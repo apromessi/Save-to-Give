@@ -44,8 +44,8 @@ def registration_form():
     if request.method == "POST":
         return "Get registration data and redirect."
 
-@app.route("/browse_challenges")
-def browse_challenges():
+@app.route("/all_challenges")
+def browse_all_challenges():
     """Right now this is a "nice to have"
         - will allow an alternative for users who don't want to enter their Mint info"""
 
@@ -60,14 +60,29 @@ def display_transaction_analysis():
 
     return "Graph of transactions, challenge info."
 
+@app.route("/profile")
+def profile():
+    """Displays any relevant user information along with overall progress towards achieving challenges.
+        Links to progress on specific challenges.
+        Links to transaction analysis - and/or displays summarized version?"""
 
+    return "Graph of overall progress - all accepted challenges listed, completed challenges and amounts, contributing to overall progress."
 
+@app.route("/update_progress")
+def update_progress():
+    """Displays progress on individual challenges. Offers a way for User to update progress:
+        2 options:
+            1) enter in units completed - one coffee brewed instead of bought
+            2) or perform another transactional analysis and assess progress (might be more interesting and challenging, but I'm not sure if I have enough information from Mint/broad categories of spending"""
 
+    return "Update progress - two options. If complete, display congratulations message and offer link to donation page."
 
+@app.route("/donate")
+def donate():
+    """Access payment gateway for appropriate organization
+        Use stripe?"""
 
-
-
-
+    return "Pay the monies!"
 
 
 ##########################################################################################
