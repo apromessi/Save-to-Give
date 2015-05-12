@@ -1,8 +1,12 @@
 Flask==0.10.1
+Flask-DebugToolbar==0.10.0
+Flask-SQLAlchemy==2.0
 Jinja2==2.7.3
 MarkupSafe==0.23
+SQLAlchemy==1.0.4
 Werkzeug==0.10.4
 argparse==1.2.1
+blinker==1.3
 itsdangerous==0.24
 mintapi==1.9
 ndg-httpsclient==0.4.0
