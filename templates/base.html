@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+<head>
+  <title>Final Project</title>
+</head>
+
+<body>
+  Final Project
+  <hr>
+
+  <a href="/login">Login</a>
+  <a href="/logout">Logout</a>
+  <a href="/register">Register</a>
+
+  {% with messages = get_flashed_messages() %}
+      {% for message in messages %}
+          <div class="flashes">{{ message }}</div>
+      {% endfor %}
+  {% endwith %}
+
+  {% block content %} ADD CONTENT HERE!!! {% endblock %}
+
+</body>
+</html>

@@ -1,4 +1,5 @@
 from jinja2 import StrictUndefined
+import os
 
 from flask import Flask, render_template, redirect, request, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
@@ -21,28 +22,74 @@ app.jinja_env.undefined = StrictUndefined
 def index():
     """Displays Homepage"""
 
-    return "This is the homepage!!"
+    return render_template("homepage.html")
+
 
 @app.route("/login", methods = ["POST", "GET"])
 def login_form():
     """GET - displays a form that asks for email and password
         POST - collects that data and authenticates --> redirect to user profile"""
-
-    if request.method == "GET":
-        return "This is where you log in."
+        
     if request.method == "POST":
-        return "This is where I decide whether you're legit.Check against DB, add to session, redirect to profile."
+        username = request.form["username_input"]
+        password = request.form["password_input"]
+        user_object = User.query.filter(User.email == username).first()
+        
+        if user_object:
+            if user_object.password == password:
+                session["login"] = username
+                flash("You logged in successfully")
+                return redirect("/profile")
+            else:
+                flash("Incorrect password. Try again.")
+                return redirect("/login")
+        else:
+            flash("We do not have this email on file. Click Register if you would like to create an account.")
+            return redirect("/login")
 
-@app.route("/register")
+    return render_template("login.html")
+
+
+
+@app.route("/logout")
+def logout():
+    """Logout - link removes User from session and redirects to homepage. Flashes message confirming that User has logged out."""
+
+    session.pop("login")
+    flash("You've successfully logged out. Goodbye.")
+    return redirect("/")
+
+
+@app.route("/register", methods = ["GET", "POST"])
 def registration_form():
     """GET - Displays a form for new users to enter information and connect to Mint
         POST - adds registration data to DB --> redirect to transaction analysis
         (or choose to browse challenges --> redirect to challenge browser tool)"""
 
-    if request.method == "GET":
-        return "Display registration form"
     if request.method == "POST":
-        return "Get registration data and redirect."
+
+        firstname = request.form["firstname"]
+        lastname = request.form["lastname"]
+        email = request.form["email"]
+        password = request.form["password"]
+        mint_password = request.form["mint_password"]
+        age = request.form["age"]
+        zipcode = request.form["zipcode"]
+
+        if User.query.filter(User.email == email).first():
+            flash("Hmm...we already have your email account on file. Please log in.")
+            return redirect("/register")
+        else:
+            new_user = User(firstname = firstname, lastname = lastname, email = email,
+                            password = password, mint_password = mint_password,
+                            age = age, zipcode = zipcode)
+            db.session.add(new_user)
+            db.session.commit()
+            flash("Thanks for creating an account!")
+            return redirect("/")
+
+    return render_template("register.html")
+
 
 @app.route("/all_challenges")
 def browse_all_challenges():
@@ -50,6 +97,7 @@ def browse_all_challenges():
         - will allow an alternative for users who don't want to enter their Mint info"""
 
     return "Browse Challenge page"
+
 
 @app.route("/transaction_analysis")
 def display_transaction_analysis():
@@ -60,6 +108,7 @@ def display_transaction_analysis():
 
     return "Graph of transactions, challenge info."
 
+
 @app.route("/profile")
 def profile():
     """Displays any relevant user information along with overall progress towards achieving challenges.
@@ -67,6 +116,7 @@ def profile():
         Links to transaction analysis - and/or displays summarized version?"""
 
     return "Graph of overall progress - all accepted challenges listed, completed challenges and amounts, contributing to overall progress."
+
 
 @app.route("/update_progress")
 def update_progress():
@@ -76,6 +126,7 @@ def update_progress():
             2) or perform another transactional analysis and assess progress (might be more interesting and challenging, but I'm not sure if I have enough information from Mint/broad categories of spending"""
 
     return "Update progress - two options. If complete, display congratulations message and offer link to donation page."
+
 
 @app.route("/donate")
 def donate():

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<form action="/register" method="POST">
+    <label>First Name:
+        <input type="text" name="firstname">
+    </label><br>
+
+    <label>Last Name:
+        <input type="text" name="lastname">
+    </label><br>
+
+    <label>Email:
+        <input type="text" name="email">
+    </label><br>
+    <!-- include a note - this must match your Mint username -->
+
+    <label>Password:
+        <input type="text" name="password">
+    </label><br>
+
+    <label>Age: 
+        <input type="number" name="age">
+    </label><br>
+
+    <label>Zipcode: 
+        <input type="text" name="zipcode">
+    </label><br>
+
+<p>Please enter your Mint password so we can use it to analyze your spending habits and send you targeted challenges.</p>
+
+    <label>Mint password:
+        <input type="text" name="mint_password">
+    </label><br><br>
+
+    <label>
+        <input type="radio" name="opt_out" value="true">I'm nervous about letting you see my financial information, and I would prefer to select challenges myself.
+    </label><br><br>
+
+    <input type="Submit">
+
+</form>
+
+
+
+
+{% endblock %}
