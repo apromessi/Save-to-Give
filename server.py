@@ -22,7 +22,7 @@ class User(db.Model):
         return "<User Object: user_id = %s, email = %s>" % (self.user_id, self.email)
 
 
-class Challenges(db.Model):
+class Challenge(db.Model):
     """Challenges for the user - connects directly to relevant organization"""
 
     __tablename__ = "challenges"
@@ -33,5 +33,19 @@ class Challenges(db.Model):
     description = db.Column(db.String(1000)) # not sure if this will be necessary
     challenge_price = db.Column(db.Integer, nullable = False)
     original_cost = db.Column(db.Integer)
-    alternative_cost = db.Column(db.Integer) # do I really need all 3 costs or should I do math instead?
-    
+    alternative_cost = db.Column(db.Integer)
+    # do I really need all 3 costs or should I do math instead?
+
+class Accepted_Challenge(db.Model):
+    """Connects User and Challenge classes
+        Stores progress towards completing challenges"""
+
+    __tablename__ = "accepted_challenges"
+
+    ac_id = db.Column(db.Integer, autoincrement = True, primary_key = True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"))
+    challenge_id = db.Column(db.Integer, db.ForeignKey("challenges.challenge_id"))
+    progress = db.Column(db.Integer, nullable = False) # can I use a float?
+    completed_at = db.Column(db.Datetime)
+
+
