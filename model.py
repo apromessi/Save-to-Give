@@ -35,6 +35,7 @@ class Challenge(db.Model):
     original_cost = db.Column(db.Integer)
     alternative_cost = db.Column(db.Integer)
     # do I really need all 3 costs or should I do math instead?
+    # make amount a suggested donation?
 
     def __repr__(self):
         return "<Challenge Object: %s product_name = %s, challenge_price = %s>" % (
