@@ -52,10 +52,24 @@ class Donation(db.Model):
     description = db.Column(db.String(1000)) # not sure if this will be necessary
     donation_amount = db.Column(db.Integer, nullable = False)
     # make amount a suggested donation?
+    # create relationship between challenges and donations (datamodeling lecture)
 
     def __repr__(self):
         return "<Donation Object: %s product_name = %s, donation_amount = %s>" % (
                 self.donation_id, self.product_name, self.donation_amount)
+
+
+# need association table to connect Donation and Challenge?
+class DonationChallenge(db.Model):
+    """Association table that connects donations and challenges"""
+
+    __tablename__ = donations_challenges
+
+    donation_challenge_id = db.Column(db.Integer, autoincrement=True, primary_key = True)
+    donation_id = db.Column(db.Integer, ForeignKey("donations.donation_id"), nullable = False)
+    challenge_id = db.Column(db.Integer, ForeignKey("challenges.challenge_id"),
+                            nullable = False)
+
 
 
 class Challenge(db.Model):
