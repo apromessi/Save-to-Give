@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Build your own challenge!</h1>
+
+<form>
+    <label>I spend too much money on
+        <select name="original_item">
+            {% for original_item in challenges_list %}
+                <option value={{ original_item }}>{{ original_item }}</option>
+            {% endfor %}
+        </select>
+    </label>
+</form>
+
+{% endblock %}

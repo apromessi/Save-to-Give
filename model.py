@@ -22,23 +22,6 @@ class User(db.Model):
         return "<User Object: %s email = %s>" % (self.user_id, self.email)
 
 
-class Accepted_Challenge(db.Model):
-    """Connects User and Challenge classes
-        Stores progress towards completing challenges"""
-
-    __tablename__ = "accepted_challenges"
-
-    ac_id = db.Column(db.Integer, autoincrement = True, primary_key = True)
-    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"))
-    challenge_id = db.Column(db.Integer, db.ForeignKey("challenges.challenge_id"))
-    progress = db.Column(db.Float, nullable = False)
-    completed_at = db.Column(db.DateTime)
-
-    def __repr__(self):
-        return "<Accepted_Challenge Object: %s user_id=%s, challenge_id=%s, progress = %s>" % (
-                self.ac_id, self.user_id, self.challenge_id, self.progress)
-
-
 class Donation(db.Model):
     """Donation objects that connect directly to relevant organization
         Connect to challenges table via association table and
@@ -52,24 +35,20 @@ class Donation(db.Model):
     description = db.Column(db.String(1000)) # not sure if this will be necessary
     donation_amount = db.Column(db.Integer, nullable = False)
     # make amount a suggested donation?
-    # create relationship between challenges and donations (datamodeling lecture)
 
     def __repr__(self):
         return "<Donation Object: %s product_name = %s, donation_amount = %s>" % (
                 self.donation_id, self.product_name, self.donation_amount)
 
 
-# need association table to connect Donation and Challenge?
 class DonationChallenge(db.Model):
     """Association table that connects donations and challenges"""
 
-    __tablename__ = donations_challenges
+    __tablename__ = "donations_challenges"
 
     donation_challenge_id = db.Column(db.Integer, autoincrement=True, primary_key = True)
-    donation_id = db.Column(db.Integer, ForeignKey("donations.donation_id"), nullable = False)
-    challenge_id = db.Column(db.Integer, ForeignKey("challenges.challenge_id"),
-                            nullable = False)
-
+    donation_id = db.Column(db.Integer, db.ForeignKey("donations.donation_id"))
+    challenge_id = db.Column(db.Integer, db.ForeignKey("challenges.challenge_id"))
 
 
 class Challenge(db.Model):
@@ -84,12 +63,32 @@ class Challenge(db.Model):
     alternative_items = db.Column(db.String(100))
     alternative_cost = db.Column(db.Integer)
     # should savings_amount be an attribute? redundant, but will use often. Or make a method/helper function instead?
+    donation = db.relationship("Donation", secondary = DonationChallenge,
+                                backref = db.backref("donations"))
 
     def __repr__(self):
         return "<Challenge Object: %s original_items = %s, challenge_price = %s>" % (
                 self.challenge_id, self.original_items, self.challenge_price)
 
-# also need Donation and an association table between Donation and Challenge??
+
+class Accepted_Challenge(db.Model):
+    """Connects User and Challenge classes
+        Stores progress towards completing challenges"""
+
+    __tablename__ = "accepted_challenges"
+
+    ac_id = db.Column(db.Integer, autoincrement = True, primary_key = True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"))
+    challenge_id = db.Column(db.Integer, db.ForeignKey("challenges.challenge_id"))
+    progress = db.Column(db.Float, nullable = False)
+    completed_at = db.Column(db.DateTime)
+
+    challenge = db.relationship("Challenge", backref = db.backref("accepted_challenges"))
+    user = db.relationship("User", backref = db.backref("accepted_challenges"))
+
+    def __repr__(self):
+        return "<Accepted_Challenge Object: %s user_id=%s, challenge_id=%s, progress = %s>" % (
+                self.ac_id, self.user_id, self.challenge_id, self.progress)
 
 
 class Transaction(db.Model):
@@ -103,10 +102,13 @@ class Transaction(db.Model):
     description = db.Column(db.String(100))
     category = db.Column(db.String(64))
     amount = db.Column(db.Float)
+    # add more info for whether a particular transaction counts towards a challenge - would also allow user to input relevant transactions - or apply an existing transaction to progress?
+    user = db.relationship("User", backref = db.backref("transactions"))
 
     def __repr__(self):
         return "<Transaction Object: %s user_id=%s, category = %s, amount = %s>" % (
                 self.transaction_id, self.user_id, self.category, self.amount)
+
 
 class Organization(db.Model):
     """Organization data pertaining to specific challenges."""

@@ -4,7 +4,7 @@ import os
 from flask import Flask, render_template, redirect, request, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
 
-from model import User, Challenge, Accepted_Challenge, Transaction, Organization, connect_to_db, db
+from model import User, Challenge, Accepted_Challenge, Donation, DonationChallenge, Transaction, Organization, connect_to_db, db
 
 
 app = Flask(__name__)
@@ -91,12 +91,15 @@ def registration_form():
     return render_template("register.html")
 
 
-@app.route("/all_challenges")
-def browse_all_challenges():
-    """Right now this is a "nice to have"
-        - will allow an alternative for users who don't want to enter their Mint info"""
+@app.route("/challenge_builder")
+def challenge_builder():
+    """Displays an interactive form for users to create their own challenge by interacting with
+        existing challenge and donation objects and calculating amount of times they are
+        willing to substitute"""
 
-    return "Browse Challenge page"
+    challenges_list = ["coffee", "lattes", "lunch out"]
+
+    return render_template("challenge_builder.html", challenges_list = challenges_list)
 
 
 @app.route("/transaction_analysis")
