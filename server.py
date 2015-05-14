@@ -133,7 +133,7 @@ def update_progress():
 @app.route("/donate")
 def donate():
     """Access payment gateway for appropriate organization
-        Use stripe?"""
+        Use paypal?"""
 
     return "Pay the monies!"
 

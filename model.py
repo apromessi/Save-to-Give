@@ -21,7 +21,6 @@ class User(db.Model):
     def __repr__(self):
         return "<User Object: %s email = %s>" % (self.user_id, self.email)
 
-
 class Challenge(db.Model):
     """Challenges for the user - connects directly to relevant organization"""
 
@@ -40,6 +39,8 @@ class Challenge(db.Model):
     def __repr__(self):
         return "<Challenge Object: %s product_name = %s, challenge_price = %s>" % (
                 self.challenge_id, self.product_name, self.challenge_price)
+
+# also need Donation and an association table between Donation and Challenge??
 
 class Accepted_Challenge(db.Model):
     """Connects User and Challenge classes
@@ -68,7 +69,6 @@ class Transaction(db.Model):
     description = db.Column(db.String(100))
     category = db.Column(db.String(64))
     amount = db.Column(db.Float)
-    label = db.Column(db.String(64)) # placeholder because not sure if necessary - shows up in transaction data
 
     def __repr__(self):
         return "<Transaction Object: %s user_id=%s, category = %s, amount = %s>" % (
@@ -95,7 +95,7 @@ def connect_to_db(app):
     """Connect the database to our Flask app."""
 
     # Configure to use our SQLite database
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///finalproject.db'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///secrets.db'
     db.app = app
     db.init_app(app)
 
