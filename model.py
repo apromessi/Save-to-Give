@@ -21,26 +21,6 @@ class User(db.Model):
     def __repr__(self):
         return "<User Object: %s email = %s>" % (self.user_id, self.email)
 
-class Challenge(db.Model):
-    """Challenges for the user - connects directly to relevant organization"""
-
-    __tablename__ = "challenges"
-
-    challenge_id = db.Column(db.Integer, autoincrement = True, primary_key = True)
-    org_id = db.Column(db.Integer, db.ForeignKey("organizations.org_id"))
-    product_name = db.Column(db.String(100), nullable = False)
-    description = db.Column(db.String(1000)) # not sure if this will be necessary
-    challenge_price = db.Column(db.Integer, nullable = False)
-    original_cost = db.Column(db.Integer)
-    alternative_cost = db.Column(db.Integer)
-    # do I really need all 3 costs or should I do math instead?
-    # make amount a suggested donation?
-
-    def __repr__(self):
-        return "<Challenge Object: %s product_name = %s, challenge_price = %s>" % (
-                self.challenge_id, self.product_name, self.challenge_price)
-
-# also need Donation and an association table between Donation and Challenge??
 
 class Accepted_Challenge(db.Model):
     """Connects User and Challenge classes
@@ -57,6 +37,46 @@ class Accepted_Challenge(db.Model):
     def __repr__(self):
         return "<Accepted_Challenge Object: %s user_id=%s, challenge_id=%s, progress = %s>" % (
                 self.ac_id, self.user_id, self.challenge_id, self.progress)
+
+
+class Donation(db.Model):
+    """Donation objects that connect directly to relevant organization
+        Connect to challenges table via association table and
+        matching donation_amount and savings from challenge"""
+
+    __tablename__ = "donations"
+
+    donation_id = db.Column(db.Integer, autoincrement = True, primary_key = True)
+    org_id = db.Column(db.Integer, db.ForeignKey("organizations.org_id"))
+    product_name = db.Column(db.String(100), nullable = False)
+    description = db.Column(db.String(1000)) # not sure if this will be necessary
+    donation_amount = db.Column(db.Integer, nullable = False)
+    # make amount a suggested donation?
+
+    def __repr__(self):
+        return "<Donation Object: %s product_name = %s, donation_amount = %s>" % (
+                self.donation_id, self.product_name, self.donation_amount)
+
+
+class Challenge(db.Model):
+    """Challenges for the user
+        connects to matching donations via savings and donation_amount"""
+
+    __tablename__ = "challenges"
+
+    challenge_id = db.Column(db.Integer, autoincrement = True, primary_key = True)
+    original_items = db.Column(db.String(100))
+    original_cost = db.Column(db.Integer)
+    alternative_items = db.Column(db.String(100))
+    alternative_cost = db.Column(db.Integer)
+    # should savings_amount be an attribute? redundant, but will use often. Or make a method/helper function instead?
+
+    def __repr__(self):
+        return "<Challenge Object: %s original_items = %s, challenge_price = %s>" % (
+                self.challenge_id, self.original_items, self.challenge_price)
+
+# also need Donation and an association table between Donation and Challenge??
+
 
 class Transaction(db.Model):
     """Contains transaction data from mintapi"""
