@@ -1,7 +1,7 @@
 from jinja2 import StrictUndefined
 import os
 
-from flask import Flask, render_template, redirect, request, flash, session
+from flask import Flask, render_template, redirect, request, flash, session, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 
 from model import User, Challenge, Accepted_Challenge, Donation, DonationChallenge, Transaction, Organization, connect_to_db, db
@@ -91,16 +91,26 @@ def registration_form():
     return render_template("register.html")
 
 
-@app.route("/challenge_builder")
-def challenge_builder():
+@app.route("/challenge_builder_step1")
+def challenge_builder_step1():
     """Displays an interactive form for users to create their own challenge by interacting with
         existing challenge and donation objects and calculating amount of times they are
-        willing to substitute"""
+        willing to substitute
+
+        STEP 1: iterate through all challenge objects and put original_items into the challenges list, which gets put into a dropdown in challenge_builder.html"""
 
     challenges_list = ["coffee", "lattes", "lunch out"]
+    #TODO - challenges list comes from Challenge objects
 
     return render_template("challenge_builder.html", challenges_list = challenges_list)
 
+@app.route("/challenge_builder_step2")
+def challenge_builder_step2():
+
+    original_item = request.args["original_item"]
+    alternative_item = "homebrewed coffees"
+
+    return jsonify(original_item = original_item, alternative_item = alternative_item)
 
 @app.route("/transaction_analysis")
 def display_transaction_analysis():

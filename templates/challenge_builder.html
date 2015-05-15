@@ -3,7 +3,7 @@
 
 <h1>Build your own challenge!</h1>
 
-<form>
+<form id="step1" action="/challenge_builder_step1">
     <label>I spend too much money on
         <select name="original_item">
             {% for original_item in challenges_list %}
@@ -12,5 +12,19 @@
         </select>
     </label>
 </form>
+
+<form id="step2">
+    <label>
+        Woooooooo!
+        
+    </label>
+</form>
+
+<script>
+    $("#step1").on("select", function() {$("#step2").load("/challenge_builder_step2");})
+
+</script>
+
+<!-- on select (event), send info through flask route and then use ajax to make the next one appear send the data back to the next form -> back to the route and then evaluate what info to send back to html -->
 
 {% endblock %}
