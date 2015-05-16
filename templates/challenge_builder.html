@@ -3,27 +3,73 @@
 
 <h1>Build your own challenge!</h1>
 
-<form id="step1" action="/challenge_builder_step1">
-    <label>I spend too much money on
-        <select name="original_item">
-            {% for original_item in challenges_list %}
-                <option value={{ original_item }}>{{ original_item }}</option>
-            {% endfor %}
-        </select>
-    </label>
-</form>
+<div id="step1">
+    <form action = "challenge_builder_step2">
+        <label>I spend too much money on
+            <select name="original_item" onchange="showStep2()">
+                {% for original_item in challenges_list %}
+                    <option value="{{ original_item }}">{{ original_item }}</option>
+                {% endfor %}
+            </select>
+        </label>
+    </form>
+</div>
 
-<form id="step2">
-    <label>
-        Woooooooo!
-        
-    </label>
-</form>
+<div id="step2">
+    <p>How many [original_item from dropdown] will you substitute for [alternative_item - same challenge object]?</p>
+    <form>
+        <label>number of [original_item from dropdown]
+            <input type="number" name="qty">
+        </label>
+    </form>
+    <p>[amount you save - calculates from qty and price of original_item (attribute of challenge object)]</p>
+</div>
+
+<div id="step3">
+    <p>With [amount that you save], you can donate [donation item]!</p>
+    -----------click to accept -- input type=submit? method=post -------------------------------
+</div>
 
 <script>
-    $("#step1").on("select", function() {$("#step2").load("/challenge_builder_step2");})
+    $("#step2").css("visibility", "hidden");
+    $("#step3").css("visibility", "hidden");
+
+    function showStep2() {
+        console.log("Helllo?");
+        var original_item = $("#step1").val();
+        console.log(original_item);
+        $("#step2").css("visibility", "visible");
+
+            };
+
+// $(document).ready(funtion(){
+// var $step1 = $('step1');
+// $form.submit(funtion(e){
+//     e.preventDefault();
+//     $.ajax({
+//         type: "GET",
+//         data: $(this).serialize(), 
+//         cache: false,
+//         success: functionName
+//     });
+//   });
+// });   
 
 </script>
+
+<!-- $(document).ready(funtion(){
+var $form = $('form');
+$form.submit(funtion(e){
+    e.preventDefault();
+    $.ajax({
+        type: "POST",
+        data: $(this).serialize(), 
+        cache: false,
+        success: displayResults
+    });
+  });
+});
+ -->
 
 <!-- on select (event), send info through flask route and then use ajax to make the next one appear send the data back to the next form -> back to the route and then evaluate what info to send back to html -->
 

@@ -91,7 +91,7 @@ def registration_form():
     return render_template("register.html")
 
 
-@app.route("/challenge_builder_step1")
+@app.route("/challenge_builder")
 def challenge_builder_step1():
     """Displays an interactive form for users to create their own challenge by interacting with
         existing challenge and donation objects and calculating amount of times they are
@@ -104,12 +104,14 @@ def challenge_builder_step1():
 
     return render_template("challenge_builder.html", challenges_list = challenges_list)
 
+
 @app.route("/challenge_builder_step2")
 def challenge_builder_step2():
 
     original_item = request.args["original_item"]
     alternative_item = "homebrewed coffees"
 
+    print original_item
     return jsonify(original_item = original_item, alternative_item = alternative_item)
 
 @app.route("/transaction_analysis")
