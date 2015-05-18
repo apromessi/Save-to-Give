@@ -34,22 +34,12 @@ class Donation(db.Model):
     org_id = db.Column(db.Integer, db.ForeignKey("organizations.org_id"))
     product_name = db.Column(db.String(100), nullable = False)
     description = db.Column(db.String(1000)) # not sure if this will be necessary
-    donation_amount = db.Column(db.Integer, nullable = False)
+    donation_amount = db.Column(db.Float, nullable = False)
     # make amount a suggested donation?
 
     def __repr__(self):
         return "<Donation Object: %s product_name = %s, donation_amount = %s>" % (
                 self.donation_id, self.product_name, self.donation_amount)
-
-
-class DonationChallenge(db.Model):
-    """Association table that connects donations and challenges"""
-
-    __tablename__ = "donations_challenges"
-
-    donation_challenge_id = db.Column(db.Integer, autoincrement=True, primary_key = True)
-    donation_id = db.Column(db.Integer, db.ForeignKey("donations.donation_id"))
-    challenge_id = db.Column(db.Integer, db.ForeignKey("challenges.challenge_id"))
 
 
 class Challenge(db.Model):
@@ -60,12 +50,11 @@ class Challenge(db.Model):
 
     challenge_id = db.Column(db.Integer, autoincrement = True, primary_key = True)
     original_items = db.Column(db.String(100))
-    original_cost = db.Column(db.Integer)
+    original_cost = db.Column(db.Float)
     alternative_items = db.Column(db.String(100))
-    alternative_cost = db.Column(db.Integer)
-    # should savings_amount be an attribute? redundant, but will use often. Or make a method/helper function instead?
-    donation = db.relationship("Donation", secondary = DonationChallenge,
-                                backref = db.backref("donations"))
+    alternative_cost = db.Column(db.Float)
+
+    # 
 
     def __repr__(self):
         return "<Challenge Object: %s original_items = %s, challenge_price = %s>" % (
@@ -81,11 +70,13 @@ class Accepted_Challenge(db.Model):
     ac_id = db.Column(db.Integer, autoincrement = True, primary_key = True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"))
     challenge_id = db.Column(db.Integer, db.ForeignKey("challenges.challenge_id"))
+    donation_id = db.Column(db.Integer, db.ForeignKey("donations.donation_id"))
     progress = db.Column(db.Float, nullable = False)
     completed_at = db.Column(db.DateTime)
 
     challenge = db.relationship("Challenge", backref = db.backref("accepted_challenges"))
     user = db.relationship("User", backref = db.backref("accepted_challenges"))
+    donation = db.relationship("Donation", backref = db.backref("accepted_challenge"), uselist=False)
 
     def __repr__(self):
         return "<Accepted_Challenge Object: %s user_id=%s, challenge_id=%s, progress = %s>" % (

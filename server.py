@@ -5,7 +5,7 @@ import keyring
 from flask import Flask, render_template, redirect, request, flash, session, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 
-from model import User, Challenge, Accepted_Challenge, Donation, DonationChallenge, Transaction, Organization, connect_to_db, db
+from model import User, Challenge, Accepted_Challenge, Donation, Transaction, Organization, connect_to_db, db
 from transaction_analysis import load_transactions
 
 

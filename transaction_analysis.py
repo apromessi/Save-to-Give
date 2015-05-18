@@ -1,5 +1,4 @@
 from model import Transaction, connect_to_db, db
-from server import app
 import datetime
 import mintapi
 import keyring
@@ -31,3 +30,10 @@ def transaction_category_analysis(user_id):
         How much have they spent per category? What percent is that of the whole?"""
 
     pass
+
+
+# if __name__ == "__main__":
+#     # As a convenience, if we run this module interactively, it will leave
+#     # you in a state of being able to work with the database directly.
+
+#     load_transactions()

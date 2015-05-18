@@ -8,6 +8,7 @@ Werkzeug==0.10.4
 argparse==1.2.1
 blinker==1.3
 itsdangerous==0.24
+keyring==5.3
 mintapi==1.9
 ndg-httpsclient==0.4.0
 numpy==1.9.2
