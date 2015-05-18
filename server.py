@@ -33,14 +33,13 @@ def login_form():
         POST - collects that data and authenticates --> redirect to user profile"""
         
     if request.method == "POST":
-        username = request.form["username_input"]
+        email = request.form["username_input"]
         password = request.form["password_input"]
-        user_object = User.query.filter(User.email == username).first()
+        user_object = User.query.filter(User.email == email).first()
         
         if user_object:
             if user_object.password == password:
-                session["login"] = username
-                load_transactions(user_object.mint_username)
+                session["login"] = email
                 flash("You logged in successfully")
                 return redirect("/profile")
             else:
@@ -57,9 +56,10 @@ def login_form():
 @app.route("/logout")
 def logout():
     """Logout - link removes User from session and redirects to homepage. Flashes message confirming that User has logged out."""
+    
+    # password seems to not be in keychain anymore...i think this is a good thing?
 
     session.pop("login")
-    # do I have to do anything to end keyring session?
     flash("You've successfully logged out. Goodbye.")
     return redirect("/")
 
@@ -84,7 +84,7 @@ def registration_form():
 
         if User.query.filter(User.email == email).first():
             flash("Hmm...we already have your email account on file. Please log in.")
-            return redirect("/register")
+            return redirect("/login")
         else:
             new_user = User(firstname = firstname, lastname = lastname, email = email,
                             password = password, mint_username = mint_username,
@@ -92,6 +92,7 @@ def registration_form():
             db.session.add(new_user)
             db.session.commit()
 
+            session["login"] = email
             keyring.set_password("system", mint_username, mint_password)
             load_transactions(mint_username)
 

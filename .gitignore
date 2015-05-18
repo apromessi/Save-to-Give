@@ -1,5 +1,7 @@
 env
 secrets.sh
 secrets.py
-secrets.pyc
 secrets.db
+
+*.pyc
+*.ods
