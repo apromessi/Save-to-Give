@@ -12,11 +12,12 @@ class User(db.Model):
     firstname = db.Column(db.String(50))
     lastname = db.Column(db.String(50))
     email = db.Column(db.String(64), nullable = False)
-    # use one email for now - must match email in mint account
+    mint_username = db.Column(db.String(64))
     password = db.Column(db.String(40), nullable = False)
-    mint_password = db.Column(db.String(40))
     zipcode = db.Column(db.String(15)) # placeholder for now - in case location analysis later
     age = db.Column(db.Integer) # placeholder for now - in case demographic analysis later
+    # removed mint password from database - intead going to try and use keychain
+
 
     def __repr__(self):
         return "<User Object: %s email = %s>" % (self.user_id, self.email)

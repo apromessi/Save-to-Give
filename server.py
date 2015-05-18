@@ -1,10 +1,12 @@
 from jinja2 import StrictUndefined
 import os
+import keyring
 
 from flask import Flask, render_template, redirect, request, flash, session, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 
 from model import User, Challenge, Accepted_Challenge, Donation, DonationChallenge, Transaction, Organization, connect_to_db, db
+from transaction_analysis import load_transactions
 
 
 app = Flask(__name__)
@@ -38,6 +40,7 @@ def login_form():
         if user_object:
             if user_object.password == password:
                 session["login"] = username
+                load_transactions(user_object.mint_username)
                 flash("You logged in successfully")
                 return redirect("/profile")
             else:
@@ -56,6 +59,7 @@ def logout():
     """Logout - link removes User from session and redirects to homepage. Flashes message confirming that User has logged out."""
 
     session.pop("login")
+    # do I have to do anything to end keyring session?
     flash("You've successfully logged out. Goodbye.")
     return redirect("/")
 
@@ -72,19 +76,25 @@ def registration_form():
         lastname = request.form["lastname"]
         email = request.form["email"]
         password = request.form["password"]
-        mint_password = request.form["mint_password"]
         age = request.form["age"]
         zipcode = request.form["zipcode"]
+
+        mint_username = request.form["mint_username"]
+        mint_password = request.form["mint_password"]
 
         if User.query.filter(User.email == email).first():
             flash("Hmm...we already have your email account on file. Please log in.")
             return redirect("/register")
         else:
             new_user = User(firstname = firstname, lastname = lastname, email = email,
-                            password = password, mint_password = mint_password,
+                            password = password, mint_username = mint_username,
                             age = age, zipcode = zipcode)
             db.session.add(new_user)
             db.session.commit()
+
+            keyring.set_password("system", mint_username, mint_password)
+            load_transactions(mint_username)
+
             flash("Thanks for creating an account!")
             return redirect("/")
 

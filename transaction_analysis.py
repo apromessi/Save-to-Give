@@ -2,14 +2,15 @@ from model import Transaction, connect_to_db, db
 from server import app
 import datetime
 import mintapi
+import keyring
 import pandas as pd
-import os
 
 
-def load_transactions(email, password):
+def load_transactions(mint_username):
     """Load transactions from mintapi into database."""
 
-    mint = mintapi.Mint(email, password)
+    mint_password = keyring.get_password("system", mint_username)
+    mint = mintapi.Mint(mint_username, mint_password)
     user_transactions = mint.get_transactions()
 
     for i in range(len(user_transactions.index)):
@@ -30,12 +31,3 @@ def transaction_category_analysis(user_id):
         How much have they spent per category? What percent is that of the whole?"""
 
     pass
-
-
-if __name__ == "__main__":
-    connect_to_db(app)
-    
-    email = os.environ["MINT_EMAIL"]
-    password = os.environ["MINT_PASSWORD"]
-    
-    load_transactions(email, password)
