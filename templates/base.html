@@ -9,9 +9,12 @@
   Final Project
   <hr>
 
-  <a href="/login">Login</a>
-  <a href="/logout">Logout</a>
-  <a href="/register">Register</a>
+  {% if session.get("login") %}
+    <a href="/logout">Logout</a>
+  {% else %}
+    <a href="/login">Login</a>
+    <a href="/register">Register</a>
+  {% endif %}
 
   {% with messages = get_flashed_messages() %}
       {% for message in messages %}
