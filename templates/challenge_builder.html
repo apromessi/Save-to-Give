@@ -38,7 +38,7 @@
     function showStep2() {
         var original_items = $("#step1 option:selected").text();
         console.log(original_items);
-        $("#step2").load("/challenge_builder_step2/" + original_items);
+        $("#step2").load("/challenge_builder_step2/" + (original_items));
         $("#step2").css("visibility", "visible");
             };
 

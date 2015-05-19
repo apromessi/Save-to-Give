@@ -116,9 +116,9 @@ def challenge_builder_step1():
     return render_template("challenge_builder.html", challenges_list = challenges_list)
 
 
-@app.route("/challenge_builder_step2/<original_items>")
+@app.route("/challenge_builder_step2/<path:original_items>")
 def challenge_builder_step2(original_items):
-
+    # need a ListConverter?? https://exploreflask.com/views.html
     alternative_items = "homebrewed coffees"
 
     print original_items
