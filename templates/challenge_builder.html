@@ -17,9 +17,9 @@
 </div>
 
 <div id="step2">
-    <p>How many [[ alternative_items ]] will you substitute for [[ original_items ]]?</p>
+    <p>How many <span class="alt"></span> will you substitute for <span id="orig"></span>?</p>
     <form>
-        <label>number of [original_items from dropdown]
+        <label>number of <span class="alt"></span>
             <input type="number" name="qty">
         </label>
     </form>
@@ -36,9 +36,14 @@
     $("#step3").css("visibility", "hidden");
 
     function showStep2() {
-        var original_items = $("#step1 option:selected").text();
-        console.log(original_items);
-        $("#step2").load("/challenge_builder_step2/" + (original_items));
+        var original_items = encodeURIComponent($("#step1 option:selected").text());
+        $.get(
+            "/challenge_builder_step2/" + original_items,
+            function (result) {
+                $(".alt").text(result.alternative_items);
+                $("#orig").text(result.original_items);
+            }
+        );
         $("#step2").css("visibility", "visible");
             };
 

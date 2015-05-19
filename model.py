@@ -57,8 +57,8 @@ class Challenge(db.Model):
     # 
 
     def __repr__(self):
-        return "<Challenge Object: %s original_items = %s, challenge_price = %s>" % (
-                self.challenge_id, self.original_items, self.challenge_price)
+        return "<Challenge Object: %s, original_items = %s>" % (
+                self.challenge_id, self.original_items)
 
 
 class Accepted_Challenge(db.Model):

@@ -118,11 +118,15 @@ def challenge_builder_step1():
 
 @app.route("/challenge_builder_step2/<path:original_items>")
 def challenge_builder_step2(original_items):
-    # need a ListConverter?? https://exploreflask.com/views.html
-    alternative_items = "homebrewed coffees"
 
-    print original_items
+    # alternative_items = db.session.query(Challenge.alternative_items,).filter(
+                                    # Challenge.original_items == original_items).first()
+    challenge_obj = Challenge.query.filter(Challenge.original_items == original_items).first()
+    print challenge_obj
+    alternative_items = challenge_obj.alternative_items
+
     return jsonify(original_items = original_items, alternative_items = alternative_items)
+
 
 @app.route("/transaction_analysis")
 def display_transaction_analysis():
