@@ -110,20 +110,19 @@ def challenge_builder_step1():
 
         STEP 1: iterate through all challenge objects and put original_items into the challenges list, which gets put into a dropdown in challenge_builder.html"""
 
-    challenges_list = ["coffee", "lattes", "lunch out"]
-    #TODO - challenges list comes from Challenge objects
+    challenges_list = db.session.query(Challenge.original_items).all()
+    challenges_list = [challenge[0] for challenge in challenges_list]
 
     return render_template("challenge_builder.html", challenges_list = challenges_list)
 
 
-@app.route("/challenge_builder_step2")
-def challenge_builder_step2():
+@app.route("/challenge_builder_step2/<original_items>")
+def challenge_builder_step2(original_items):
 
-    original_item = request.args["original_item"]
-    alternative_item = "homebrewed coffees"
+    alternative_items = "homebrewed coffees"
 
-    print original_item
-    return jsonify(original_item = original_item, alternative_item = alternative_item)
+    print original_items
+    return jsonify(original_items = original_items, alternative_items = alternative_items)
 
 @app.route("/transaction_analysis")
 def display_transaction_analysis():

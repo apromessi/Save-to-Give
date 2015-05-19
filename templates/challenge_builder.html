@@ -4,11 +4,12 @@
 <h1>Build your own challenge!</h1>
 
 <div id="step1">
-    <form action = "challenge_builder_step2">
+    <form>
         <label>I spend too much money on
-            <select name="original_item" onchange="showStep2()">
-                {% for original_item in challenges_list %}
-                    <option value="{{ original_item }}">{{ original_item }}</option>
+            <select name="original_items" onchange="showStep2()">
+                    <option value="choose_an_item"></option>
+                {% for original_items in challenges_list %}
+                    <option value="{{ original_items }}">{{ original_items }}</option>
                 {% endfor %}
             </select>
         </label>
@@ -16,13 +17,13 @@
 </div>
 
 <div id="step2">
-    <p>How many [original_item from dropdown] will you substitute for [alternative_item - same challenge object]?</p>
+    <p>How many [[ alternative_items ]] will you substitute for [[ original_items ]]?</p>
     <form>
-        <label>number of [original_item from dropdown]
+        <label>number of [original_items from dropdown]
             <input type="number" name="qty">
         </label>
     </form>
-    <p>[amount you save - calculates from qty and price of original_item (attribute of challenge object)]</p>
+    <p>[amount you save - calculates from qty and price of original_items (attribute of challenge object)]</p>
 </div>
 
 <div id="step3">
@@ -35,11 +36,10 @@
     $("#step3").css("visibility", "hidden");
 
     function showStep2() {
-        console.log("Helllo?");
-        var original_item = $("#step1").val();
-        console.log(original_item);
+        var original_items = $("#step1 option:selected").text();
+        console.log(original_items);
+        $("#step2").load("/challenge_builder_step2/" + original_items);
         $("#step2").css("visibility", "visible");
-
             };
 
 // $(document).ready(funtion(){
