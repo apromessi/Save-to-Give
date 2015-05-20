@@ -26,10 +26,11 @@
 
 <div id="step3">
     <p>You will save $<span class="savings"></span>!</p>
+    <p>Here are the donation items that most closely match the amount you are saving:</p>
+    <!-- <p>With $<span id="donation_price"></span>, you can <span id="donation_item"></span>!</p> -->
+    <div id="challenge"></div>
 
-    <p>With about $<span class="savings"></span>, you can <span id="donation_item"></span>!</p>
-    <!-- this savings amount will actually adjust slightly to match estimate/rounding from server -->
-    -----------click to accept -- input type=submit? method=post -------------------------------
+    -----------click to accept -- input type=submit? method=post ------------------------------
 </div>
 
 <script>
@@ -49,6 +50,7 @@
             };
 
     function showStep3() {
+        $("#challenge").empty()
         var original_items = $("#step1 option:selected").text();
         var qty = $("#qty").val();
         $.get(
@@ -60,8 +62,12 @@
                 $.get(
                     "/challenge_builder_step3/" + donation_amt,
                     function (result) {
-                        // iterate through donation_item_price list of tuples here? will also need to iterate above to create multiple sentences
-                        $("#donation_item").text(result.donation_item_price);
+                        console.log(result);
+                        _.each(result.donation_item_price, function(donation_array) {
+                            $("#challenge").append(
+                                "<p>With $" + donation_array[1] + 
+                                " you can " + donation_array[0] + "!</p>");
+                        });
                     }
                 );
             }
