@@ -16,18 +16,18 @@
     </form>
 </div>
 
-<div id="step2">
-    <p>How many <span class="alt"></span> will you substitute for <span id="orig"></span>?</p>
+<div id="step2"><br>
     <form>
-        <label>number of <span class="alt"></span>
-            <input type="number" name="qty">
+        <label>How many <span class="alt"></span> will you substitute for <span id="orig"></span>?<br>
+            <input type="number" name="qty" id="qty" oninput="showStep3()"> <span class="alt"></span><br>
         </label>
     </form>
-    <p>[amount you save - calculates from qty and price of original_items (attribute of challenge object)]</p>
 </div>
 
 <div id="step3">
-    <p>With [amount that you save], you can donate [donation item]!</p>
+    <p>You will save $<span id="savings"></span>!</p>
+
+    <p>With $<span id="savings"></span>, you can donate <span id="donation_item"></span>!</p>
     -----------click to accept -- input type=submit? method=post -------------------------------
 </div>
 
@@ -46,6 +46,24 @@
         );
         $("#step2").css("visibility", "visible");
             };
+
+    function showStep3() {
+        var original_items = $("#step1 option:selected").text();
+        var qty = $("#qty").val();
+        $.get(
+            "/challenge_builder_step2/" + original_items,
+            function (result) {
+                $("#savings").text(result.savings * qty);
+            }
+        );
+        $.get(
+            "/challenge_builder_step3/" + qty,
+            function (result) {
+                $("#donation_item").text(result.donation_item);
+            }
+        $("#step3").css("visibility", "visible");
+            };
+
 
 // $(document).ready(funtion(){
 // var $step1 = $('step1');

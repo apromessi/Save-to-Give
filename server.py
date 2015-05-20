@@ -122,10 +122,15 @@ def challenge_builder_step2(original_items):
     # alternative_items = db.session.query(Challenge.alternative_items,).filter(
                                     # Challenge.original_items == original_items).first()
     challenge_obj = Challenge.query.filter(Challenge.original_items == original_items).first()
-    print challenge_obj
+    
     alternative_items = challenge_obj.alternative_items
+    original_cost = challenge_obj.original_cost
+    alternative_cost = challenge_obj.alternative_cost
 
-    return jsonify(original_items = original_items, alternative_items = alternative_items)
+    savings = original_cost - alternative_cost
+
+    return jsonify(original_items = original_items, alternative_items = alternative_items,
+                    savings = savings)
 
 
 @app.route("/transaction_analysis")
