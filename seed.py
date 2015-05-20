@@ -31,9 +31,9 @@ def load_donations():
         for line in lines:
             line = line.split(",")
         a_donation = Donation(org_id = line[1],
-        						product_name = line[2],
+        						donation_item = line[2],
         						description = line[3],
-        						donation_amount = float(line[4]))
+        						donation_price = float(line[4]))
         db.session.add(a_donation)
 
     db.session.commit()

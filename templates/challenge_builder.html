@@ -25,9 +25,10 @@
 </div>
 
 <div id="step3">
-    <p>You will save $<span id="savings"></span>!</p>
+    <p>You will save $<span class="savings"></span>!</p>
 
-    <p>With $<span id="savings"></span>, you can donate <span id="donation_item"></span>!</p>
+    <p>With $<span class="savings"></span>, you can donate <span id="donation_item"></span>!</p>
+    <!-- this savings amount will actually adjust slightly to match estimate/rounding from server -->
     -----------click to accept -- input type=submit? method=post -------------------------------
 </div>
 
@@ -53,14 +54,19 @@
         $.get(
             "/challenge_builder_step2/" + original_items,
             function (result) {
-                $("#savings").text(result.savings * qty);
+                var donation_amt = (result.savings * qty);
+                $(".savings").text(donation_amt);
+                // will have to figure out how to round
+                $.get(
+                    "/challenge_builder_step3/" + donation_amt,
+                    function (result) {
+                        console.log(result);
+                        $("#donation_item").text(result.donation_item_price);
+                    }
+                );
             }
         );
-        $.get(
-            "/challenge_builder_step3/" + qty,
-            function (result) {
-                $("#donation_item").text(result.donation_item);
-            }
+        
         $("#step3").css("visibility", "visible");
             };
 

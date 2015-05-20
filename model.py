@@ -32,9 +32,9 @@ class Donation(db.Model):
 
     donation_id = db.Column(db.Integer, autoincrement = True, primary_key = True)
     org_id = db.Column(db.Integer, db.ForeignKey("organizations.org_id"))
-    product_name = db.Column(db.String(100), nullable = False)
+    donation_item = db.Column(db.String(100), nullable = False)
     description = db.Column(db.String(1000)) # not sure if this will be necessary
-    donation_amount = db.Column(db.Float, nullable = False)
+    donation_price = db.Column(db.Float, nullable = False)
     # make amount a suggested donation?
 
     def __repr__(self):

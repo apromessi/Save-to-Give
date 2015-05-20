@@ -133,6 +133,27 @@ def challenge_builder_step2(original_items):
                     savings = savings)
 
 
+@app.route("/challenge_builder_step3/<int:donation_amt>")
+def challenge_builder_step3(donation_amt):
+    """match calcualted donation_amt from form to donation_price in database"""
+    
+    max_donation_amt = int(donation_amt) + 3
+    min_donation_amt = int(donation_amt) - 3
+    
+    donation_obj_list = Donation.query.filter(Donation.donation_price < max_donation_amt,
+                                            Donation.donation_price > min_donation_amt,)
+
+    donation_item_price = []
+
+    for donation_obj in donation_obj_list:
+        donation_item = donation_obj.donation_item
+        donation_price = donation_obj.donation_price
+        donation_item_price.append((donation_item, donation_price))
+
+    print donation_item_price
+
+    return jsonify(donation_item_price = donation_item_price)
+
 @app.route("/transaction_analysis")
 def display_transaction_analysis():
     """Scrapes data from Mint account and displays an analysis of transactions by category.
