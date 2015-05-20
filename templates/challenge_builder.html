@@ -27,7 +27,7 @@
 <div id="step3">
     <p>You will save $<span class="savings"></span>!</p>
 
-    <p>With $<span class="savings"></span>, you can donate <span id="donation_item"></span>!</p>
+    <p>With about $<span class="savings"></span>, you can <span id="donation_item"></span>!</p>
     <!-- this savings amount will actually adjust slightly to match estimate/rounding from server -->
     -----------click to accept -- input type=submit? method=post -------------------------------
 </div>
@@ -60,7 +60,7 @@
                 $.get(
                     "/challenge_builder_step3/" + donation_amt,
                     function (result) {
-                        console.log(result);
+                        // iterate through donation_item_price list of tuples here? will also need to iterate above to create multiple sentences
                         $("#donation_item").text(result.donation_item_price);
                     }
                 );

@@ -1,17 +1,21 @@
-1,1,Flock of Chicks,,20
-2,1,Contribute Towards Buying a Goat,,10
-3,1,Contribute Towards Buying a Sheep,,10
-4,1,Contribute Towards Buying a Pig,,10
-5,1,Honeybees,,30
-6,1,Contribute Towards Buying Rabbits,,10
-7,1,Flock of Ducks,,20
-8,1,Flock of Geese,,20
-9,2,Chicken Breeding Program,,16
-10,2,Care Package for Family Living with HIV/AIDS,,16
-11,2,Bushel of Seeds,,19
-12,2,Energy-Saving Stoves,,19
-13,2,Crafty Gifts,,19
-14,2,Jerry Cans in Uganda,,24
-15,3,Save a Child from Deadly Hunger,,45
-16,4,First Book,,5
-17,5,Malaria Treatment for One Child,Artemisinin-based combination therapies,1
+1,1,donate a flock of chicks,,20
+2,1,contribute towards donating a goat,,10
+3,1,contribute towards donating a sheep,,10
+4,1,contribute towards donating a pig,,10
+5,1,donate honeybees,,30
+6,1,contribute towards donating rabbits,,10
+7,1,donate a flock of ducks,,20
+8,1,donate a flock of geese,,20
+9,2,donate a chicken breeding program,,16
+10,2,donate a care package for a family living with HIV/AIDS,,16
+11,2,donate a bushel of seeds,,19
+12,2,donate energy-saving stoves,,19
+13,2,donate crafty gifts,,19
+14,2,donate jerry cans in Uganda,,24
+15,3,save a child from deadly hunger,,45
+16,4,donate a child's first book,,5
+17,5,provide malaria treatment for one child,Artemisinin-based combination therapies,1
+18,5,provide malaria treatment for five children,Artemisinin-based combination therapies,5
+19,5,provide malaria treatment for ten children,Artemisinin-based combination therapies,10
+20,5,provide malaria treatment for fifteen children,Artemisinin-based combination therapies,15
+21,5,provide malaria treatment for twenty children,Artemisinin-based combination therapies,20
