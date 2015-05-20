@@ -139,6 +139,7 @@ def challenge_builder_step3(donation_amt):
     
     max_donation_amt = int(donation_amt) + 3
     min_donation_amt = int(donation_amt) - 3
+    print donation_amt
     
     donation_obj_list = Donation.query.filter(Donation.donation_price < max_donation_amt,
                                             Donation.donation_price > min_donation_amt,)

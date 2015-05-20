@@ -26,11 +26,9 @@
 
 <div id="step3">
     <p>You will save $<span class="savings"></span>!</p>
-    <p>Here are the donation items that most closely match the amount you are saving:</p>
+    <h3>Here are the donation items that most closely match the amount you are saving:</h3>
     <!-- <p>With $<span id="donation_price"></span>, you can <span id="donation_item"></span>!</p> -->
     <div id="challenge"></div>
-
-    -----------click to accept -- input type=submit? method=post ------------------------------
 </div>
 
 <script>
@@ -58,6 +56,7 @@
             function (result) {
                 var donation_amt = (result.savings * qty);
                 $(".savings").text(donation_amt);
+                donation_amt = Math.round(donation_amt)
                 // will have to figure out how to round
                 $.get(
                     "/challenge_builder_step3/" + donation_amt,
@@ -66,13 +65,13 @@
                         _.each(result.donation_item_price, function(donation_array) {
                             $("#challenge").append(
                                 "<p>With $" + donation_array[1] + 
-                                " you can " + donation_array[0] + "!</p>");
+                                " you can " + donation_array[0] + "!</p>",
+                                "<input type='button' value='Accept' class='accept_button'>");
                         });
                     }
                 );
             }
         );
-        
         $("#step3").css("visibility", "visible");
             };
 
