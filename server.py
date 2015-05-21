@@ -118,9 +118,9 @@ def challenge_builder_step1():
 
 @app.route("/challenge_builder_step2/<path:original_items>")
 def challenge_builder_step2(original_items):
+    """sends challenge object information back to challenge_builder form,
+        including raw price difference for savings calculator"""
 
-    # alternative_items = db.session.query(Challenge.alternative_items,).filter(
-                                    # Challenge.original_items == original_items).first()
     challenge_obj = Challenge.query.filter(Challenge.original_items == original_items).first()
     
     alternative_items = challenge_obj.alternative_items
@@ -165,11 +165,19 @@ def display_transaction_analysis():
     return "Graph of transactions, challenge info."
 
 
-@app.route("/profile")
+@app.route("/profile", methods=["POST"])
 def profile():
     """Displays any relevant user information along with overall progress towards achieving challenges.
         Links to progress on specific challenges.
         Links to transaction analysis - and/or displays summarized version?"""
+
+    original_items = request.form.get("original_items")
+    alternative_items = request.form.get("alternative_items")
+    donation_item = request.form.get("donation_item")
+    donation_price = request.form.get("donation_price")
+
+    print original_items, alternative_items, donation_item, donation_price
+
 
     return "Graph of overall progress - all accepted challenges listed, completed challenges and amounts, contributing to overall progress."
 

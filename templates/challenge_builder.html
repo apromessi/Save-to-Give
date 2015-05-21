@@ -27,7 +27,6 @@
 <div id="step3">
     <p>You will save $<span class="savings"></span>!</p>
     <h3>Here are the donation items that most closely match the amount you are saving:</h3>
-    <!-- <p>With $<span id="donation_price"></span>, you can <span id="donation_item"></span>!</p> -->
     <div id="challenge"></div>
 </div>
 
@@ -64,8 +63,9 @@
                         console.log(result);
                         _.each(result.donation_item_price, function(donation_array) {
                             $("#challenge").append(
-                                "<p>With $" + donation_array[1] + 
-                                " you can " + donation_array[0] + "!</p>",
+                                "<p>With $<span id='donation_price'>" + donation_array[1] + 
+                                "</span> you can <span id='donation_item'>" + 
+                                donation_array[0] + "</span>!</p>",
                                 "<input type='button' value='Accept' class='accept_button'>");
                         });
                     }
@@ -75,36 +75,18 @@
         $("#step3").css("visibility", "visible");
             };
 
-
-// $(document).ready(funtion(){
-// var $step1 = $('step1');
-// $form.submit(funtion(e){
-//     e.preventDefault();
-//     $.ajax({
-//         type: "GET",
-//         data: $(this).serialize(), 
-//         cache: false,
-//         success: functionName
-//     });
-//   });
-// });   
+    // $(".accept_button").click(function() {
+    //     alert("here!");
+    //         // $.post("/profile",
+    //         //     { original_items: $("#orig").text(),
+    //         //         alternative_items: $(".alt").text(),
+    //         //         donation_item: $("#donation_item").text(),
+    //         //         donation_price: $("#donation_price").text() },
+    //         //     function(result) {
+    //         //         console.log("Yay!");
+    //         //     });
+    //     });
 
 </script>
-
-<!-- $(document).ready(funtion(){
-var $form = $('form');
-$form.submit(funtion(e){
-    e.preventDefault();
-    $.ajax({
-        type: "POST",
-        data: $(this).serialize(), 
-        cache: false,
-        success: displayResults
-    });
-  });
-});
- -->
-
-<!-- on select (event), send info through flask route and then use ajax to make the next one appear send the data back to the next form -> back to the route and then evaluate what info to send back to html -->
 
 {% endblock %}
