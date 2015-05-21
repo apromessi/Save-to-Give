@@ -66,26 +66,33 @@
                                 "<p>With $<span id='donation_price'>" + donation_array[1] + 
                                 "</span> you can <span id='donation_item'>" + 
                                 donation_array[0] + "</span>!</p>",
-                                "<input type='button' value='Accept' class='accept_button'>");
+
+                                "<input type='button' data-donation_price='" + donation_array[1] +
+                                 "' data-donation_item='" + donation_array[0] +
+                                 "' value='Accept' class='accept_button'>");
                         });
-                    }
-                );
+                        $(".accept_button").click(acceptChallenge)
+
+                    });
             }
         );
         $("#step3").css("visibility", "visible");
-            };
+    }
+        
 
-    // $(".accept_button").click(function() {
-    //     alert("here!");
-    //         // $.post("/profile",
-    //         //     { original_items: $("#orig").text(),
-    //         //         alternative_items: $(".alt").text(),
-    //         //         donation_item: $("#donation_item").text(),
-    //         //         donation_price: $("#donation_price").text() },
-    //         //     function(result) {
-    //         //         console.log("Yay!");
-    //         //     });
-    //     });
+    function acceptChallenge(evt) {
+        var data = $(evt.currentTarget).data();
+            $.post("/profile",
+                { original_items: $("#orig").text(),
+                    alternative_items: $(".alt").text(),
+                    qty: $("#qty").val(),
+                    donation_item: data.donation_item,
+                    donation_price: data.donation_price },
+                function(result) {
+                    console.log("Yay!");
+                }
+            );
+    }
 
 </script>
 

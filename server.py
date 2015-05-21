@@ -173,10 +173,11 @@ def profile():
 
     original_items = request.form.get("original_items")
     alternative_items = request.form.get("alternative_items")
+    qty = request.form.get("qty")
     donation_item = request.form.get("donation_item")
     donation_price = request.form.get("donation_price")
 
-    print original_items, alternative_items, donation_item, donation_price
+    print qty, original_items, alternative_items, donation_item, donation_price
 
 
     return "Graph of overall progress - all accepted challenges listed, completed challenges and amounts, contributing to overall progress."
