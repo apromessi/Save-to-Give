@@ -166,33 +166,41 @@ def display_transaction_analysis():
     return "Graph of transactions, challenge info."
 
 
-@app.route("/profile", methods=["POST"])
+@app.route("/profile", methods=["GET", "POST"])
 def profile():
     """Displays any relevant user information along with overall progress towards achieving challenges.
         Links to progress on specific challenges.
         Links to transaction analysis - and/or displays summarized version?"""
 
-    original_items = request.form.get("original_items")
-    alternative_items = request.form.get("alternative_items")
-    qty = request.form.get("qty")
-    donation_item = request.form.get("donation_item")
-    donation_price = request.form.get("donation_price")
-    print original_items, alternative_items, qty, donation_item, donation_price
-
-    # need to get relevant user, challenge, and donation objects -- can delete unneeded info
     a_user = db.session.query(User.user_id, User.firstname).filter(
-                        User.email == session["login"]).one()
-    challenge_id = db.session.query(Challenge.challenge_id).filter(
-                        Challenge.original_items == original_items).one()
-    donation_id = db.session.query(Donation.donation_id).filter(
-                        Donation.donation_item == donation_item).one()
-    accepted_at = datetime.datetime.now()
-    
-    accepted_challenge = Accepted_Challenge(user_id = a_user[0], challenge_id = challenge_id[0],
-                                            donation_id = donation_id[0], accepted_qty = qty,
-                                            progress = 0, accepted_at = accepted_at)
-    db.session.add(accepted_challenge)
-    db.session.commit()
+                            User.email == session["login"]).one()
+
+    if request.method == "POST":
+        original_items = request.form.get("original_items")
+        alternative_items = request.form.get("alternative_items")
+        qty = request.form.get("qty")
+        donation_item = request.form.get("donation_item")
+        donation_price = request.form.get("donation_price")
+        print original_items, alternative_items, qty, donation_item, donation_price
+
+        # need to get relevant user, challenge, and donation objects -- can delete unneeded info
+        challenge_id = db.session.query(Challenge.challenge_id).filter(
+                            Challenge.original_items == original_items).one()
+        donation_id = db.session.query(Donation.donation_id).filter(
+                            Donation.donation_item == donation_item).one()
+        accepted_at = datetime.datetime.now()
+        
+        accepted_challenge = Accepted_Challenge(user_id = a_user[0],
+                                                challenge_id = challenge_id[0],
+                                                donation_id = donation_id[0],
+                                                accepted_qty = qty,
+                                                progress = 0,
+                                                accepted_at = accepted_at)
+        db.session.add(accepted_challenge)
+        db.session.commit()
+        flash("You have successfully added a challenge!")
+
+    print a_user[1], "***********************************"
 
     users_ac_objects = Accepted_Challenge.query.filter(
                             Accepted_Challenge.user_id == a_user[0]).all()
@@ -214,19 +222,19 @@ def profile():
                         donation_item_price[1], ac_object.completed_at)
             users_completed_challenges.append(challenge)
 
-    flash("You have successfully added a challenge!")
+    
     return render_template("profile.html", firstname = a_user[1],
                             users_current_challenges = users_current_challenges,
                             users_completed_challenges = users_completed_challenges)
 
 
-@app.route("/profile", methods=["GET"])
-def show_profile():
-    """Displays any relevant user information along with overall progress towards achieving challenges.
-        Links to progress on specific challenges.
-        Links to transaction analysis - and/or displays summarized version?"""
+# @app.route("/profile", methods=["GET"])
+# def show_profile():
+#     """Displays any relevant user information along with overall progress towards achieving challenges.
+#         Links to progress on specific challenges.
+#         Links to transaction analysis - and/or displays summarized version?"""
 
-    return render_template("profile.html")
+#     return render_template("profile.html")
 
 
 @app.route("/update_progress")
