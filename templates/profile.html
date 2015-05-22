@@ -3,11 +3,11 @@
 
 <h1>{{ firstname }}'s Profile</h1>
 
-
+<div id="overall_progress_chart">
 <h1>GRAPH!!!</h1>
+</div>
 
-
-
+<div id="current_challenges">
 {% if users_current_challenges|length == 1 %}
     <h4>Current Challenge</h4>
 {% else %}
@@ -16,9 +16,12 @@
 
     {% for challenge in users_current_challenges %}
             <p>I will substitute {{ challenge[0] }} {{ challenge[1] }} for {{ challenge[2] }} 
-            and use the ${{ "%0.2f" % challenge[4]|float }} I save to {{ challenge[3] }}.</p>
-    {% endfor %}
+            and use the ${{ "%0.2f" % challenge[4] }} I save to {{ challenge[3] }}.</p>
 
+    {% endfor %}
+</div>
+
+<div id="completed_challenges">
 {% if users_completed_challenges|length == 1 %}
     <h4>Completed Challenge</h4>
 {% else %}
@@ -27,8 +30,11 @@
 
     {% for challenge in users_completed_challenges %}
         <p>I will substitute {{ challenge[0] }} {{ challenge[1] }} for {{ challenge[2] }} 
-            and use the ${{ "%0.2f" % challenge[4]|float }} I save to {{ challenge[3] }}.</p>
+            and use the ${{ "%0.2f" % challenge[4] }} I save to {{ challenge[3] }}.</p>
     {% endfor %} 
+</div>
+
+
 
 
 {% endblock %}

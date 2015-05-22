@@ -67,9 +67,8 @@
                                 "</span> you can <span id='donation_item'>" + 
                                 donation_array[0] + "</span>!</p>",
 
-                                "<input type='button' data-donation_price='" + donation_array[1] +
-                                 "' data-donation_item='" + donation_array[0] +
-                                 "' value='Accept' class='accept_button'>");
+                                "<input type='button' data-donation_item='" +
+                                 donation_array[0] + "' value='Accept' class='accept_button'>");
                         });
                         $(".accept_button").click(acceptChallenge)
 
@@ -82,11 +81,11 @@
 
     function acceptChallenge(evt) {
         var data = $(evt.currentTarget).data();
+        console.log(data.donation_item)
         var data_obj = { original_items: $("#orig").text(),
                         alternative_items: $(".alt").text(),
                         qty: $("#qty").val(),
-                        donation_item: data.donation_item,
-                        donation_price: data.donation_price };
+                        donation_item: data.donation_item};
         var form = document.createElement('form');
         $(form).attr("method", "post").attr("action", "/profile");
         _.each(data_obj, function(value, key) {
