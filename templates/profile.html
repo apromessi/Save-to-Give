@@ -8,19 +8,27 @@
 
 
 
+{% if users_current_challenges|length == 1 %}
+    <h4>Current Challenge</h4>
+{% else %}
+    <h4>Current Challenges</h4>
+ {% endif %}
 
-
-{% for challenge in users_challenges %}
-    {% if challenge[5] == None %}
-        <h4>Current Challenge[s]</h4>
+{% for challenge in users_current_challenges %}
         <p>I will substitute {{ challenge[0] }} {{ challenge[1] }} for {{ challenge[2] }} 
-            and use the {{ challenge[3] }} I save to {{ challenge[4] }}.</p>
-    {% else %}
-        <h4>Completed Challenge[s]</h4>
-        <p>I will substitute {{ challenge[0] }} {{ challenge[1] }} for {{ challenge[2] }} 
-            and use the {{ challenge[3] }} I save to {{ challenge[4] }}.</p>
-    {% endif %}
+        and use the ${{ challenge[4] }} I save to {{ challenge[3] }}.</p>
 {% endfor %}
+
+{% if users_completed_challenges|length == 1 %}
+    <h4>Completed Challenge</h4>
+{% else %}
+    <h4>Completed Challenges</h4>
+ {% endif %}
+
+{% for challenge in users_completed_challenges %}
+    <p>I will substitute {{ challenge[0] }} {{ challenge[1] }} for {{ challenge[2] }} 
+        and use the {{ challenge[4] }} I save to {{ challenge[3] }}.</p>
+{% endfor %} 
 
 
 {% endblock %}
