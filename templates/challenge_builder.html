@@ -88,7 +88,6 @@
                         donation_item: data.donation_item,
                         donation_price: data.donation_price };
         var form = document.createElement('form');
-        debugger
         $(form).attr("method", "post").attr("action", "/profile");
         _.each(data_obj, function(value, key) {
             $("<input>").attr({
@@ -98,17 +97,6 @@
         });
 
         $(form).submit();
-
-            // $.post("/profile",
-            //     { original_items: $("#orig").text(),
-            //         alternative_items: $(".alt").text(),
-            //         qty: $("#qty").val(),
-            //         donation_item: data.donation_item,
-            //         donation_price: data.donation_price },
-            //     function(result) {
-            //         window.location.href("/profile?hjhjh=khkjh");
-            //     }
-            // );
     }
 
 </script>

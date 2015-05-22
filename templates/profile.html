@@ -1,13 +1,17 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>[Firstname]'s Profile</h1>
+<h1>{{ firstname }}'s Profile</h1>
 
 
 <h1>GRAPH!!!</h1>
 
 <h4>Current Challenge[s]</h4>
-<p>I will substitute[#] [alt_item] for [orig_item] and use the [$] I save to [don_item].</p>
+
+{% for challenge in users_challenges %}
+<p>I will substitute {{ challenge[0] }} {{ challenge[1] }} for {{ challenge[2] }} 
+    and use the {{ challenge[3] }} I save to {{ challenge[4] }}.</p>
+{% endfor %}
 
 
 {% endblock %}

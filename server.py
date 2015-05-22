@@ -180,28 +180,36 @@ def profile():
     print original_items, alternative_items, qty, donation_item, donation_price
 
     # need to get relevant user, challenge, and donation objects -- can delete unneeded info
-    user_id = db.session.query(User.user_id).filter(User.email == session["login"]).one()
+    a_user = db.session.query(User.user_id, User.firstname).filter(
+                        User.email == session["login"]).one()
     challenge_id = db.session.query(Challenge.challenge_id).filter(
                         Challenge.original_items == original_items).one()
     donation_id = db.session.query(Donation.donation_id).filter(
                         Donation.donation_item == donation_item).one()
     accepted_at = datetime.datetime.now()
     
-    accepted_challenge = Accepted_Challenge(user_id = user_id[0], challenge_id = challenge_id[0],
+    accepted_challenge = Accepted_Challenge(user_id = a_user[0], challenge_id = challenge_id[0],
                                             donation_id = donation_id[0], accepted_qty = qty,
                                             progress = 0, accepted_at = accepted_at)
     db.session.add(accepted_challenge)
     db.session.commit()
 
     users_ac_objects = Accepted_Challenge.query.filter(
-                            Accepted_Challenge.user_id == user_id[0]).all()
+                            Accepted_Challenge.user_id == a_user[0]).all()
     users_challenges = []
     for ac_object in users_ac_objects:
-        
-    
-    flash("You have successfully added a challenge!", users_challenges = users_challenges)
-    
-    return render_template("profile.html")
+        qty = ac_object.accepted_qty
+        challenge_items = db.session.query(Challenge.alternative_items, Challenge.original_items
+                                ).filter(Challenge.challenge_id == ac_object.challenge_id).one()
+        donation_item_price = db.session.query(Donation.donation_item, Donation.donation_price
+                                ).filter(Donation.donation_id == ac_object.donation_id).one()
+        challenge = (qty, challenge_items[0], challenge_items[1], donation_item_price[0],
+                        donation_item_price[1])
+        users_challenges.append(challenge)
+
+    flash("You have successfully added a challenge!")
+    return render_template("profile.html", users_challenges = users_challenges,
+                            firstname = a_user[1])
 
 
 @app.route("/profile", methods=["GET"])
