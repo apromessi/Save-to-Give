@@ -197,19 +197,25 @@ def profile():
     users_ac_objects = Accepted_Challenge.query.filter(
                             Accepted_Challenge.user_id == a_user[0]).all()
     users_challenges = []
+    
     for ac_object in users_ac_objects:
         qty = ac_object.accepted_qty
         challenge_items = db.session.query(Challenge.alternative_items, Challenge.original_items
                                 ).filter(Challenge.challenge_id == ac_object.challenge_id).one()
         donation_item_price = db.session.query(Donation.donation_item, Donation.donation_price
                                 ).filter(Donation.donation_id == ac_object.donation_id).one()
+        if ac_object.completed_at == None:
+            status = None
+        else:
+            status = db.session.query(ac_object.completed_at).one()
+            status = status[0]
         challenge = (qty, challenge_items[0], challenge_items[1], donation_item_price[0],
-                        donation_item_price[1])
+                        donation_item_price[1], status)
         users_challenges.append(challenge)
 
     flash("You have successfully added a challenge!")
-    return render_template("profile.html", users_challenges = users_challenges,
-                            firstname = a_user[1])
+    return render_template("profile.html", firstname = a_user[1],
+                            users_challenges = users_challenges)
 
 
 @app.route("/profile", methods=["GET"])

@@ -6,11 +6,20 @@
 
 <h1>GRAPH!!!</h1>
 
-<h4>Current Challenge[s]</h4>
+
+
+
 
 {% for challenge in users_challenges %}
-<p>I will substitute {{ challenge[0] }} {{ challenge[1] }} for {{ challenge[2] }} 
-    and use the {{ challenge[3] }} I save to {{ challenge[4] }}.</p>
+    {% if challenge[5] == None %}
+        <h4>Current Challenge[s]</h4>
+        <p>I will substitute {{ challenge[0] }} {{ challenge[1] }} for {{ challenge[2] }} 
+            and use the {{ challenge[3] }} I save to {{ challenge[4] }}.</p>
+    {% else %}
+        <h4>Completed Challenge[s]</h4>
+        <p>I will substitute {{ challenge[0] }} {{ challenge[1] }} for {{ challenge[2] }} 
+            and use the {{ challenge[3] }} I save to {{ challenge[4] }}.</p>
+    {% endif %}
 {% endfor %}
 
 
