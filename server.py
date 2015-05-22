@@ -180,11 +180,11 @@ def profile():
     print original_items, alternative_items, qty, donation_item, donation_price
 
     # need to get relevant user, challenge, and donation objects -- can delete unneeded info
-    user_id = db.session.query(User.user_id).filter(User.email == session["login"]).first()
+    user_id = db.session.query(User.user_id).filter(User.email == session["login"]).one()
     challenge_id = db.session.query(Challenge.challenge_id).filter(
-                        Challenge.original_items == original_items).first()
+                        Challenge.original_items == original_items).one()
     donation_id = db.session.query(Donation.donation_id).filter(
-                        Donation.donation_item == donation_item).first()
+                        Donation.donation_item == donation_item).one()
     accepted_at = datetime.datetime.now()
     
     accepted_challenge = Accepted_Challenge(user_id = user_id[0], challenge_id = challenge_id[0],
@@ -192,11 +192,15 @@ def profile():
                                             progress = 0, accepted_at = accepted_at)
     db.session.add(accepted_challenge)
     db.session.commit()
-    print "1"
 
-
-    flash("You have successfully added a challenge!")
-    print "2"
+    users_ac_objects = Accepted_Challenge.query.filter(
+                            Accepted_Challenge.user_id == user_id[0]).all()
+    users_challenges = []
+    for ac_object in users_ac_objects:
+        
+    
+    flash("You have successfully added a challenge!", users_challenges = users_challenges)
+    
     return render_template("profile.html")
 
 
