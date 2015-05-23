@@ -216,10 +216,20 @@ def profile():
                         donation_item_price[1], ac_object.completed_at)
             users_completed_challenges.append(challenge)
 
-    return render_template("profile.html", firstname = a_user[1],
+    return render_template("profile.html", firstname = a_user[1], user_id = user_id[0],
                             users_current_challenges = users_current_challenges,
                             users_completed_challenges = users_completed_challenges)
 
+@app_route("/overall_progress_chart/<int:user_id>")
+def overall_progress_chart(user_id):
+    """Sends relevant challenge data to display on the overall_progress_chart on the profile page"""
+
+    users_ac_objects = Accepted_Challenge.query.filter(
+                            Accepted_Challenge.user_id == user_id).all()
+
+    
+
+    pass
 
 @app.route("/update_progress")
 def update_progress():

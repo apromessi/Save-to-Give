@@ -3,8 +3,9 @@
 
 <h1>{{ firstname }}'s Profile</h1>
 
-<div id="overall_progress_chart">
+<div>
 <h1>GRAPH!!!</h1>
+<canvas id="overall_progress_chart" width="400" height="400"></canvas>
 </div>
 
 <div id="current_challenges">
@@ -34,7 +35,42 @@
     {% endfor %} 
 </div>
 
+<script>
+    $.get("/overall_progress_chart<{{ user_id }}",
+        function (result) {
+            console.log(result);
+        }
+    );
 
+    var ctx = $("#overall_progress_chart").get(0).getContext("2d");
+    
+    var data = {
+    labels: ["January", "February", "March", "April", "May", "June", "July"],
+    datasets: [
+        {
+            label: "My First dataset",
+            fillColor: "rgba(220,220,220,0.2)",
+            strokeColor: "rgba(220,220,220,1)",
+            pointColor: "rgba(220,220,220,1)",
+            pointStrokeColor: "#fff",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(220,220,220,1)",
+            data: [65, 59, 80, 81, 56, 55, 40]
+        },
+        {
+            label: "My Second dataset",
+            fillColor: "rgba(151,187,205,0.2)",
+            strokeColor: "rgba(151,187,205,1)",
+            pointColor: "rgba(151,187,205,1)",
+            pointStrokeColor: "#fff",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(151,187,205,1)",
+            data: [28, 48, 40, 19, 86, 27, 90]
+        }
+    ]
+};
+var overall_progress_chart = new Chart(ctx).Line(data);
+</script>
 
 
 {% endblock %}
