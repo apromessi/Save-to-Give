@@ -29,10 +29,10 @@ def load_donations():
     for text in donations_file:
         lines = text.strip().splitlines()
         for line in lines:
-            line = line.split(",")
+            line = line.split("#")
         a_donation = Donation(org_id = line[1],
         						donation_item = line[2],
-        						description = line[3],
+        						description = line[3].strip('"'),
         						donation_price = float(line[4]))
         db.session.add(a_donation)
 
