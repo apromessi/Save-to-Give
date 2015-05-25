@@ -18,7 +18,12 @@
     {% for challenge in users_current_challenges %}
             <p>I will substitute {{ challenge[0] }} {{ challenge[1] }} for {{ challenge[2] }} 
             and use the ${{ "%0.2f" % challenge[4] }} I save to {{ challenge[3] }}.</p>
-
+            <input type="button" value="Update Progress" class="update_button"
+            action="/update_progress/{{ challenge[5] }}">
+            <input type="button" value="View Challenge" class="view_button"
+            action="/view_challenge/{{ challenge[5] }}">
+            <input type="button" value="Cancel Challenge" class="cancel_button"
+            action="/cancel_challenge/{{ challenge[5] }}">
     {% endfor %}
 </div>
 
@@ -32,6 +37,8 @@
     {% for challenge in users_completed_challenges %}
         <p>I will substitute {{ challenge[0] }} {{ challenge[1] }} for {{ challenge[2] }} 
             and use the ${{ "%0.2f" % challenge[4] }} I save to {{ challenge[3] }}.</p>
+        <input type="button" value="View Challenge" class="view_button"
+        action="/view_challenge/{{ challenge[5] }}">
     {% endfor %} 
 </div>
 

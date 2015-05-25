@@ -18,6 +18,35 @@ class User(db.Model):
     age = db.Column(db.Integer) # placeholder for now - in case demographic analysis later
     # removed mint password from database - intead going to try and use keychain
 
+    def accepted_challenge_info(self, user_id):
+        """Provides all relevant info about users current and completed challenges.
+            Takes user_id as parameter and returns current and
+            completed challenges as 2 lists within a list."""
+        
+        users_ac_objects = Accepted_Challenge.query.filter(
+                            Accepted_Challenge.user_id == user_id).all()
+
+        users_current_challenges = []
+        users_completed_challenges = []
+        
+        for ac_object in users_ac_objects:
+            qty = ac_object.accepted_qty
+            alternative_items = ac_object.challenge.alternative_items
+            original_items = ac_object.challenge.original_items
+            donation_item = ac_object.donation.donation_item
+            donation_price = ac_object.donation.donation_price
+
+            if ac_object.completed_at == None:
+                challenge = (qty, alternative_items, original_items, donation_item,
+                            donation_price, ac_object.progress, ac_object.ac_id)
+                users_current_challenges.append(challenge)
+            else:
+                challenge = (qty, alternative_items, original_items, donation_item,
+                            donation_price, ac_object.completed_at, ac_object.ac_id)
+                users_completed_challenges.append(challenge)
+
+        return [users_current_challenges, users_completed_challenges]
+
 
     def __repr__(self):
         return "<User Object: %s email = %s>" % (self.user_id, self.email)

@@ -172,8 +172,7 @@ def profile():
         Links to progress on specific challenges.
         Links to transaction analysis - and/or displays summarized version?"""
 
-    a_user = db.session.query(User.user_id, User.firstname).filter(
-                            User.email == session["login"]).one()
+    a_user = User.query.filter(User.email == session["login"]).one()
 
     if request.method == "POST":
         original_items = request.form.get("original_items")
@@ -185,54 +184,40 @@ def profile():
         donation_id = db.session.query(Donation.donation_id).filter(
                             Donation.donation_item == donation_item).one()
         accepted_at = datetime.datetime.now()
+        # completed_at = datetime.datetime.now() + datetime.timedelta(days = 2)
         
-        accepted_challenge = Accepted_Challenge(user_id = a_user[0],
+        accepted_challenge = Accepted_Challenge(user_id = a_user.user_id,
                                                 challenge_id = challenge_id[0],
                                                 donation_id = donation_id[0],
                                                 accepted_qty = qty,
                                                 progress = 0,
                                                 accepted_at = accepted_at)
+                                                # completed_at = completed_at)
+        
+
         db.session.add(accepted_challenge)
         db.session.commit()
         flash("You have successfully added a challenge!")
 
-    users_ac_objects = Accepted_Challenge.query.filter(
-                            Accepted_Challenge.user_id == a_user[0]).all()
-    users_current_challenges = []
-    users_completed_challenges = []
-    
-    for ac_object in users_ac_objects:
-        qty = ac_object.accepted_qty
-        challenge_items = db.session.query(Challenge.alternative_items, Challenge.original_items
-                                ).filter(Challenge.challenge_id == ac_object.challenge_id).one()
-        donation_item_price = db.session.query(Donation.donation_item, Donation.donation_price
-                                ).filter(Donation.donation_id == ac_object.donation_id).one()
-        if ac_object.completed_at == None:
-            challenge = (qty, challenge_items[0], challenge_items[1], donation_item_price[0],
-                        donation_item_price[1], ac_object.progress)
-            users_current_challenges.append(challenge)
-        else:
-            challenge = (qty, challenge_items[0], challenge_items[1], donation_item_price[0],
-                        donation_item_price[1], ac_object.completed_at)
-            users_completed_challenges.append(challenge)
+    users_current_challenges, users_completed_challenges = a_user.accepted_challenge_info(a_user.user_id)
 
-    return render_template("profile.html", firstname = a_user[1], user_id = a_user[0],
-                            users_current_challenges = users_current_challenges,
-                            users_completed_challenges = users_completed_challenges)
+    return render_template("profile.html", firstname = a_user.firstname,
+                                        user_id = a_user.user_id,
+                                        users_current_challenges = users_current_challenges,
+                                        users_completed_challenges = users_completed_challenges)
+
 
 @app.route("/overall_progress_chart/<int:user_id>")
 def overall_progress_chart(user_id):
     """Sends relevant challenge data to display on the overall_progress_chart on the profile page"""
 
-    users_ac_objects = Accepted_Challenge.query.filter(
-                            Accepted_Challenge.user_id == user_id).all()
-
+    users_current_challenges, users_completed_challenges = a_user.accepted_challenge_info(user_id)
     
 
     pass
 
-@app.route("/update_progress")
-def update_progress():
+@app.route("/update_progress/<int:ac_id>")
+def update_progress(ac_id):
     """Displays progress on individual challenges. Offers a way for User to update progress:
         2 options:
             1) enter in units completed - one coffee brewed instead of bought
@@ -241,6 +226,23 @@ def update_progress():
         Or have User enter in the amount they think they will save when they accept a particular challenge and then monitor progress towards meeting THAT goal."""
 
     return "Update progress - two options. If complete, display congratulations message and offer link to donation page."
+
+
+@app.route("/cancel_challenge/<int:ac_id>")
+def cancel_challenge(ac_id):
+    """Removes accepted_challenge object from database and redirects to profile
+        - challenge lists should display the updated information."""
+
+    #TODO - remove accepted challenge object
+
+    return redirect("/profile")
+
+
+@app.route("/view_challenge/<int:ac_id>")
+def view_challenge(ac_id):
+    """Display progress and information on individual challenges"""
+
+    pass
 
 
 @app.route("/donate")
