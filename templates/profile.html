@@ -21,9 +21,9 @@
             <input type="button" value="Update Progress" class="update_button"
             data-acid="{{ challenge[6] }}">
             <input type="button" value="View Challenge" class="view_button"
-            action="/view_challenge/{{ challenge[6] }}">
+            data-acid="{{ challenge[6] }}">
             <input type="button" value="Cancel Challenge" class="cancel_button"
-            action="/cancel_challenge/{{ challenge[6] }}">
+            data-acid="{{ challenge[6] }}">
     {% endfor %}
 </div>
 
@@ -48,11 +48,34 @@
 
     function updateProgress(evt) {
         var data = $(evt.currentTarget).data();
-        console.log("here");
-        console.log(data.acid);
-        // debugger
         var form = document.createElement('form');
         $(form).attr("action", "/update_progress");
+        $("<input>").attr({
+                name: "ac_id",
+                value: data.acid
+            }).appendTo(form);
+        $(form).submit();
+    }
+
+    $(".view_button").click(viewChallenge);
+
+    function viewChallenge(evt) {
+        var data = $(evt.currentTarget).data();
+        var form = document.createElement('form');
+        $(form).attr("action", "/view_challenge");
+        $("<input>").attr({
+                name: "ac_id",
+                value: data.acid
+            }).appendTo(form);
+        $(form).submit();
+    }
+
+    $(".cancel_button").click(cancelChallenge);
+
+    function cancelChallenge(evt) {
+        var data = $(evt.currentTarget).data();
+        var form = document.createElement('form');
+        $(form).attr("action", "/cancel_challenge");
         $("<input>").attr({
                 name: "ac_id",
                 value: data.acid

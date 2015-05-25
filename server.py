@@ -228,21 +228,27 @@ def update_progress():
     return render_template("update_progress.html", ac_id = ac_id)
 
 
-@app.route("/cancel_challenge/<int:ac_id>")
-def cancel_challenge(ac_id):
+@app.route("/cancel_challenge")
+def cancel_challenge():
     """Removes accepted_challenge object from database and redirects to profile
         - challenge lists should display the updated information."""
 
     #TODO - remove accepted challenge object
+    ac_id = request.args["ac_id"]
+    ac_obj = Accepted_Challenge.query.get(ac_id)
+    db.session.delete(ac_obj)
+    db.session.commit()
 
     return redirect("/profile")
 
 
-@app.route("/view_challenge/<int:ac_id>")
-def view_challenge(ac_id):
+@app.route("/view_challenge")
+def view_challenge():
     """Display progress and information on individual challenges"""
 
-    pass
+    ac_id = request.args["ac_id"]
+
+    return render_template("view_challenge.html", ac_id = ac_id)
 
 
 @app.route("/donate")
