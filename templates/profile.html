@@ -43,6 +43,14 @@
 </div>
 
 <script>
+
+    $(".update_button").click(updateProgress);
+
+    // function updateProgress(evt) {
+    //     var 
+    // }
+    // ENDED HERE ON SUNDAY
+
     $.get("/overall_progress_chart<{{ user_id }}",
         function (result) {
             console.log(result);

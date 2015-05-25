@@ -221,8 +221,9 @@ def update_progress(ac_id):
         2 options:
             1) enter in units completed - one coffee brewed instead of bought
             2) or perform another transactional analysis and assess progress (might be more interesting and challenging, but I'm not sure if I have enough information from Mint/broad categories of spending
-        Either way - can make donation amount suggested/optional rather than required ("I estimate you will have saved $x, but really you saved $y - donate that instead")
-        Or have User enter in the amount they think they will save when they accept a particular challenge and then monitor progress towards meeting THAT goal."""
+        Either way - can make donation amount suggested/optional rather than required ("I estimate you will have saved $x, but really you saved $y - donate that instead")"""
+
+    
 
     return "Update progress - two options. If complete, display congratulations message and offer link to donation page."
 
