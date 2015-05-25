@@ -3,6 +3,24 @@ from transaction_analysis import load_transactions
 from server import app
 
 
+def load_users():
+    """load fake users from users.csv into database."""
+
+    users_file = open("./seed_data/users.csv")
+
+    for text in users_file:
+        lines = text.strip().splitlines()
+        for line in lines:
+            line = line.split(",")
+            a_user = User(firstname = line[1],
+                            lastname = line[2],
+                            email = line[3],
+                            password = line[5])
+            db.session.add(a_user)
+
+    db.session.commit()
+
+
 def load_challenges():
     """load challenge estimates from challenges.csv into database."""
 
@@ -60,6 +78,7 @@ def load_orgs():
 if __name__ == "__main__":
     connect_to_db(app)
 
+    load_users()
     load_challenges()
     load_donations()
     load_orgs()

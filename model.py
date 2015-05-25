@@ -35,10 +35,16 @@ class User(db.Model):
             original_items = ac_object.challenge.original_items
             donation_item = ac_object.donation.donation_item
             donation_price = ac_object.donation.donation_price
+            
+            progress_updates = ac_object.progress_updates
+            total_progress = 0
+            for progress_update in progress_updates:
+                total_progress += progress_update.progress_amt
+            progress_percent = total_progress/donation_price
 
             if ac_object.completed_at == None:
                 challenge = (qty, alternative_items, original_items, donation_item,
-                            donation_price, ac_object.progress, ac_object.ac_id)
+                            donation_price, progress_percent, ac_object.ac_id)
                 users_current_challenges.append(challenge)
             else:
                 challenge = (qty, alternative_items, original_items, donation_item,
@@ -91,8 +97,8 @@ class Challenge(db.Model):
 
 
 class Accepted_Challenge(db.Model):
-    """Connects User and Challenge classes
-        Stores progress towards completing challenges"""
+    """Connects User, Challenge, and Donation classes.
+        Stores information about user's specific challenges."""
 
     __tablename__ = "accepted_challenges"
 
@@ -101,17 +107,40 @@ class Accepted_Challenge(db.Model):
     challenge_id = db.Column(db.Integer, db.ForeignKey("challenges.challenge_id"))
     donation_id = db.Column(db.Integer, db.ForeignKey("donations.donation_id"))
     accepted_qty = db.Column(db.Integer)
-    progress = db.Column(db.Float, nullable = False)
+    # progress = db.Column(db.Float, nullable = False)
     accepted_at = db.Column(db.DateTime)
     completed_at = db.Column(db.DateTime)
 
     challenge = db.relationship("Challenge", backref = db.backref("accepted_challenges"))
     user = db.relationship("User", backref = db.backref("accepted_challenges"))
-    donation = db.relationship("Donation", backref = db.backref("accepted_challenge"), uselist=False)
+    donation = db.relationship("Donation", backref = db.backref("accepted_challenge"),
+                                uselist=False)
 
     def __repr__(self):
-        return "<Accepted_Challenge Object: %s user_id=%s, challenge_id=%s, progress = %s>" % (
-                self.ac_id, self.user_id, self.challenge_id, self.progress)
+        return "<Accepted_Challenge Object: %s user_id=%s, challenge_id=%s>" % (
+                self.ac_id, self.user_id, self.challenge_id)
+
+
+class Progress_Update(db.Model):
+    """Stores progress towards completing specific challenges.
+        (information about separate update events, which, when combined, will be used to
+        determine when a user has completed a challenge and can donate the money they saved.
+        Progress update timestamps and amounts will be shown on the charts.)"""
+
+    __tablename__ = "progress_updates"
+
+    progress_id = db.Column(db.Integer, autoincrement = True, primary_key = True)
+    ac_id = db.Column(db.Integer, db.ForeignKey("accepted_challenges.ac_id"))
+    updated_at = db.Column(db.DateTime)
+    update_amt = db.Column(db.Float)
+    completed = db.Column(db.Boolean)
+
+    accepted_challenge = db.relationship("Accepted_Challenge",
+                                            backref = db.backref("progress_updates"))
+
+    def __repr__(self):
+        return "<Progress Update Object: %s ac_id=%s, update_amt=%s, updated_at=%s" % (
+                self.progress_id, self.ac_id, self.update_amt, self.updated_at)
 
 
 class Transaction(db.Model):

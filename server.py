@@ -190,10 +190,9 @@ def profile():
                                                 challenge_id = challenge_id[0],
                                                 donation_id = donation_id[0],
                                                 accepted_qty = qty,
-                                                progress = 0,
+                                                # progress = 0,
                                                 accepted_at = accepted_at)
-                                                # completed_at = completed_at)
-        
+                                                # completed_at = completed_at)  
 
         db.session.add(accepted_challenge)
         db.session.commit()
