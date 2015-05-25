@@ -215,17 +215,17 @@ def overall_progress_chart(user_id):
 
     pass
 
-@app.route("/update_progress/<int:ac_id>")
-def update_progress(ac_id):
+@app.route("/update_progress")
+def update_progress():
     """Displays progress on individual challenges. Offers a way for User to update progress:
         2 options:
             1) enter in units completed - one coffee brewed instead of bought
             2) or perform another transactional analysis and assess progress (might be more interesting and challenging, but I'm not sure if I have enough information from Mint/broad categories of spending
         Either way - can make donation amount suggested/optional rather than required ("I estimate you will have saved $x, but really you saved $y - donate that instead")"""
 
-    
+    ac_id = request.args["ac_id"]
 
-    return "Update progress - two options. If complete, display congratulations message and offer link to donation page."
+    return render_template("update_progress.html", ac_id = ac_id)
 
 
 @app.route("/cancel_challenge/<int:ac_id>")

@@ -19,11 +19,11 @@
             <p>I will substitute {{ challenge[0] }} {{ challenge[1] }} for {{ challenge[2] }} 
             and use the ${{ "%0.2f" % challenge[4] }} I save to {{ challenge[3] }}.</p>
             <input type="button" value="Update Progress" class="update_button"
-            action="/update_progress/{{ challenge[5] }}">
+            data-acid="{{ challenge[6] }}">
             <input type="button" value="View Challenge" class="view_button"
-            action="/view_challenge/{{ challenge[5] }}">
+            action="/view_challenge/{{ challenge[6] }}">
             <input type="button" value="Cancel Challenge" class="cancel_button"
-            action="/cancel_challenge/{{ challenge[5] }}">
+            action="/cancel_challenge/{{ challenge[6] }}">
     {% endfor %}
 </div>
 
@@ -38,7 +38,7 @@
         <p>I will substitute {{ challenge[0] }} {{ challenge[1] }} for {{ challenge[2] }} 
             and use the ${{ "%0.2f" % challenge[4] }} I save to {{ challenge[3] }}.</p>
         <input type="button" value="View Challenge" class="view_button"
-        action="/view_challenge/{{ challenge[5] }}">
+        action="/view_challenge/{{ challenge[6] }}">
     {% endfor %} 
 </div>
 
@@ -46,14 +46,23 @@
 
     $(".update_button").click(updateProgress);
 
-    // function updateProgress(evt) {
-    //     var 
-    // }
-    // ENDED HERE ON SUNDAY
+    function updateProgress(evt) {
+        var data = $(evt.currentTarget).data();
+        console.log("here");
+        console.log(data.acid);
+        // debugger
+        var form = document.createElement('form');
+        $(form).attr("action", "/update_progress");
+        $("<input>").attr({
+                name: "ac_id",
+                value: data.acid
+            }).appendTo(form);
+        $(form).submit();
+    }
 
     $.get("/overall_progress_chart<{{ user_id }}",
         function (result) {
-            console.log(result);
+            ;
         }
     );
 
