@@ -242,6 +242,13 @@ def view_challenge():
                                                 donation_price = donation_price)
 
 
+@app.route("/update_progress")
+def update_progress():
+    """Logs progress updates by taking information from the view challenge page
+        and adding progress objects"""
+
+    pass
+
 @app.route("/cancel_challenge")
 def cancel_challenge():
     """Removes accepted_challenge object from database and redirects to profile

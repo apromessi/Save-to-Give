@@ -18,7 +18,7 @@
 <form>
     <label>I have successfully substituted
         <input type="number" name="update_qty" id="update_qty"
-                oninput="getEstimate()"
+                oninput="calcEstimate()"
                 data-altcost="{{ alternative_cost }}"
                 data-origcost="{{ original_cost }}">
         {{ alternative_items }} for {{ original_items }}.<br>
@@ -35,8 +35,7 @@
 
 <script>
     
-
-    function getEstimate() {
+    function calcEstimate() {
         $("#update_statement").empty();
         var update_qty = $("#update_qty").val()
         var data = $("#update_qty").data();
@@ -48,17 +47,26 @@
             calculated_estimate + ".</p>");
     }
 
-    $("#edit_estimate").click(editEstimate)
+    $("#edit_estimate").click(editEstimate);
 
     function editEstimate() {
         $("#update_statement").empty();
         var data = $("#update_statement").data();
         $("#update_statement").append("<label>I estimate that I really saved $" +
                         "<input type='number' name='manual_estimate' id='manual_estimate'" +
-                        "placeholder=" + data.calculated_estimate + "></label>")
-        var manual_estimate = ("#manual_estimate").val()
-        $("#update_statement").attr("data-manual_estimate", manual_estimate)
+                        "placeholder=" + data.calculated_estimate + "></label>");
+        var manual_estimate = ("#manual_estimate").val();
+        $("#update_statement").attr("data-manual_estimate", manual_estimate);
     }
+
+    $("#submit_update").click();
+
+    function submitUpdate() {
+        
+
+    }
+
+
 
 
     $.get("/indiv_progress_chart<{{ ac_id }}",
