@@ -190,7 +190,6 @@ def profile():
                                                 challenge_id = challenge_id[0],
                                                 donation_id = donation_id[0],
                                                 accepted_qty = qty,
-                                                # progress = 0,
                                                 accepted_at = accepted_at)
                                                 # completed_at = completed_at)  
 
@@ -212,20 +211,35 @@ def overall_progress_chart(user_id):
 
     users_current_challenges, users_completed_challenges = a_user.accepted_challenge_info(user_id)
     
-
     pass
 
-@app.route("/update_progress")
-def update_progress():
-    """Displays progress on individual challenges. Offers a way for User to update progress:
+
+@app.route("/view_challenge")
+def view_challenge():
+    """Display progress and information on individual challenges.
+    Offers a way for User to update progress:
         2 options:
             1) enter in units completed - one coffee brewed instead of bought
             2) or perform another transactional analysis and assess progress (might be more interesting and challenging, but I'm not sure if I have enough information from Mint/broad categories of spending
         Either way - can make donation amount suggested/optional rather than required ("I estimate you will have saved $x, but really you saved $y - donate that instead")"""
 
     ac_id = request.args["ac_id"]
+    ac_obj = Accepted_Challenge.query.get(ac_id)
+    qty = ac_obj.accepted_qty
+    alternative_items = ac_obj.challenge.alternative_items
+    alternative_cost = ac_obj.challenge.alternative_cost
+    original_items = ac_obj.challenge.original_items
+    original_cost = ac_obj.challenge.original_cost
+    donation_item = ac_obj.donation.donation_item
+    donation_price = ac_obj.donation.donation_price
 
-    return render_template("update_progress.html", ac_id = ac_id)
+    return render_template("view_challenge.html", ac_id = ac_id, qty = qty,
+                                                alternative_items = alternative_items,
+                                                alternative_cost = alternative_cost,
+                                                original_items = original_items,
+                                                original_cost = original_cost,
+                                                donation_item = donation_item,
+                                                donation_price = donation_price)
 
 
 @app.route("/cancel_challenge")
@@ -236,19 +250,18 @@ def cancel_challenge():
     #TODO - remove accepted challenge object
     ac_id = request.args["ac_id"]
     ac_obj = Accepted_Challenge.query.get(ac_id)
+
     db.session.delete(ac_obj)
+
+    # TODO - make sure progress object functionality works here
+
+    ac_progress_objs = ac_obj.progress_updates
+    for progress_obj in ac_progress_objs:
+        db.session.delete(progress_obj)
+
     db.session.commit()
 
     return redirect("/profile")
-
-
-@app.route("/view_challenge")
-def view_challenge():
-    """Display progress and information on individual challenges"""
-
-    ac_id = request.args["ac_id"]
-
-    return render_template("view_challenge.html", ac_id = ac_id)
 
 
 @app.route("/donate")

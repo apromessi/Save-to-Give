@@ -107,7 +107,6 @@ class Accepted_Challenge(db.Model):
     challenge_id = db.Column(db.Integer, db.ForeignKey("challenges.challenge_id"))
     donation_id = db.Column(db.Integer, db.ForeignKey("donations.donation_id"))
     accepted_qty = db.Column(db.Integer)
-    # progress = db.Column(db.Float, nullable = False)
     accepted_at = db.Column(db.DateTime)
     completed_at = db.Column(db.DateTime)
 

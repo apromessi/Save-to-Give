@@ -3,6 +3,91 @@
 
 <h1>View Challenge</h1>
 
-<h2>AC_ID = {{ ac_id }}</h2>
+<span>
+    <h1>GRAPH!!!</h1>
+    <canvas id="indiv_progress_chart" width="200" height="200"></canvas>
+</span>
+
+<span id="challenge">
+    <h4>My Challenge:</h4>
+    <p>I have agreed to substitute {{ qty }} {{ alternative_items }} for {{ original_items }}
+        and use the ${{ "%0.2f" % donation_price }} I save to {{ donation_item }}.</p>
+</span>
+
+<h4>Update my progress:</h4>
+<form>
+    <label>I have successfully substituted
+        <input type="number" name="update_qty" id="update_qty"
+                oninput="getEstimate()"
+                data-altcost="{{ alternative_cost }}"
+                data-origcost="{{ original_cost }}">
+        {{ alternative_items }} for {{ original_items }}.
+    </label>
+
+        <p id="step2">We estimate that you saved $<span id="estimated_savings">0</span>.</p><br>
+        
+        <input type="button" value="Edit Estimate" id="edit_estimate">
+        <input type="button" value="Submit Update" id="submit_update">
+</form>
+
+
+<script>
+    $("#step2").css("visibility", "hidden");
+
+    function getEstimate() {
+        $("#estimated_savings").empty();
+        $("#estimated_savings").html("0");
+        var update_qty = $("#update_qty").val()
+        var data = $("#update_qty").data();
+        var altcost = data.altcost;
+        var origcost = data.origcost;
+        var estimated_savings = (origcost - altcost) * update_qty;
+        $("#estimated_savings").html(estimated_savings);
+        $("#step2").css("visibility", "visible");
+    }
+
+    $("#edit_estimate").click(editEstimate)
+
+    function editEstimate() {
+        
+    }
+
+
+    $.get("/indiv_progress_chart<{{ ac_id }}",
+            function (result) {
+                ;
+            }
+        );
+
+        var ctx = $("#indiv_progress_chart").get(0).getContext("2d");
+        
+        var data = {
+        labels: ["January", "February", "March", "April", "May", "June", "July"],
+        datasets: [
+            {
+                label: "My First dataset",
+                fillColor: "rgba(220,220,220,0.2)",
+                strokeColor: "rgba(220,220,220,1)",
+                pointColor: "rgba(220,220,220,1)",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(220,220,220,1)",
+                data: [65, 59, 80, 81, 56, 55, 40]
+            },
+            {
+                label: "My Second dataset",
+                fillColor: "rgba(151,187,205,0.2)",
+                strokeColor: "rgba(151,187,205,1)",
+                pointColor: "rgba(151,187,205,1)",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(151,187,205,1)",
+                data: [28, 48, 40, 19, 86, 27, 90]
+            }
+        ]
+    };
+    var overall_progress_chart = new Chart(ctx).Line(data);
+</script>
+
 
 {% endblock %}

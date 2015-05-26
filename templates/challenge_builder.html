@@ -56,7 +56,6 @@
                 var donation_amt = (result.savings * qty);
                 $(".savings").text(donation_amt);
                 donation_amt = Math.round(donation_amt)
-                // will have to figure out how to round
                 $.get(
                     "/challenge_builder_step3/" + donation_amt,
                     function (result) {

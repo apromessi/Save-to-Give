@@ -4,8 +4,8 @@
 <h1>{{ firstname }}'s Profile</h1>
 
 <div>
-<h1>GRAPH!!!</h1>
-<canvas id="overall_progress_chart" width="400" height="400"></canvas>
+    <h1>GRAPH!!!</h1>
+    <canvas id="overall_progress_chart" width="400" height="400"></canvas>
 </div>
 
 <div id="current_challenges">
@@ -18,8 +18,6 @@
     {% for challenge in users_current_challenges %}
             <p>I will substitute {{ challenge[0] }} {{ challenge[1] }} for {{ challenge[2] }} 
             and use the ${{ "%0.2f" % challenge[4] }} I save to {{ challenge[3] }}.</p>
-            <input type="button" value="Update Progress" class="update_button"
-            data-acid="{{ challenge[6] }}">
             <input type="button" value="View Challenge" class="view_button"
             data-acid="{{ challenge[6] }}">
             <input type="button" value="Cancel Challenge" class="cancel_button"
@@ -43,19 +41,6 @@
 </div>
 
 <script>
-
-    $(".update_button").click(updateProgress);
-
-    function updateProgress(evt) {
-        var data = $(evt.currentTarget).data();
-        var form = document.createElement('form');
-        $(form).attr("action", "/update_progress");
-        $("<input>").attr({
-                name: "ac_id",
-                value: data.acid
-            }).appendTo(form);
-        $(form).submit();
-    }
 
     $(".view_button").click(viewChallenge);
 
