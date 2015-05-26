@@ -24,7 +24,9 @@
         {{ alternative_items }} for {{ original_items }}.
     </label>
 
-        <p id="step2">We estimate that you saved $<span id="estimated_savings">0</span>.</p><br>
+    <div id="update_statement">
+    </div><br>
+
         
         <input type="button" value="Edit Estimate" id="edit_estimate">
         <input type="button" value="Submit Update" id="submit_update">
@@ -32,24 +34,26 @@
 
 
 <script>
-    $("#step2").css("visibility", "hidden");
+    
 
     function getEstimate() {
-        $("#estimated_savings").empty();
-        $("#estimated_savings").html("0");
+        $("#update_statement").empty();
         var update_qty = $("#update_qty").val()
         var data = $("#update_qty").data();
         var altcost = data.altcost;
         var origcost = data.origcost;
         var estimated_savings = (origcost - altcost) * update_qty;
-        $("#estimated_savings").html(estimated_savings);
-        $("#step2").css("visibility", "visible");
+        $("#update_statement").append("<p>We estimate that you saved $" +
+            estimated_savings + ".</p>");
     }
 
     $("#edit_estimate").click(editEstimate)
 
     function editEstimate() {
-        
+        $("#update_statement").empty();
+        $("#update_statement").append("<label>I estimate that I really saved $
+                        <input type='number' name='manual_estimate' id='manual_estimate'>
+                        </label>")
     }
 
 
