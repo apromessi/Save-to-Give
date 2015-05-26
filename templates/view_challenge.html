@@ -21,7 +21,7 @@
                 oninput="getEstimate()"
                 data-altcost="{{ alternative_cost }}"
                 data-origcost="{{ original_cost }}">
-        {{ alternative_items }} for {{ original_items }}.
+        {{ alternative_items }} for {{ original_items }}.<br>
     </label>
 
     <div id="update_statement">
@@ -42,18 +42,22 @@
         var data = $("#update_qty").data();
         var altcost = data.altcost;
         var origcost = data.origcost;
-        var estimated_savings = (origcost - altcost) * update_qty;
+        var calculated_estimate = (origcost - altcost) * update_qty;
+        $("#update_statement").attr("data-calculated_estimate", calculated_estimate)
         $("#update_statement").append("<p>We estimate that you saved $" +
-            estimated_savings + ".</p>");
+            calculated_estimate + ".</p>");
     }
 
     $("#edit_estimate").click(editEstimate)
 
     function editEstimate() {
         $("#update_statement").empty();
-        $("#update_statement").append("<label>I estimate that I really saved $
-                        <input type='number' name='manual_estimate' id='manual_estimate'>
-                        </label>")
+        var data = $("#update_statement").data();
+        $("#update_statement").append("<label>I estimate that I really saved $" +
+                        "<input type='number' name='manual_estimate' id='manual_estimate'" +
+                        "placeholder=" + data.calculated_estimate + "></label>")
+        var manual_estimate = ("#manual_estimate").val()
+        $("#update_statement").attr("data-manual_estimate", manual_estimate)
     }
 
 
