@@ -104,6 +104,17 @@ def registration_form():
     return render_template("register.html")
 
 
+@app.route("/donation_info/<int:donation_id>")
+def donation_info(donation_id):
+    """Display information about each donation item, including price, description and org"""
+
+    donation_obj = Donation.query.get(donation_id)
+    org_obj = Organization.query.get(donation_obj.org_id)
+    print org_obj
+
+    return render_template("donation_info.html", donation_obj = donation_obj, org_obj = org_obj)
+
+
 @app.route("/challenge_builder")
 def challenge_builder_step1():
     """Displays an interactive form for users to create their own challenge by interacting with
@@ -139,8 +150,8 @@ def challenge_builder_step2(original_items):
 def challenge_builder_step3(donation_amt):
     """match calcualted donation_amt from form to donation_price in database"""
     
-    max_donation_amt = int(donation_amt) + 3
-    min_donation_amt = int(donation_amt) - 3
+    max_donation_amt = int(donation_amt) + 2
+    min_donation_amt = int(donation_amt) - 2
     print donation_amt
     
     donation_obj_list = Donation.query.filter(Donation.donation_price < max_donation_amt,
@@ -151,7 +162,8 @@ def challenge_builder_step3(donation_amt):
     for donation_obj in donation_obj_list:
         donation_item = donation_obj.donation_item
         donation_price = donation_obj.donation_price
-        donation_item_price.append((donation_item, donation_price))
+        donation_id = donation_obj.donation_id
+        donation_item_price.append((donation_item, donation_price, donation_id))
 
     print donation_item_price
 

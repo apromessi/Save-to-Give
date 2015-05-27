@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h3>Save up some extra cash and {{ donation_obj.donation_item }}.</h3>
+<h4>${{ "%0.2f" % donation_obj.donation_price }}</h4>
+
+<p>{{ donation_obj.description }}</p>
+
+<h4>Organization: {{ org_obj.org_name }}</h4>
+
+
+{% endblock %}

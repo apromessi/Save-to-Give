@@ -63,8 +63,8 @@
                         _.each(result.donation_item_price, function(donation_array) {
                             $("#challenge").append(
                                 "<p>With $<span id='donation_price'>" + donation_array[1] + 
-                                "</span> you can <span id='donation_item'>" + 
-                                donation_array[0] + "</span>!</p>",
+                                "</span> you can <span id='donation_item'> <a href='/donation_info/" + donation_array[2] + "'>" + 
+                                donation_array[0] + "</a></span>!</p>",
 
                                 "<input type='button' data-donation_item='" +
                                  donation_array[0] + "' value='Accept' class='accept_button'>");
