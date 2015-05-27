@@ -12,6 +12,8 @@
     <h4>My Challenge:</h4>
     <p>I have agreed to substitute {{ qty }} {{ alternative_items }} for {{ original_items }}
         and use the ${{ "%0.2f" % donation_price }} I save to {{ donation_item }}.</p>
+    <p>{{ donation_description }}</p>
+    <p>Organization: {{ org_name }}</p>
 </span>
 
 {% if completed_at == None %}

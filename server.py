@@ -247,6 +247,8 @@ def view_challenge():
     donation_price = ac_obj.donation.donation_price
     completed_at = ac_obj.completed_at
     total_progress = ac_obj.calculate_total_progress()
+    donation_description = ac_obj.donation.description
+    org_name = Organization.query.get(ac_obj.donation.org_id).org_name
 
     return render_template("view_challenge.html", ac_id = ac_id, qty = qty,
                                                 alternative_items = alternative_items,
@@ -256,7 +258,9 @@ def view_challenge():
                                                 donation_item = donation_item,
                                                 donation_price = donation_price,
                                                 completed_at = completed_at,
-                                                total_progress = total_progress)
+                                                total_progress = total_progress,
+                                                donation_description = donation_description,
+                                                org_name = org_name)
 
 
 @app.route("/update_progress", methods = ["POST"])
