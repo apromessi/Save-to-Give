@@ -1,6 +1,7 @@
 """Models and database functions for final project"""
 
 from flask_sqlalchemy import SQLAlchemy
+import datetime
 db = SQLAlchemy()
 
 class User(db.Model):
@@ -119,9 +120,16 @@ class Accepted_Challenge(db.Model):
         progress_updates = self.progress_updates
         total_progress = 0
         for update in progress_updates:
-            total_progress += update.update_amt
+            total_progress += float(update.update_amt)
         return total_progress
         # or do I want percentage?
+
+    def determine_completion(self):
+        if self.completed_at == None:
+            total_progress = self.calculate_total_progress
+            donation_price = self.donation.donation_price
+            if total_progress >= donation_price:
+                self.completed_at = datetime.datetime.now()
 
     def __repr__(self):
         return "<Accepted_Challenge Object: %s user_id=%s, challenge_id=%s>" % (

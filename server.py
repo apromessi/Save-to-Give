@@ -250,13 +250,19 @@ def update_progress():
 
     ac_id = request.form["ac_id"]
     progress_amt = request.form["progress_amt"]
+    ac_obj = Accepted_Challenge.query.get(ac_id)
 
     progress_update = Progress_Update(ac_id = ac_id,
                                     updated_at = datetime.datetime.now(),
                                     update_amt = progress_amt)
     db.session.add(progress_update)
-    db.session.commit()
 
+    total_progress = ac_obj.calculate_total_progress()
+    print total_progress
+    ac_obj.determine_completion()
+    print ac_obj.completed_at, "******************************"
+
+    db.session.commit()
 
     return redirect("/view_challenge?ac_id=" + str(ac_id))
     
