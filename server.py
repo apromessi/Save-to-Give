@@ -6,7 +6,8 @@ import datetime
 from flask import Flask, render_template, redirect, request, flash, session, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 
-from model import User, Challenge, Accepted_Challenge, Donation, Transaction, Organization, connect_to_db, db
+from model import (User, Challenge, Accepted_Challenge, Donation, Transaction,
+                    Organization, Progress_Update, connect_to_db, db)
 from transaction_analysis import load_transactions
 
 
@@ -249,11 +250,15 @@ def update_progress():
 
     ac_id = request.form["ac_id"]
     progress_amt = request.form["progress_amt"]
-    print ac_id, progress_amt, "$$$$$$$$$$$$$$$$$$$$$$$$$$"
 
-    return redirect("/view_challenge")
+    progress_update = Progress_Update(ac_id = ac_id,
+                                    updated_at = datetime.datetime.now(),
+                                    update_amt = progress_amt)
+    db.session.add(progress_update)
+    db.session.commit()
 
-    # progress_update_obj = Progress_Update()
+
+    return redirect("/view_challenge?ac_id=" + str(ac_id))
     
 
 @app.route("/cancel_challenge")

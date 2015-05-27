@@ -61,18 +61,14 @@
 
     function enterEstimate() {
         var manual_estimate = $("#manual_estimate").val();
-        console.log(manual_estimate)
         $("#submit_update").attr("data-manual_estimate", manual_estimate);
-        console.log($("#submit_update").attr("data-manual_estimate"))
     }
 
     $("#submit_update").click(submitUpdate);
 
     function submitUpdate(evt) {
         var data = $(evt.currentTarget).data();
-        console.log(data.manual_estimate)
         manual_estimate = $("#submit_update").attr("data-manual_estimate")
-        console.log(data.calculated_estimate)
         if (manual_estimate !== undefined) {
             data_obj = { ac_id: data.ac_id, 
                         progress_amt: manual_estimate };

@@ -115,6 +115,14 @@ class Accepted_Challenge(db.Model):
     donation = db.relationship("Donation", backref = db.backref("accepted_challenge"),
                                 uselist=False)
 
+    def calculate_total_progress(self):
+        progress_updates = self.progress_updates
+        total_progress = 0
+        for update in progress_updates:
+            total_progress += update.update_amt
+        return total_progress
+        # or do I want percentage?
+
     def __repr__(self):
         return "<Accepted_Challenge Object: %s user_id=%s, challenge_id=%s>" % (
                 self.ac_id, self.user_id, self.challenge_id)
@@ -133,6 +141,7 @@ class Progress_Update(db.Model):
     updated_at = db.Column(db.DateTime)
     update_amt = db.Column(db.Float)
     completed = db.Column(db.Boolean)
+    # not sure whether i should keep "completed" as a Bool or just calculate it - or should "completed" refer to whether they paid or not? do I want to track whether they've actually paid? - can't do that unless I set up a payment gateway anyway
 
     accepted_challenge = db.relationship("Accepted_Challenge",
                                             backref = db.backref("progress_updates"))
