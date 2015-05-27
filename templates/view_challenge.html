@@ -42,7 +42,8 @@
         var altcost = data.altcost;
         var origcost = data.origcost;
         var calculated_estimate = (origcost - altcost) * update_qty;
-        $("#update_statement").attr("data-calculated_estimate", calculated_estimate)
+        $("#submit_update").attr("data-calculated_estimate", calculated_estimate)
+        $("#submit_update").attr("data-ac_id", {{ ac_id }})
         $("#update_statement").append("<p>We estimate that you saved $" +
             calculated_estimate + ".</p>");
     }
@@ -51,25 +52,49 @@
 
     function editEstimate() {
         $("#update_statement").empty();
-        var data = $("#update_statement").data();
+        var data = $("#submit_update").data();
         $("#update_statement").append("<label>I estimate that I really saved $" +
                         "<input type='number' name='manual_estimate' id='manual_estimate'" +
-                        "placeholder=" + data.calculated_estimate + "></label>");
-        var manual_estimate = ("#manual_estimate").val();
-        $("#update_statement").attr("data-manual_estimate", manual_estimate);
+                        "placeholder='" + data.calculated_estimate +
+                        "' oninput='enterEstimate()'></label>");
     }
 
-    $("#submit_update").click();
-
-    function submitUpdate() {
-        
-
+    function enterEstimate() {
+        var manual_estimate = $("#manual_estimate").val();
+        console.log(manual_estimate)
+        $("#submit_update").attr("data-manual_estimate", manual_estimate);
+        console.log($("#submit_update").attr("data-manual_estimate"))
     }
 
+    $("#submit_update").click(submitUpdate);
+
+    function submitUpdate(evt) {
+        var data = $(evt.currentTarget).data();
+        console.log(data.manual_estimate)
+        manual_estimate = $("#submit_update").attr("data-manual_estimate")
+        console.log(data.calculated_estimate)
+        if (manual_estimate !== undefined) {
+            data_obj = { ac_id: data.ac_id, 
+                        progress_amt: manual_estimate };
+        } else {
+            data_obj = { ac_id: data.ac_id, 
+                        progress_amt: data.calculated_estimate };
+        }
+        console.log(data_obj)
+        debugger
+        var form = document.createElement('form');
+        $(form).attr("method", "post").attr("action", "/update_progress");
+        _.each(data_obj, function(value, key) {
+            $("<input>").attr({
+                name: key,
+                value: value
+            }).appendTo(form);
+        });
+        $(form).submit();
+        }
 
 
-
-    $.get("/indiv_progress_chart<{{ ac_id }}",
+    $.get("/indiv_progress_chart/{{ ac_id }}",
             function (result) {
                 ;
             }

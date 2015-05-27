@@ -242,12 +242,19 @@ def view_challenge():
                                                 donation_price = donation_price)
 
 
-@app.route("/update_progress")
+@app.route("/update_progress", methods = ["POST"])
 def update_progress():
     """Logs progress updates by taking information from the view challenge page
         and adding progress objects"""
 
-    pass
+    ac_id = request.form["ac_id"]
+    progress_amt = request.form["progress_amt"]
+    print ac_id, progress_amt, "$$$$$$$$$$$$$$$$$$$$$$$$$$"
+
+    return redirect("/view_challenge")
+
+    # progress_update_obj = Progress_Update()
+    
 
 @app.route("/cancel_challenge")
 def cancel_challenge():
