@@ -301,9 +301,15 @@ def donate(ac_id):
     if ac_obj.completed_at == None:
         ac_obj.completed_at = datetime.datetime.now()
 
+    org_id = ac_obj.donation.org_id
+    org_obj = Organization.query.get(org_id)
+    donation_item = ac_obj.donation.donation_item
+    original_items = ac_obj.challenge.original_items
+
     db.session.commit()
 
-    return render_template("donate.html")
+    return render_template("donate.html", org_obj = org_obj, donation_item = donation_item,
+                            original_items = original_items)
 
 
 ##########################################################################################
