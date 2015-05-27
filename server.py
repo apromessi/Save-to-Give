@@ -233,6 +233,8 @@ def view_challenge():
     original_cost = ac_obj.challenge.original_cost
     donation_item = ac_obj.donation.donation_item
     donation_price = ac_obj.donation.donation_price
+    completed_at = ac_obj.completed_at
+    total_progress = ac_obj.calculate_total_progress()
 
     return render_template("view_challenge.html", ac_id = ac_id, qty = qty,
                                                 alternative_items = alternative_items,
@@ -240,7 +242,9 @@ def view_challenge():
                                                 original_items = original_items,
                                                 original_cost = original_cost,
                                                 donation_item = donation_item,
-                                                donation_price = donation_price)
+                                                donation_price = donation_price,
+                                                completed_at = completed_at,
+                                                total_progress = total_progress)
 
 
 @app.route("/update_progress", methods = ["POST"])
@@ -260,7 +264,6 @@ def update_progress():
     total_progress = ac_obj.calculate_total_progress()
     print total_progress
     ac_obj.determine_completion()
-    print ac_obj.completed_at, "******************************"
 
     db.session.commit()
 
@@ -289,12 +292,18 @@ def cancel_challenge():
     return redirect("/profile")
 
 
-@app.route("/donate")
-def donate():
+@app.route("/donate/<int:ac_id>")
+def donate(ac_id):
     """Access payment gateway for appropriate organization
         Use paypal?"""
 
-    return "Pay the monies!"
+    ac_obj = Accepted_Challenge.query.get(ac_id)
+    if ac_obj.completed_at == None:
+        ac_obj.completed_at = datetime.datetime.now()
+
+    db.session.commit()
+
+    return render_template("donate.html")
 
 
 ##########################################################################################

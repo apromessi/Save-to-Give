@@ -37,11 +37,8 @@ class User(db.Model):
             donation_item = ac_object.donation.donation_item
             donation_price = ac_object.donation.donation_price
             
-            progress_updates = ac_object.progress_updates
-            total_progress = 0
-            for progress_update in progress_updates:
-                total_progress += progress_update.progress_amt
-            progress_percent = total_progress/donation_price
+            total_progress = ac_object.calculate_total_progress()
+            progress_percent = total_progress/ac_object.donation.donation_price
 
             if ac_object.completed_at == None:
                 challenge = (qty, alternative_items, original_items, donation_item,
@@ -148,7 +145,7 @@ class Progress_Update(db.Model):
     ac_id = db.Column(db.Integer, db.ForeignKey("accepted_challenges.ac_id"))
     updated_at = db.Column(db.DateTime)
     update_amt = db.Column(db.Float)
-    completed = db.Column(db.Boolean)
+    # completed = db.Column(db.Boolean)
     # not sure whether i should keep "completed" as a Bool or just calculate it - or should "completed" refer to whether they paid or not? do I want to track whether they've actually paid? - can't do that unless I set up a payment gateway anyway
 
     accepted_challenge = db.relationship("Accepted_Challenge",

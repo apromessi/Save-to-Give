@@ -14,23 +14,37 @@
         and use the ${{ "%0.2f" % donation_price }} I save to {{ donation_item }}.</p>
 </span>
 
-<h4>Update my progress:</h4>
-<form>
-    <label>I have successfully substituted
-        <input type="number" name="update_qty" id="update_qty"
-                oninput="calcEstimate()"
-                data-altcost="{{ alternative_cost }}"
-                data-origcost="{{ original_cost }}">
-        {{ alternative_items }} for {{ original_items }}.<br>
-    </label>
+{% if completed_at == None %}
+    <h4>Update my progress:</h4>
+    <form>
+        <label>I have successfully substituted
+            <input type="number" name="update_qty" id="update_qty"
+                    oninput="calcEstimate()"
+                    data-altcost="{{ alternative_cost }}"
+                    data-origcost="{{ original_cost }}">
+            {{ alternative_items }} for {{ original_items }}.<br>
+        </label>
 
-    <div id="update_statement">
-    </div><br>
+        <div id="update_statement">
+        </div><br>
+            
+            <input type="button" value="Edit Estimate" id="edit_estimate">
+            <input type="button" value="Submit Update" id="submit_update">
+    </form>
 
-        
-        <input type="button" value="Edit Estimate" id="edit_estimate">
-        <input type="button" value="Submit Update" id="submit_update">
-</form>
+    
+    <p>I'm so close to reaching my goal! I would like to declare my challenge complete
+        with my current progress as is and <a href="/donate/{{ ac_id }}">donate now</a>.
+    </p>
+    
+
+
+{% else %}
+    <h4>
+        Congratulations! You have saved ${{ "%0.2f" % total_progress }} and completed this challenge! Would you like to <a href="/donate/{{ ac_id }}">donate now</a>?
+    </h4>
+
+{% endif %}
 
 
 <script>
