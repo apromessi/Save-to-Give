@@ -95,7 +95,6 @@
                         progress_amt: data.calculated_estimate };
         }
         console.log(data_obj)
-        debugger
         var form = document.createElement('form');
         $(form).attr("method", "post").attr("action", "/update_progress");
         _.each(data_obj, function(value, key) {
