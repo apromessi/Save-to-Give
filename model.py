@@ -145,11 +145,18 @@ class Progress_Update(db.Model):
     ac_id = db.Column(db.Integer, db.ForeignKey("accepted_challenges.ac_id"))
     updated_at = db.Column(db.DateTime)
     update_amt = db.Column(db.Float)
-    # completed = db.Column(db.Boolean)
-    # not sure whether i should keep "completed" as a Bool or just calculate it - or should "completed" refer to whether they paid or not? do I want to track whether they've actually paid? - can't do that unless I set up a payment gateway anyway
 
     accepted_challenge = db.relationship("Accepted_Challenge",
                                             backref = db.backref("progress_updates"))
+
+    def convert_to_dict(self):
+        progress_update_dict = {}
+        progress_update_dict["progress_id"] = self.progress_id
+        progress_update_dict["ac_id"] = self.ac_id
+        progress_update_dict["updated_at"] = self.updated_at
+        progress_update_dict["update_amt"] = self.update_amt
+        return progress_update_dict
+
 
     def __repr__(self):
         return "<Progress Update Object: %s ac_id=%s, update_amt=%s, updated_at=%s" % (

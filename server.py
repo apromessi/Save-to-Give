@@ -263,6 +263,20 @@ def view_challenge():
                                                 org_name = org_name)
 
 
+@app.route("/indiv_progress_chart/<int:ac_id>")
+def indiv_progress_chart(ac_id):
+    """Provides progress information for chart on view_challenge.html"""
+
+    ac_obj = Accepted_Challenge.query.get(ac_id)
+    progress_updates = ac_obj.progress_updates
+    progress_updates_asdict = []
+    for update in progress_updates:
+        update.convert_to_dict()
+        progress_updates_asdict.append(update)
+
+    return jsonify(progress_updates_asdict = progress_updates_asdict)
+
+
 @app.route("/update_progress", methods = ["POST"])
 def update_progress():
     """Logs progress updates by taking information from the view challenge page
@@ -333,11 +347,11 @@ def donate(ac_id):
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point
     # that we invoke the DebugToolbarExtension
-    app.debug = False
+    app.debug = True
 
     connect_to_db(app)
 
     # Use the DebugToolbar
-    #DebugToolbarExtension(app)
+    DebugToolbarExtension(app)
 
     app.run()
