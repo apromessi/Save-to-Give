@@ -123,7 +123,7 @@ class Accepted_Challenge(db.Model):
 
     def determine_completion(self):
         if self.completed_at == None:
-            total_progress = self.calculate_total_progress
+            total_progress = self.calculate_total_progress()
             donation_price = self.donation.donation_price
             if total_progress >= donation_price:
                 self.completed_at = datetime.datetime.now()
