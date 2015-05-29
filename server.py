@@ -269,12 +269,13 @@ def indiv_progress_chart(ac_id):
 
     ac_obj = Accepted_Challenge.query.get(ac_id)
     progress_updates = ac_obj.progress_updates
-    progress_updates_asdict = []
+    progress_updates_dicts = []
     for update in progress_updates:
-        update.convert_to_dict()
-        progress_updates_asdict.append(update)
+        update = update.__dict__
+        update.pop("_sa_instance_state")
+        progress_updates_dicts.append(update)
 
-    return jsonify(progress_updates_asdict = progress_updates_asdict)
+    return jsonify(progress_updates = progress_updates_dicts)
 
 
 @app.route("/update_progress", methods = ["POST"])

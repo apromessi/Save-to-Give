@@ -106,32 +106,49 @@
         $(form).submit();
     }
 
+    var ctx = $("#indiv_progress_chart").get(0).getContext("2d");
 
     $.get("/indiv_progress_chart/{{ ac_id }}",
         function (result) {
             console.log(result);
+            // var coordinates = []
+            var updated_at = []
+            var update_amt = []
+            console.log(result.progress_updates)
+            _.each(result.progress_updates, function(update) {
+                // coordinates.push([update.updated_at, update.update_amt])
+                updated_at.push([update.updated_at])
+                update_amt.push([update.update_amt])
+            });
+            // console.log(coordinates)
+            var data = {
+                // labels: ['1', '2', '3'],
+                labels: updated_at,
+                datasets: [
+                    {
+                        label: "My First dataset",
+                        fillColor: "rgba(220,220,220,0.2)",
+                        strokeColor: "rgba(220,220,220,1)",
+                        pointColor: "rgba(220,220,220,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(220,220,220,1)",
+                        // data: coordinates,
+                        data: update_amt,
+                        // scaleOverride: true,
+                        // scaleSteps: 15,
+                        // scaleStepWidth: 1
+                    },
+                ]
+            };
+            var overall_progress_chart = new Chart(ctx).Line(data);
         }
     );
 
-    var ctx = $("#indiv_progress_chart").get(0).getContext("2d");
     
 
-    var data = {
-        labels: ["January", "February", "March", "April", "May", "June", "July"],
-        datasets: [
-            {
-                label: "My First dataset",
-                fillColor: "rgba(220,220,220,0.2)",
-                strokeColor: "rgba(220,220,220,1)",
-                pointColor: "rgba(220,220,220,1)",
-                pointStrokeColor: "#fff",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(220,220,220,1)",
-                data: [65, 59, 80, 81, 56, 55, 40]
-            },
-        ]
-    };
-    var overall_progress_chart = new Chart(ctx).Line(data);
+    
+    
 </script>
 
 
