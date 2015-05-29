@@ -7,7 +7,7 @@
 
 <span>
     <h1>GRAPH!!!</h1>
-    <canvas id="indiv_progress_chart" width="200" height="200"></canvas>
+    <canvas id="indiv_progress_chart" width="400" height="400"></canvas>
 </span>
 
 <span id="challenge">
@@ -111,18 +111,14 @@
     $.get("/indiv_progress_chart/{{ ac_id }}",
         function (result) {
             console.log(result);
-            // var coordinates = []
             var updated_at = []
             var update_amt = []
             console.log(result.progress_updates)
             _.each(result.progress_updates, function(update) {
-                // coordinates.push([update.updated_at, update.update_amt])
                 updated_at.push([update.updated_at])
                 update_amt.push([update.update_amt])
             });
-            // console.log(coordinates)
             var data = {
-                // labels: ['1', '2', '3'],
                 labels: updated_at,
                 datasets: [
                     {
@@ -133,15 +129,15 @@
                         pointStrokeColor: "#fff",
                         pointHighlightFill: "#fff",
                         pointHighlightStroke: "rgba(220,220,220,1)",
-                        // data: coordinates,
-                        data: update_amt,
-                        // scaleOverride: true,
-                        // scaleSteps: 15,
-                        // scaleStepWidth: 1
+                        data: update_amt
                     },
                 ]
             };
-            var overall_progress_chart = new Chart(ctx).Line(data);
+            var options = {scaleStartValue: 0,
+                            scaleOverride: true,
+                            scaleStepWidth: 1,
+                            scaleSteps: 12};
+            var overall_progress_chart = new Chart(ctx).Line(data, options);    
         }
     );
 
