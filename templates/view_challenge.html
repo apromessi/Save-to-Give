@@ -113,21 +113,23 @@
             console.log(result);
             var updated_at = []
             var update_amt = []
+            var total_progress = 0
             console.log(result.progress_updates)
             _.each(result.progress_updates, function(update) {
                 updated_at.push([update.updated_at])
-                update_amt.push([update.update_amt])
+                total_progress = total_progress + update.update_amt
+                update_amt.push([total_progress])
             });
             var data = {
                 labels: updated_at,
                 datasets: [
                     {
                         label: "My First dataset",
-                        fillColor: "rgba(220,220,220,0.2)",
-                        strokeColor: "rgba(220,220,220,1)",
-                        pointColor: "rgba(220,220,220,1)",
-                        pointStrokeColor: "#fff",
-                        pointHighlightFill: "#fff",
+                        fillColor: "#A9F5F2",
+                        strokeColor: "#58D3F7",
+                        pointColor: "#5882FA",
+                        pointStrokeColor: "#A9F5D0",
+                        pointHighlightFill: "#A9F5D0",
                         pointHighlightStroke: "rgba(220,220,220,1)",
                         data: update_amt
                     },
@@ -140,6 +142,8 @@
             var overall_progress_chart = new Chart(ctx).Line(data, options);    
         }
     );
+
+// TO UPDATE CHART: myLineChart.update();
 
     
 
