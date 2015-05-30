@@ -38,7 +38,7 @@
 
     
     <p>I'm so close to reaching my goal! I would like to declare my challenge complete
-        with my current progress as is and <a href="/donate/{{ ac_id }}">donate now</a>.
+        and <a href="/donate/{{ ac_id }}">donate now</a>.
     </p>
     
 
@@ -136,7 +136,7 @@
                         type: 'spline'
                     },
                     title: {
-                        text: 'Challenge Progress'
+                        text: 'My Progress'
                     },
                     xAxis: {
                         type: 'datetime',
@@ -152,11 +152,24 @@
                         title: {
                             text: 'Amount saved'
                         },
-                        min: 0
+                        min: 0,
+                        plotLines: [{
+                            value: result.goal,
+                            width: 2,
+                            color: 'blue',
+                            label: {
+                                text: 'Challenge: $' + result.goal,
+                                align: 'right'
+                            }
+                        }]
                     },
-                    // tooltip: {
-                    //     pointFormat: '{point.x:%e. %b}: ${point.y:.2f}'
-                    // },
+                    tooltip: {
+                        
+                        pointFormat: 'Total savings: ${point.y:.2f}'
+                    },
+                    legend: {
+                        enabled: false
+                    },
 
                     plotOptions: {
                         spline: {

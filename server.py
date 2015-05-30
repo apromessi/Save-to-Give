@@ -277,9 +277,9 @@ def indiv_progress_chart(ac_id):
         update = update.__dict__
         update.pop("_sa_instance_state")
         progress_updates_dicts.append(update)
-    target = ac_obj.donation.donation_price
+    goal = ac_obj.donation.donation_price
                                                                                                                        
-    return jsonify(progress_updates = progress_updates_dicts, target = target)
+    return jsonify(progress_updates = progress_updates_dicts, goal = goal)
 
 
 @app.route("/update_progress", methods = ["POST"])
