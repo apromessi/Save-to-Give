@@ -154,9 +154,9 @@
                         },
                         min: 0
                     },
-                    tooltip: {
-                        pointFormat: '{point.x:%e. %b}: ${point.y:.2f}'
-                    },
+                    // tooltip: {
+                    //     pointFormat: '{point.x:%e. %b}: ${point.y:.2f}'
+                    // },
 
                     plotOptions: {
                         spline: {
@@ -167,6 +167,7 @@
                     },
 
                     series: [{
+                        name: '',
                         data: coordinates
                     }]
                 });
