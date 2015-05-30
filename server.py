@@ -270,12 +270,15 @@ def indiv_progress_chart(ac_id):
     ac_obj = Accepted_Challenge.query.get(ac_id)
     progress_updates = ac_obj.progress_updates
     progress_updates_dicts = []
+    accepted_at = {"updated_at": ac_obj.accepted_at, "update_amt": 0}
+    progress_updates_dicts.append(accepted_at)
     for update in progress_updates:
         update = update.__dict__
         update.pop("_sa_instance_state")
         progress_updates_dicts.append(update)
-
-    return jsonify(progress_updates = progress_updates_dicts)
+    target = ac_obj.donation.donation_price
+                                                                                                                       
+    return jsonify(progress_updates = progress_updates_dicts, target = target)
 
 
 @app.route("/update_progress", methods = ["POST"])
@@ -307,13 +310,10 @@ def cancel_challenge():
     """Removes accepted_challenge object from database and redirects to profile
         - challenge lists should display the updated information."""
 
-    #TODO - remove accepted challenge object
     ac_id = request.args["ac_id"]
     ac_obj = Accepted_Challenge.query.get(ac_id)
 
     db.session.delete(ac_obj)
-
-    # TODO - make sure progress object functionality works here
 
     ac_progress_objs = ac_obj.progress_updates
     for progress_obj in ac_progress_objs:
@@ -327,11 +327,18 @@ def cancel_challenge():
 @app.route("/donate/<int:ac_id>")
 def donate(ac_id):
     """Access payment gateway for appropriate organization
-        Use paypal?"""
+        Use paypal?
+        Set accepted_challenge completed_at attribute to current time.
+        Create a progress_updates with full donation price as update_amt and 
+        updated_at as current time"""
 
     ac_obj = Accepted_Challenge.query.get(ac_id)
     if ac_obj.completed_at == None:
         ac_obj.completed_at = datetime.datetime.now()
+        completed_prog_obj = Progress_Update(ac_id = ac_id,
+                                            updated_at = datetime.datetime.now(),
+                                            update_amt = ac_obj.donation.donation_price)
+        db.session.add(completed_prog_obj)
 
     org_id = ac_obj.donation.org_id
     org_obj = Organization.query.get(org_id)

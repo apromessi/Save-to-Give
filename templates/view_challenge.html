@@ -7,7 +7,7 @@
 
 <span>
     <h1>GRAPH!!!</h1>
-    <canvas id="indiv_progress_chart" width="400" height="400"></canvas>
+    <div id="indiv_progress_chart" style="width:400px; height:400px;"></div>
 </span>
 
 <span id="challenge">
@@ -45,7 +45,8 @@
 
 {% else %}
     <h4>
-        Congratulations! You have saved ${{ "%0.2f" % total_progress }} and completed this challenge! Would you like to <a href="/donate/{{ ac_id }}">donate now</a>?
+        <!-- Congratulations! You have saved ${{ "%0.2f" % total_progress }} and completed this challenge! Would you like to <a href="/donate/{{ ac_id }}">donate now</a>? -->
+        Congratulations! You have completed this challenge! Would you like to <a href="/donate/{{ ac_id }}">donate now</a>?
     </h4>
 
 {% endif %}
@@ -106,44 +107,96 @@
         $(form).submit();
     }
 
-    var ctx = $("#indiv_progress_chart").get(0).getContext("2d");
+    // var ctx = $("#indiv_progress_chart").get(0).getContext("2d");
 
     $.get("/indiv_progress_chart/{{ ac_id }}",
         function (result) {
             console.log(result);
-            var updated_at = []
-            var update_amt = []
+            // var updated_at = []
+            // var update_amt = []
+            var coordinates = []
             var total_progress = 0
             console.log(result.progress_updates)
             _.each(result.progress_updates, function(update) {
-                updated_at.push([update.updated_at])
+                // updated_at.push([update.updated_at])
                 total_progress = total_progress + update.update_amt
-                update_amt.push([total_progress])
+                // update_amt.push([total_progress])
+                coordinates.push([update.updated_at, total_progress])
             });
-            var data = {
-                labels: updated_at,
-                datasets: [
-                    {
-                        label: "My First dataset",
-                        fillColor: "#A9F5F2",
-                        strokeColor: "#58D3F7",
-                        pointColor: "#5882FA",
-                        pointStrokeColor: "#A9F5D0",
-                        pointHighlightFill: "#A9F5D0",
-                        pointHighlightStroke: "rgba(220,220,220,1)",
-                        data: update_amt
+            console.log(coordinates)
+            $(function () { 
+                $('#indiv_progress_chart').highcharts({
+                    chart: {
+                        type: 'spline'
                     },
-                ]
-            };
-            var options = {scaleStartValue: 0,
-                            scaleOverride: true,
-                            scaleStepWidth: 1,
-                            scaleSteps: 12};
-            var overall_progress_chart = new Chart(ctx).Line(data, options);    
+                    title: {
+                        text: 'Challenge Progress'
+                    },
+                    xAxis: {
+                        type: 'datetime',
+                        dateTimeLabelFormats: {
+                            month: '%e %b',
+                            year: '%b'
+                        },
+                        title: {
+                            text: 'Date'
+                        }
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Amount saved'
+                        },
+                        min: 0
+                    },
+                    tooltip: {
+                        pointFormat: '{point.x:%e. %b}: ${point.y:.2f}'
+                    },
+
+                    plotOptions: {
+                        spline: {
+                            marker: {
+                                enabled: true
+                            }
+                        }
+                    },
+
+                    series: [{
+                        data: [coordinates]
+                    }]
+                });
+            });
+
+
+
+
+
+
+            // var data = {
+            //     labels: updated_at,
+            //     // labels: ["1", "2", "3", "4"],
+            //     datasets: [
+            //         {
+            //             label: "My First dataset",
+            //             fillColor: "#A9F5F2",
+            //             strokeColor: "#58D3F7",
+            //             pointColor: "#5882FA",
+            //             pointStrokeColor: "#A9F5D0",
+            //             pointHighlightFill: "#A9F5D0",
+            //             pointHighlightStroke: "rgba(220,220,220,1)",
+            //             data: update_amt
+            //             // data: coordinates
+            //         },
+            //     ]
+            // };
+            // var options = {scaleStartValue: 0,
+            //                 scaleOverride: true,
+            //                 scaleStepWidth: 1,
+            //                 scaleSteps: result.target};
+            // var overall_progress_chart = new Chart(ctx).Line(data, options);    
         }
     );
 
-// TO UPDATE CHART: myLineChart.update();
+// showXLabels option for .Line 
 
     
 

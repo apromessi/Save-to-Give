@@ -149,18 +149,6 @@ class Progress_Update(db.Model):
     accepted_challenge = db.relationship("Accepted_Challenge",
                                             backref = db.backref("progress_updates"))
 
-    def convert_to_dict(self):
-        progress_update_dict = { "progress_id": self.progress_id,
-                                "ac_id": self.ac_id,
-                                'updated_at': self.updated_at,
-                                'update_amt': self.update_amt }
-        # progress_update_dict["progress_id"] = self.progress_id
-        # progress_update_dict["ac_id"] = self.ac_id
-        # progress_update_dict["updated_at"] = self.updated_at
-        # progress_update_dict["update_amt"] = self.update_amt
-        return progress_update_dict
-
-
     def __repr__(self):
         return "<Progress Update Object: %s ac_id=%s, update_amt=%s, updated_at=%s" % (
                 self.progress_id, self.ac_id, self.update_amt, self.updated_at)
