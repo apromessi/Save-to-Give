@@ -121,7 +121,13 @@
                 // updated_at.push([update.updated_at])
                 total_progress = total_progress + update.update_amt
                 // update_amt.push([total_progress])
-                coordinates.push([update.updated_at, total_progress])
+                var updated_at = update.updated_at
+                updated_at = new Date(updated_at)
+                console.log(updated_at)
+                time = Date.UTC(updated_at.getFullYear(), 
+                                updated_at.getMonth(), 
+                                updated_at.getDate())
+                coordinates.push([time, total_progress])
             });
             console.log(coordinates)
             $(function () { 
@@ -161,42 +167,13 @@
                     },
 
                     series: [{
-                        data: [coordinates]
+                        data: coordinates
                     }]
                 });
-            });
-
-
-
-
-
-
-            // var data = {
-            //     labels: updated_at,
-            //     // labels: ["1", "2", "3", "4"],
-            //     datasets: [
-            //         {
-            //             label: "My First dataset",
-            //             fillColor: "#A9F5F2",
-            //             strokeColor: "#58D3F7",
-            //             pointColor: "#5882FA",
-            //             pointStrokeColor: "#A9F5D0",
-            //             pointHighlightFill: "#A9F5D0",
-            //             pointHighlightStroke: "rgba(220,220,220,1)",
-            //             data: update_amt
-            //             // data: coordinates
-            //         },
-            //     ]
-            // };
-            // var options = {scaleStartValue: 0,
-            //                 scaleOverride: true,
-            //                 scaleStepWidth: 1,
-            //                 scaleSteps: result.target};
-            // var overall_progress_chart = new Chart(ctx).Line(data, options);    
+            });  
         }
     );
 
-// showXLabels option for .Line 
 
     
 

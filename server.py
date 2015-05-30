@@ -2,6 +2,7 @@ from jinja2 import StrictUndefined
 import os
 import keyring
 import datetime
+from dateutil.tz import tzlocal
 
 from flask import Flask, render_template, redirect, request, flash, session, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
@@ -196,7 +197,7 @@ def profile():
                             Challenge.original_items == original_items).one()
         donation_id = db.session.query(Donation.donation_id).filter(
                             Donation.donation_item == donation_item).one()
-        accepted_at = datetime.datetime.now()
+        accepted_at = datetime.datetime.now(tzlocal())
         # completed_at = datetime.datetime.now() + datetime.timedelta(days = 2)
         
         accepted_challenge = Accepted_Challenge(user_id = a_user.user_id,
