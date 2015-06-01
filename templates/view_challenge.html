@@ -108,15 +108,11 @@
     $.get("/indiv_progress_chart/{{ ac_id }}",
         function (result) {
             console.log(result);
-            // var updated_at = []
-            // var update_amt = []
             var coordinates = []
             var total_progress = 0
             console.log(result.progress_updates)
             _.each(result.progress_updates, function(update) {
-                // updated_at.push([update.updated_at])
                 total_progress = total_progress + update.update_amt
-                // update_amt.push([total_progress])
                 var updated_at = update.updated_at
                 updated_at = new Date(updated_at)
                 console.log(updated_at)

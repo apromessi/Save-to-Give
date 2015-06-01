@@ -5,10 +5,7 @@
 
 <h1>{{ firstname }}'s Profile</h1>
 
-<div>
-    <h1>GRAPH!!!</h1>
-    <canvas id="overall_progress_chart" width="400" height="400"></canvas>
-</div>
+<div id="overall_progress_chart" style="width:400px; height:400px;"></div>
 
 {% if users_current_challenges|length >= 1 %}
     <div id="current_challenges">
@@ -74,53 +71,89 @@
         $(form).submit();
     }
 
-    $.get("/overall_progress_chart<{{ user_id }}",
+    $.get("/overall_progress_chart/{{ user_id }}",
         function (result) {
-            ;
+            console.log(result);
+            var coordinates = []
+            var total_progress = 0
+            console.log(result.progress_updates)
+            _.each(result.progress_updates, function(update) {
+                total_progress = total_progress + update.update_amt
+                var updated_at = update.updated_at
+                updated_at = new Date(updated_at)
+                console.log(updated_at)
+                time = Date.UTC(updated_at.getFullYear(), 
+                                updated_at.getMonth(), 
+                                updated_at.getDate())
+                coordinates.push([time, total_progress])
+            });
+            console.log(coordinates)
+            $(function () { 
+                $('#overall_progress_chart').highcharts({
+                    chart: {
+                        type: 'spline',
+                        ignoreHiddenSeries: false,
+                        marginRight: 35
+                    },
+                    title: {
+                        text: 'My Progress'
+                    },
+                    xAxis: {
+                        type: 'datetime',
+                        dateTimeLabelFormats: {
+                            month: '%e %b',
+                            year: '%b'
+                        },
+                        title: {
+                            text: 'Date'
+                        }
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Amount saved'
+                        },
+                        min: 0,
+                        plotLines: [{
+                            value: result.goal,
+                            width: 2,
+                            color: 'blue',
+                            dashStyle: "dash",
+                            label: {
+                                text: 'Challenge: $' + result.goal,
+                                align: 'right'
+                            }
+                        }]
+                    },
+                    tooltip: {
+                        pointFormat: 'Total savings: ${point.y:.2f}'
+                    },
+                    legend: {
+                        enabled: false
+                    },
+
+                    plotOptions: {
+                        spline: {
+                            marker: {
+                                enabled: true
+                            }
+                        }
+                    },
+
+                    series: [{
+                        name: 'Progress',
+                        data: coordinates
+                    },
+                    {
+                        name: 'Hidden - for scale',
+                        data: [[coordinates[0][0], result.goal]],
+                    }]
+                });
+                $('#overall_progress_chart').highcharts().series[1].hide();
+            });  
         }
     );
-
-    var ctx = $("#overall_progress_chart").get(0).getContext("2d");
     
-    var data = {
-    labels: ["January", "February", "March", "April", "May", "June", "July"],
-    datasets: [
-        {
-            label: "My First dataset",
-            fillColor: "rgba(220,220,220,0.2)",
-            strokeColor: "rgba(220,220,220,1)",
-            pointColor: "rgba(220,220,220,1)",
-            pointStrokeColor: "#fff",
-            pointHighlightFill: "#fff",
-            pointHighlightStroke: "rgba(220,220,220,1)",
-            data: [65, 59, 80, 81, 56, 55, 40]
-        },
-    ]
-};
-var overall_progress_chart = new Chart(ctx).Line(data);
 </script>
-
-<!-- EXAMPLE FROM SURVEY PORCUPINE -->
-
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script> -->
-
-    <!-- // // Hack to remove x-axis labels (they're too long and we can get this info via hover)
-    // Chart.types.Line.extend({
-    //   name: "AltLine",
-    //   initialize: function (data) {
-    //     Chart.types.Line.prototype.initialize.apply(this, arguments);
-    //     this.scale.draw = function () {
-    //       this.endPoint = this.height - 5;
-    //       Chart.Scale.prototype.draw.apply(this, arguments);
-    //     };
-    //   }
-    // });
-    // // To avoid repetition, set options for all charts
-    // Chart.defaults.global.scaleOverride = true;
-    // Chart.defaults.global.scaleSteps = 8;
-    // Chart.defaults.global.scaleStepWidth = 0.5;
-    // Chart.defaults.global.scaleStartValue = 1;
-    // Chart.defaults.global.pointHitDetectionRadius = 3; -->
 
 
 {% endblock %}

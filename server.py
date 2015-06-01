@@ -223,9 +223,29 @@ def profile():
 def overall_progress_chart(user_id):
     """Sends relevant challenge data to display on the overall_progress_chart on the profile page"""
 
-    users_current_challenges, users_completed_challenges = a_user.accepted_challenge_info(user_id)
-    
-    pass
+    user_obj = User.query.get(user_id)
+    accepted_challenges = user_obj.accepted_challenges
+
+    progress_updates_dicts = []
+    goal = 0
+
+    for ac_obj in accepted_challenges:
+        progress_updates = ac_obj.progress_updates
+        accepted_at = {"updated_at": ac_obj.accepted_at, "update_amt": 0}
+        progress_updates_dicts.append(accepted_at)
+        # not sure if I want to add accepted_at for every challenge or not
+        for update in progress_updates:
+            update = update.__dict__
+            update.pop("_sa_instance_state")
+            progress_updates_dicts.append(update)
+        goal += ac_obj.donation.donation_price
+
+    progress_updates_dicts = [(update['updated_at'], update) for update in progress_updates_dicts]
+    progress_updates_dicts.sort()
+    progress_updates_dicts = [update for (key, update) in progress_updates_dicts]
+    # TODO - sort!!!
+                                                                                                                       
+    return jsonify(progress_updates = progress_updates_dicts, goal = goal)
 
 
 @app.route("/view_challenge")
