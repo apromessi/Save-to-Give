@@ -5,10 +5,7 @@
 
 <h1>View Challenge</h1>
 
-<span>
-    <h1>GRAPH!!!</h1>
-    <div id="indiv_progress_chart" style="width:400px; height:400px;"></div>
-</span>
+<div id="indiv_progress_chart" style="width:400px; height:400px;"></div>
 
 <span id="challenge">
     <h4>My Challenge:</h4>
@@ -107,7 +104,6 @@
         $(form).submit();
     }
 
-    // var ctx = $("#indiv_progress_chart").get(0).getContext("2d");
 
     $.get("/indiv_progress_chart/{{ ac_id }}",
         function (result) {
@@ -134,7 +130,8 @@
                 $('#indiv_progress_chart').highcharts({
                     chart: {
                         type: 'spline',
-                        ignoreHiddenSeries: false
+                        ignoreHiddenSeries: false,
+                        marginRight: 35
                     },
                     title: {
                         text: 'My Progress'
@@ -193,11 +190,6 @@
             });  
         }
     );
-
-
-    
-
-    
     
 </script>
 
