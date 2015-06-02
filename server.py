@@ -165,61 +165,6 @@ def challenge_builder_step3(donation_amt):
         donation_obj.pop("_sa_instance_state")
         donation_objects_dicts.append(donation_obj)
 
-    ##############################################################
-    # def match_donation_amt(est_range = 2):
-    #     max_donation_amt = int(donation_amt) + est_range
-    #     min_donation_amt = int(donation_amt) - est_range
-    #     print max_donation_amt, "max donation amt"
-        
-    #     donation_object_list = Donation.query.filter(Donation.donation_price < max_donation_amt,
-    #                                             Donation.donation_price > min_donation_amt).all()
-    #     print donation_object_list, "donation object list"
-
-    #     if donation_object_list == []:
-    #         print est_range, "*********************************"
-    #         match_donation_amt(est_range + 1)
-
-    #     print donation_object_list, "donation object list inside function"
-    #     return donation_object_list
-
-    # donation_object_list = match_donation_amt()
-    # print type(donation_object_list), "donation object list", donation_object_list
-
-    # donation_objects_dicts = []
-
-    # for donation_obj in donation_object_list:
-    #     org_obj = Organization.query.get(donation_obj.org_id)
-    #     org_name = org_obj.org_name
-    #     donation_obj = donation_obj.__dict__
-    #     donation_obj["org_name"] = org_name
-    #     donation_obj.pop("_sa_instance_state")
-    #     donation_objects_dicts.append(donation_obj)
-
-
-    #################################################################
-    # donation_item_price = []
-    # est_range = 2
-    
-    # while donation_item_price == []:
-    #     max_donation_amt = int(donation_amt) + est_range
-    #     min_donation_amt = int(donation_amt) - est_range
-        
-    #     donation_obj_list = Donation.query.filter(Donation.donation_price < max_donation_amt,
-    #                                             Donation.donation_price > min_donation_amt,)
-
-    #     donation_item_price = []
-
-    #     for donation_obj in donation_obj_list:
-    #         donation_item = donation_obj.donation_item
-    #         donation_price = donation_obj.donation_price
-    #         donation_id = donation_obj.donation_id
-    #         donation_item_price.append((donation_item, donation_price, donation_id))
-
-    #     print est_range, "***********************"
-    #     est_range += 1
-    #     return donation_item_price
-
-
     return jsonify(donation_objects = donation_objects_dicts)
 
 

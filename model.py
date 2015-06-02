@@ -71,7 +71,7 @@ class Donation(db.Model):
     # make amount a suggested donation?
 
     def __repr__(self):
-        return "<Donation Object: %s product_name = %s, donation_amount = %s>" % (
+        return "<Donation Object: %s donation_item = %s, donation_price = %s>" % (
                 self.donation_id, self.donation_item, self.donation_price)
 
 
