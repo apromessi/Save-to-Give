@@ -54,29 +54,42 @@
             "/challenge_builder_step2/" + original_items,
             function (result) {
                 var donation_amt = (result.savings * qty);
+                donation_amt = (donation_amt).toFixed(2);
                 $(".savings").text(donation_amt);
-                donation_amt = Math.round(donation_amt)
+                console.log(donation_amt)
+                
                 $.get(
                     "/challenge_builder_step3/" + donation_amt,
                     function (result) {
                         console.log(result);
-                        _.each(result.donation_item_price, function(donation_array) {
+                        _.each(result.donation_objects, function(donation_obj) {
                             $("#challenge").append(
-                                "<p>With $<span id='donation_price'>" + donation_array[1] + 
-                                "</span> you can <span id='donation_item'> <a href='/donation_info/" + donation_array[2] + "'>" + 
-                                donation_array[0] + "</a></span>!</p>",
+                                "<p>With $<span id='donation_price'>" + 
+                                donation_obj.donation_price + 
+                                "</span> you can <span id='donation_item'> <a href='#'" +
+                                "class='donation_info_link'>" + 
+                                donation_obj.donation_item + "</a></span>!</p>",
+
+                                "<div class='donation_info'><p>" +
+                                donation_obj.description + "</p><p>Organization: " +
+                                donation_obj.org_name + "</p></div>",
 
                                 "<input type='button' data-donation_item='" +
-                                 donation_array[0] + "' value='Accept' class='accept_button'>");
+                                 donation_obj.donation_item + 
+                                 "' value='Accept' class='accept_button'>");
                         });
                         $(".accept_button").click(acceptChallenge)
-
+                            $(".donation_info_link").click(toggleDonationInfo);
                     });
             }
         );
         $("#step3").css("visibility", "visible");
     }
-        
+    
+
+    function toggleDonationInfo() {
+        $(this).closest("p").next("div").toggle();
+    }
 
     function acceptChallenge(evt) {
         var data = $(evt.currentTarget).data();

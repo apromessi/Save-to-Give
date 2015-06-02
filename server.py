@@ -147,28 +147,81 @@ def challenge_builder_step2(original_items):
                     savings = savings)
 
 
-@app.route("/challenge_builder_step3/<int:donation_amt>")
+@app.route("/challenge_builder_step3/<float:donation_amt>")
 def challenge_builder_step3(donation_amt):
-    """match calcualted donation_amt from form to donation_price in database"""
+    """match calculated donation_amt from form to donation_price in database"""
     
-    max_donation_amt = int(donation_amt) + 2
-    min_donation_amt = int(donation_amt) - 2
-    print donation_amt
+    donation_object_list = Donation.query.order_by("ABS(donation_price - " +
+                                                     str(donation_amt) + ")").all()
+    donation_object_list = donation_object_list[:3]
+
+    donation_objects_dicts = []
+
+    for donation_obj in donation_object_list:
+        org_obj = Organization.query.get(donation_obj.org_id)
+        org_name = org_obj.org_name
+        donation_obj = donation_obj.__dict__
+        donation_obj["org_name"] = org_name
+        donation_obj.pop("_sa_instance_state")
+        donation_objects_dicts.append(donation_obj)
+
+    ##############################################################
+    # def match_donation_amt(est_range = 2):
+    #     max_donation_amt = int(donation_amt) + est_range
+    #     min_donation_amt = int(donation_amt) - est_range
+    #     print max_donation_amt, "max donation amt"
+        
+    #     donation_object_list = Donation.query.filter(Donation.donation_price < max_donation_amt,
+    #                                             Donation.donation_price > min_donation_amt).all()
+    #     print donation_object_list, "donation object list"
+
+    #     if donation_object_list == []:
+    #         print est_range, "*********************************"
+    #         match_donation_amt(est_range + 1)
+
+    #     print donation_object_list, "donation object list inside function"
+    #     return donation_object_list
+
+    # donation_object_list = match_donation_amt()
+    # print type(donation_object_list), "donation object list", donation_object_list
+
+    # donation_objects_dicts = []
+
+    # for donation_obj in donation_object_list:
+    #     org_obj = Organization.query.get(donation_obj.org_id)
+    #     org_name = org_obj.org_name
+    #     donation_obj = donation_obj.__dict__
+    #     donation_obj["org_name"] = org_name
+    #     donation_obj.pop("_sa_instance_state")
+    #     donation_objects_dicts.append(donation_obj)
+
+
+    #################################################################
+    # donation_item_price = []
+    # est_range = 2
     
-    donation_obj_list = Donation.query.filter(Donation.donation_price < max_donation_amt,
-                                            Donation.donation_price > min_donation_amt,)
+    # while donation_item_price == []:
+    #     max_donation_amt = int(donation_amt) + est_range
+    #     min_donation_amt = int(donation_amt) - est_range
+        
+    #     donation_obj_list = Donation.query.filter(Donation.donation_price < max_donation_amt,
+    #                                             Donation.donation_price > min_donation_amt,)
 
-    donation_item_price = []
+    #     donation_item_price = []
 
-    for donation_obj in donation_obj_list:
-        donation_item = donation_obj.donation_item
-        donation_price = donation_obj.donation_price
-        donation_id = donation_obj.donation_id
-        donation_item_price.append((donation_item, donation_price, donation_id))
+    #     for donation_obj in donation_obj_list:
+    #         donation_item = donation_obj.donation_item
+    #         donation_price = donation_obj.donation_price
+    #         donation_id = donation_obj.donation_id
+    #         donation_item_price.append((donation_item, donation_price, donation_id))
 
-    print donation_item_price
+    #     print est_range, "***********************"
+    #     est_range += 1
+    #     return donation_item_price
 
-    return jsonify(donation_item_price = donation_item_price)
+
+    return jsonify(donation_objects = donation_objects_dicts)
+
 
 @app.route("/transaction_analysis")
 def display_transaction_analysis():
@@ -243,7 +296,6 @@ def overall_progress_chart(user_id):
     progress_updates_dicts = [(update['updated_at'], update) for update in progress_updates_dicts]
     progress_updates_dicts.sort()
     progress_updates_dicts = [update for (key, update) in progress_updates_dicts]
-    # TODO - sort!!!
                                                                                                                        
     return jsonify(progress_updates = progress_updates_dicts, goal = goal)
 

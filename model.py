@@ -72,7 +72,7 @@ class Donation(db.Model):
 
     def __repr__(self):
         return "<Donation Object: %s product_name = %s, donation_amount = %s>" % (
-                self.donation_id, self.product_name, self.donation_amount)
+                self.donation_id, self.donation_item, self.donation_price)
 
 
 class Challenge(db.Model):
@@ -182,6 +182,8 @@ class Organization(db.Model):
     org_name = db.Column(db.String(100))
     payment_method = db.Column(db.String(100)) # not quite sure what these will be yet
     org_url = db.Column(db.String(500)) # not sure if this is necessary - placeholder
+
+    donations = db.relationship("Donation", backref = db.backref('donations'))
 
     def __repr__(self):
         return "<Organization Object: %s org_name = %s>" % (
