@@ -30,6 +30,8 @@
     <div id="challenge"></div>
 </div>
 
+
+
 <script>
     $("#step2").css("visibility", "hidden");
     $("#step3").css("visibility", "hidden");
@@ -78,14 +80,15 @@
                                  donation_obj.donation_item + 
                                  "' value='Accept' class='accept_button'>");
                         });
-                        $(".accept_button").click(acceptChallenge)
-                            $(".donation_info_link").click(toggleDonationInfo);
+                        $(".donation_info").hide();
+                        $(".accept_button").click(acceptChallenge);
+                        $(".donation_info_link").click(toggleDonationInfo);
                     });
             }
         );
         $("#step3").css("visibility", "visible");
     }
-    
+
 
     function toggleDonationInfo() {
         $(this).closest("p").next("div").toggle();
