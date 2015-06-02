@@ -32,13 +32,11 @@
             <input type="button" value="Edit Estimate" id="edit_estimate">
             <input type="button" value="Submit Update" id="submit_update">
     </form>
-
     
     <p>I'm so close to reaching my goal! I would like to declare my challenge complete
         and <a href="/donate/{{ ac_id }}">donate now</a>.
     </p>
     
-
 
 {% else %}
     <h4>
@@ -50,7 +48,8 @@
 
 
 <script>
-    
+    $("#edit_estimate").hide();
+
     function calcEstimate() {
         $("#update_statement").empty();
         var update_qty = $("#update_qty").val()
@@ -62,6 +61,7 @@
         $("#submit_update").attr("data-ac_id", {{ ac_id }})
         $("#update_statement").append("<p>We estimate that you saved $" +
             calculated_estimate + ".</p>");
+        $("#edit_estimate").toggle();
     }
 
     $("#edit_estimate").click(editEstimate);
@@ -69,7 +69,7 @@
     function editEstimate() {
         $("#update_statement").empty();
         var data = $("#submit_update").data();
-        $("#update_statement").append("<label>I estimate that I really saved $" +
+        $("#update_statement").append("<br><label>I estimate that I really saved $" +
                         "<input type='number' name='manual_estimate' id='manual_estimate'" +
                         "placeholder='" + data.calculated_estimate +
                         "' oninput='enterEstimate()'></label>");
