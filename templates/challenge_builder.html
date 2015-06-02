@@ -26,8 +26,14 @@
 
 <div id="step3">
     <p>You will save $<span class="savings"></span>!</p>
-    <h3>Here are the donation items that most closely match the amount you are saving:</h3>
+    <h3>Here are three donation items that most closely match the amount you are saving:</h3>
     <div id="challenge"></div>
+</div>
+
+<div id="step3_high_amt">
+    <h4>Wow, you're feeling generous! Would you like to donate $<span class="savings">
+    </span> directly to <a href="https://www.oxfam.org/">Oxfam International</a>
+    or the organization of your choice?</h4>
 </div>
 
 
@@ -35,6 +41,7 @@
 <script>
     $("#step2").css("visibility", "hidden");
     $("#step3").css("visibility", "hidden");
+    $("#step3_high_amt").css("visibility", "hidden");
 
     function showStep2() {
         var original_items = encodeURIComponent($("#step1 option:selected").text());
@@ -52,18 +59,17 @@
         $("#challenge").empty()
         var original_items = $("#step1 option:selected").text();
         var qty = $("#qty").val();
+
         $.get(
             "/challenge_builder_step2/" + original_items,
             function (result) {
                 var donation_amt = (result.savings * qty);
                 donation_amt = (donation_amt).toFixed(2);
                 $(".savings").text(donation_amt);
-                console.log(donation_amt)
                 
                 $.get(
                     "/challenge_builder_step3/" + donation_amt,
                     function (result) {
-                        console.log(result);
                         _.each(result.donation_objects, function(donation_obj) {
                             $("#challenge").append(
                                 "<p>With $<span id='donation_price'>" + 
@@ -84,9 +90,27 @@
                         $(".accept_button").click(acceptChallenge);
                         $(".donation_info_link").click(toggleDonationInfo);
                     });
-            }
+                }
         );
-        $("#step3").css("visibility", "visible");
+        console.log(parseFloat($("#qty").val()))
+        if (($("#qty").val()) > 100) {
+            $("#step3_high_amt").css("visibility", "visible");
+            $("#step3").empty();
+            var original_items = $("#step1 option:selected").text();
+            var qty = $("#qty").val();
+
+            $.get(
+                "/challenge_builder_step2/" + original_items,
+                function (result) {
+                    var donation_amt = (result.savings * qty);
+                    donation_amt = (donation_amt).toFixed(2);
+                    $(".savings").text(donation_amt);
+            });
+        }
+        else {
+            $("#step3").css("visibility", "visible");
+            $("#step3_high_amt").css("visibility", "hidden");
+        }
     }
 
 
