@@ -3,4 +3,68 @@
 
 <h1>Transaction Analysis</h1>
 
+
+<div id="transaction_categories" style="width:400px; height:400px;"></div>
+
+<script>
+
+$.get("/transaction_analysis",
+        function (result) {
+            coordinates = []
+            _.each(result.categories, function(category) {
+                coordinates.push([category, categories[category]])
+            })
+            console.log(coordinates)
+
+
+        $('#container').highcharts({
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Column chart with negative values'
+            },
+            xAxis: {
+                categories: ['Apples', 'Oranges', 'Pears', 'Grapes', 'Bananas']
+            },
+            credits: {
+                enabled: false
+            },
+            series: [{
+                name: 'John',
+                data: [5, 3, 4, 7, 2]
+            }]
+        });
+    }
+);
+
+
+
+
+
+
+
+
+
+
+
+
+
+            // console.log(result);
+            // var coordinates = []
+            // var total_progress = 0
+            // console.log(result.progress_updates)
+            // _.each(result.progress_updates, function(update) {
+            //     total_progress = total_progress + update.update_amt
+            //     var updated_at = update.updated_at
+            //     updated_at = new Date(updated_at)
+            //     console.log(updated_at)
+            //     time = Date.UTC(updated_at.getFullYear(), 
+            //                     updated_at.getMonth(), 
+            //                     updated_at.getDate())
+            //     coordinates.push([time, total_progress])
+            // });
+
+</script>
+
 {% endblock %}

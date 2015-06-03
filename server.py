@@ -175,8 +175,15 @@ def mint_authentication():
     return render_template('mint_authentication.html')
 
 
+@app.route("/display_transactions")
+def display_transaction():
+    """Renders transaction_analysis template."""
+
+    return render_template('transaction_analysis.html')
+
+
 @app.route("/transaction_analysis", methods = ["POST"])
-def display_transaction_analysis():
+def transaction_analysis():
     """Scrapes data from Mint account and displays an analysis of transactions by category.
         Identfies places where User spends more money than necessary - ratio of "groceries"
         to "restaurants", search for key words like "Starbucks" or "cafe". Could also focus on week by week.
@@ -185,9 +192,9 @@ def display_transaction_analysis():
     mint_username = request.form["mint_username"]
     mint_password = request.form["mint_password"]
 
-    get_transactions(mint_username, mint_password)
+    categories = get_transactions(mint_username, mint_password)
 
-    return render_template('transaction_analysis.html')
+    return jsonify(categories = categories)
 
 
 @app.route("/profile", methods=["GET", "POST"])
