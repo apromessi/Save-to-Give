@@ -13,19 +13,23 @@ def get_transactions(mint_username, mint_password):
     mint = mintapi.Mint(mint_username, mint_password)
     user_transactions = mint.get_transactions()
 
-    categories = set([])
+    categories = {}
+    transaction_obj_list = []
 
     for i in range(len(user_transactions.index)):
         date = str(user_transactions["date"][i])[:10]
         date = datetime.datetime.strptime(date, "%Y-%m-%d")
         description = user_transactions["description"][i]
         category = user_transactions["category"][i]
-        categories.add(category)
+        categories[category] = 0
         amount = float(user_transactions["amount"][i])
         transaction_obj = Transaction(date = date, description = description,
                                         category = category, amount = amount)
+        transaction_obj_list.append(transaction_obj)
 
-    return categories
+    for transaction_obj in transaction_obj_list:
+        # for each object - find the relevant category and add to the total
+        pass
 
 
 # def transaction_category_analysis(user_id):

@@ -185,7 +185,7 @@ def display_transaction_analysis():
     mint_username = request.form["mint_username"]
     mint_password = request.form["mint_password"]
 
-    print get_transactions(mint_username, mint_password), '$$$$$$$$$$'
+    get_transactions(mint_username, mint_password)
 
     return render_template('transaction_analysis.html')
 
