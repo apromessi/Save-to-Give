@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<p>
+    If you would like us to analyze your financial transactions and send you targeted challenges,
+    please enter your Mint username and password below. We will not store any of your information,
+    promise!
+</p>
+
+<form action="/transaction_analysis" method="POST">
+    <label>Mint Username:
+        <input type="text" name="mint_username">
+    </label><br>
+
+    <label>Mint Password:
+        <input type="password" name="mint_password">
+    </label><br><br>
+
+     <input type="Submit">
+</form>
+
+
+{% endblock %}
