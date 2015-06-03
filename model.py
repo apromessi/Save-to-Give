@@ -13,11 +13,10 @@ class User(db.Model):
     firstname = db.Column(db.String(50))
     lastname = db.Column(db.String(50))
     email = db.Column(db.String(64), nullable = False)
-    mint_username = db.Column(db.String(64))
+    # mint_username = db.Column(db.String(64))
     password = db.Column(db.String(40), nullable = False)
     zipcode = db.Column(db.String(15)) # placeholder for now - in case location analysis later
     age = db.Column(db.Integer) # placeholder for now - in case demographic analysis later
-    # removed mint password from database - intead going to try and use keychain
 
     def accepted_challenge_info(self, user_id):
         """Provides all relevant info about users current and completed challenges.

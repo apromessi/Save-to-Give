@@ -9,7 +9,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 
 from model import (User, Challenge, Accepted_Challenge, Donation, Transaction,
                     Organization, Progress_Update, connect_to_db, db)
-from transaction_analysis import load_transactions
+from transaction_analysis import get_transactions
 
 
 app = Flask(__name__)
@@ -82,23 +82,18 @@ def registration_form():
         age = request.form["age"]
         zipcode = request.form["zipcode"]
 
-        mint_username = request.form["mint_username"]
-        mint_password = request.form["mint_password"]
-
         if User.query.filter(User.email == email).first():
             flash("Hmm...we already have your email account on file. Please log in.")
             return redirect("/login")
         else:
             new_user = User(firstname = firstname, lastname = lastname, email = email,
-                            password = password, mint_username = mint_username,
-                            age = age, zipcode = zipcode)
+                            password = password, age = age, zipcode = zipcode)
             db.session.add(new_user)
             db.session.commit()
 
             session["login"] = email
-            keyring.set_password("system", mint_username, mint_password)
-            load_transactions(mint_username)
-
+            # keyring.set_password("system", mint_username, mint_password)
+            
             flash("Thanks for creating an account!")
             return redirect("/")
 
@@ -168,14 +163,31 @@ def challenge_builder_step3(donation_amt):
     return jsonify(donation_objects = donation_objects_dicts)
 
 
-@app.route("/transaction_analysis")
+@app.route("/mint_authentication")
+def mint_authentication():
+    """Collect mint username and password"""
+
+    # if mint username/password is not already in keyring, show a form and ask user if they 
+    # want to enter their info and have their transactions analyzed
+    # if they go to transaction analysis link and password is already in keyring, redirect
+    # to transaction analysis page
+
+    return render_template('mint_authentication.html')
+
+
+@app.route("/transaction_analysis", methods = ["POST"])
 def display_transaction_analysis():
     """Scrapes data from Mint account and displays an analysis of transactions by category.
         Identfies places where User spends more money than necessary - ratio of "groceries"
         to "restaurants", search for key words like "Starbucks" or "cafe". Could also focus on week by week.
         Finds relevant challenges and displays challenge info for User, along with "Accept" buttons"""
 
-    return "Graph of transactions, challenge info."
+    mint_username = request.form["mint_username"]
+    mint_password = request.form["mint_password"]
+
+    print get_transactions(mint_username, mint_password), '$$$$$$$$$$'
+
+    return render_template('transaction_analysis.html')
 
 
 @app.route("/profile", methods=["GET", "POST"])
@@ -196,14 +208,12 @@ def profile():
         donation_id = db.session.query(Donation.donation_id).filter(
                             Donation.donation_item == donation_item).one()
         accepted_at = datetime.datetime.now(tzlocal())
-        # completed_at = datetime.datetime.now() + datetime.timedelta(days = 2)
         
         accepted_challenge = Accepted_Challenge(user_id = a_user.user_id,
                                                 challenge_id = challenge_id[0],
                                                 donation_id = donation_id[0],
                                                 accepted_qty = qty,
-                                                accepted_at = accepted_at)
-                                                # completed_at = completed_at)  
+                                                accepted_at = accepted_at) 
 
         db.session.add(accepted_challenge)
         db.session.commit()
@@ -316,7 +326,6 @@ def update_progress():
     total_progress = ac_obj.calculate_total_progress()
     print total_progress
     ac_obj.determine_completion()
-    print ac_obj.completed_at, "****************************"
 
     db.session.commit()
 
