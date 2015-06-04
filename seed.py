@@ -1,5 +1,4 @@
 from model import User, Donation, Challenge, Transaction, Organization, connect_to_db, db
-from transaction_analysis import load_transactions
 from server import app
 
 

@@ -30,17 +30,28 @@ def get_transactions(mint_username, mint_password):
 
     categories_to_remove = set(["paycheck", "bills & utilities", "business services", "transfer",
                                 "federal tax", "credit card payment", "nan", "financial", "income",
-                                "interest income", "pharmacy"])
+                                "interest income", "pharmacy", "check", "atm fee", "doctor", 
+                                "air travel", "hotel", "gas & fuel"])
 
     for category in categories.keys():
         if category in categories_to_remove:
             del categories[category]
+
 
     for transaction_obj in transaction_obj_list:
         category = transaction_obj.category
         if category in categories.keys():
             categories[category] += transaction_obj.amount
 
-    
+    categories_to_group = {"entertainment": ("amusement", "entertainment", "music", "sports"),
+                            "taxi": ("taxi", "rental car & taxi"),
+                            "shopping": ("clothing", "books", "electronics & software", "hair"),
+                            "restaurants": ("restaurants", "food & dining", "fast food")}
+
+    for category in categories_to_group.keys():
+        for grouped_category in categories_to_group[category]:
+            if grouped_category != category:
+                categories[category] += categories[grouped_category]
+                del categories[grouped_category]
 
     return categories
