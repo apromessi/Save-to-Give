@@ -3,6 +3,7 @@ import os
 import keyring
 import datetime
 from dateutil.tz import tzlocal
+import json
 
 from flask import Flask, render_template, redirect, request, flash, session, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
@@ -175,13 +176,6 @@ def mint_authentication():
     return render_template('mint_authentication.html')
 
 
-@app.route("/display_transactions")
-def display_transaction():
-    """Renders transaction_analysis template."""
-
-    return render_template('transaction_analysis.html')
-
-
 @app.route("/transaction_analysis", methods = ["POST"])
 def transaction_analysis():
     """Scrapes data from Mint account and displays an analysis of transactions by category.
@@ -193,8 +187,9 @@ def transaction_analysis():
     mint_password = request.form["mint_password"]
 
     categories = get_transactions(mint_username, mint_password)
+    print categories
 
-    return jsonify(categories = categories)
+    return render_template('transaction_analysis.html', categories = json.dumps(categories))
 
 
 @app.route("/profile", methods=["GET", "POST"])

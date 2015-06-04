@@ -4,39 +4,40 @@
 <h1>Transaction Analysis</h1>
 
 
-<div id="transaction_categories" style="width:400px; height:400px;"></div>
+<div id="transaction_categories" style="width:800px; height:400px;"></div>
 
 <script>
 
-$.get("/transaction_analysis",
-        function (result) {
-            coordinates = []
-            _.each(result.categories, function(category) {
-                coordinates.push([category, categories[category]])
-            })
-            console.log(coordinates)
+    var categories = {{ categories|tojson|safe }};
+    categories = JSON.parse(categories)
+    console.log(categories)
+    
+    var category_array = [];
+    var amounts = [];
 
+    _.each(categories, function(value, key) {
+        category_array.push(key);
+        amounts.push(value);
+    });
+    console.log(category_array)
 
-        $('#container').highcharts({
-            chart: {
-                type: 'column'
-            },
-            title: {
-                text: 'Column chart with negative values'
-            },
-            xAxis: {
-                categories: ['Apples', 'Oranges', 'Pears', 'Grapes', 'Bananas']
-            },
-            credits: {
-                enabled: false
-            },
-            series: [{
-                name: 'John',
-                data: [5, 3, 4, 7, 2]
-            }]
-        });
-    }
-);
+    $('#transaction_categories').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Your spending categories'
+        },
+        xAxis: {
+            categories: category_array
+        },
+        credits: {
+            enabled: false
+        },
+        series: [{
+            data: amounts
+        }]
+    });
 
 
 
