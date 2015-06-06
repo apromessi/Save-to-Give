@@ -16,10 +16,10 @@
         {% for challenge in users_current_challenges|reverse %}
                 <p>I will substitute {{ challenge[0] }} {{ challenge[1] }} for {{ challenge[2] }} 
                 and use the ${{ "%0.2f" % challenge[4] }} I save to {{ challenge[3] }}.</p>
-                <input type="button" value="View Challenge" class="view_button"
+                <input type="button" class='btn btn-default view_button' value="View Challenge"
                 data-acid="{{ challenge[6] }}">
-                <input type="button" value="Cancel Challenge" class="cancel_button"
-                data-acid="{{ challenge[6] }}">
+                <input type="button" class='btn btn-default cancel_button' 
+                value="Cancel Challenge" data-acid="{{ challenge[6] }}">
         {% endfor %}
     </div>
 {% endif %}
@@ -35,7 +35,7 @@
         {% for challenge in users_completed_challenges|reverse %}
             <p>I will substitute {{ challenge[0] }} {{ challenge[1] }} for {{ challenge[2] }} 
                 and use the ${{ "%0.2f" % challenge[4] }} I save to {{ challenge[3] }}.</p>
-            <input type="button" value="View Challenge" class="view_button"
+            <input type="button" class='btn btn-default view_button' value="View Challenge"
             data-acid="{{ challenge[6] }}">
         {% endfor %} 
     </div>

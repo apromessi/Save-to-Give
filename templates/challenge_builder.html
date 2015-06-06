@@ -75,16 +75,16 @@
                                 "<p>With $<span id='donation_price'>" + 
                                 donation_obj.donation_price + 
                                 "</span> you can <span id='donation_item'> <a href='#'" +
-                                "class='donation_info_link'>" + 
+                                "class='btn btn-default donation_info_link' role='button'>" + 
                                 donation_obj.donation_item + "</a></span>!</p>",
 
                                 "<div class='donation_info'><p>" +
                                 donation_obj.description + "</p><p>Organization: " +
                                 donation_obj.org_name + "</p></div>",
 
-                                "<input type='button' data-donation_item='" +
-                                 donation_obj.donation_item + 
-                                 "' value='Accept' class='accept_button'>");
+                                "<input type='button' class='btn btn-default accept_button' " +
+                                "data-donation_item='" + donation_obj.donation_item + 
+                                "' value='Accept'>");
                         });
                         $(".donation_info").hide();
                         $(".accept_button").click(acceptChallenge);

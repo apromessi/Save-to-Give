@@ -1,9 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>Transaction Analysis</h1>
-
-
 <div id="transaction_categories" style="width:600px; height:400px;"></div>
 
 <div id="targeted challenges">
@@ -13,14 +10,15 @@
         Substitute {{ challenge.accepted_qty }} {{ challenge.challenge.alternative_items }} 
         for {{ challenge.challenge.original_items }} and save about 
         ${{ "%.2f" % challenge.donation.donation_price }} 
-        to <a href="#" class="donation_info_link">{{ challenge.donation.donation_item }}</a>.
+        to <a href="#" class="donation_info_link btn btn-default" role='button'>
+        {{ challenge.donation.donation_item }}</a>.
     </p>
     <div class="donation_info">
         <p>{{ challenge.donation.description }}</p>
         <p>Organization: {{challenge.donation.organization.org_name }}</p>
     </div>
     <input type="button" data-acid="{{ challenge.ac_id }}"
-        value="Accept" class="accept_button">
+        value="Accept" class="accept_button btn btn-default">
 
     {% endfor %}
 </div>
@@ -84,8 +82,6 @@
     function acceptChallenge(evt) {
         var data = $(evt.currentTarget).data();
         var form = document.createElement('form');
-        console.log(data.acid)
-        debugger
         $(form).attr("method", "post").attr("action", "/accept_preset_challenge");
         $("<input>").attr({
             name: "ac_id",

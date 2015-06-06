@@ -6,34 +6,65 @@
   <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js">
   </script>
   <script src="http://code.highcharts.com/highcharts.js"></script>
+
+  <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
 </head>
 
 <body>
-  <h1>Save to Give</h1>
-  <hr>
+<div class="container-fluid">
 
-  <a href="/mint_authentication">Transaction Analysis</a>
-  <a href="/challenge_builder">Add a new challenge</a>
-  <a href="/profile">View Profile</a>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button"
+                        class="navbar-toggle collapsed"
+                        data-toggle="collapse"
+                        data-target="#navbar"
+                        aria-expanded="false"
+                        aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Save to Give</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-left">
+                    <li><a href="/mint_authentication">Transaction Analysis</a></li>
+                    <li><a href="/challenge_builder">Add a new challenge</a></li>
+                    <li><a href="/profile">View Profile</a></li>
+                </ul>
+                
+                <ul class="nav navbar-nav navbar-right">
+                    {% if session.get("login") %}
+                      <li><a href="/logout">Logout</a></li>
+                    {% else %}
+                      <li><a href="/login">Login</a></li>
+                      <li><a href="/register">Register</a></li>
+                    {% endif %} 
+                </ul>
+            </div>
+        
+        </div>
 
-  {% if session.get("login") %}
-    <a href="/logout">Logout</a>
-  {% else %}
-    <a href="/login">Login</a>
-    <a href="/register">Register</a>
-  {% endif %}
+    </nav>
+      {% with messages = get_flashed_messages() %}
+          {% for message in messages %}
+              <div class="flashes">{{ message }}</div>
+          {% endfor %}
+      {% endwith %}
 
-  {% with messages = get_flashed_messages() %}
-      {% for message in messages %}
-          <div class="flashes">{{ message }}</div>
-      {% endfor %}
-  {% endwith %}
 
   {% block content %} ADD CONTENT HERE!!! {% endblock %}
-
-<br>
-<div>
-  <img src="https://placekitten.com/g/200/300"/>
 </div>
 
 </body>
