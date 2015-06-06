@@ -1,5 +1,6 @@
 from model import Transaction, connect_to_db, db
 import datetime
+import random
 import mintapi
 import keyring
 import pandas as pd
@@ -21,7 +22,6 @@ def get_transactions(mint_username, mint_password):
         date = datetime.datetime.strptime(date, "%Y-%m-%d")
         description = user_transactions["description"][i]
         category = user_transactions["category"][i]
-        print category, type(category)
         categories[str(category).strip()] = 0
         amount = float(user_transactions["amount"][i])
         transaction_obj = Transaction(date = date, description = description,
@@ -55,3 +55,45 @@ def get_transactions(mint_username, mint_password):
                 del categories[grouped_category]
 
     return categories
+
+
+def spending_category_analysis(categories):
+    """analyzes spending habits by comparing related buckets (eg. public transit 
+        to taxis) [and by comparing your spending with average spending in SF 
+        according to the Intuit Consumer Spending Index, based on user data 
+        from Mint. --- don't have this data yet, hoping for a response to inquiry]"""
+
+    challenge_ids = []
+
+    # GROUPS:
+    cafe_challenges = [1, 4]
+    grocery_challenges = [5, 6]
+    restaurant_challenges = [2, 3]
+    alcohol_challenges = [7, 8, 9]
+    transit_challenges = [12]
+    entertainment_challenges = [10, 11]
+
+    if categories["coffee shops"]/categories["groceries"] > .3:
+        challenge_ids.extend(cafe_challenges)
+
+    if categories["groceries"] > 300:
+        challenge_ids.extend(grocery_challenges)
+
+    if categories["restaurants"] > categories["groceries"]:
+        challenge_ids.extend(restaurant_challenges)
+
+    if categories["alcohol & bars"] * 2 > categories["restaurants"]:
+        challenge_ids.extend("alcohol_challenges")
+
+    if categories["taxi"] > categories["public transportation"]:
+        challenge_ids.extend(transit_challenges)
+
+    if categories["entertainment"] > 200:
+        challenge_ids.extend(entertainment_challenges)
+
+    if challenge_ids == []:
+        challenge_ids = random.sample(range(1, 13), 3)
+
+    return challenge_ids
+
+    

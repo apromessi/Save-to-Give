@@ -182,7 +182,7 @@ class Organization(db.Model):
     payment_method = db.Column(db.String(100)) # not quite sure what these will be yet
     org_url = db.Column(db.String(500)) # not sure if this is necessary - placeholder
 
-    donations = db.relationship("Donation", backref = db.backref('donations'))
+    donations = db.relationship("Donation", backref = db.backref('organization'))
 
     def __repr__(self):
         return "<Organization Object: %s org_name = %s>" % (

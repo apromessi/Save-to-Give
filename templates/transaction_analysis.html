@@ -4,7 +4,26 @@
 <h1>Transaction Analysis</h1>
 
 
-<div id="transaction_categories" style="width:800px; height:400px;"></div>
+<div id="transaction_categories" style="width:600px; height:400px;"></div>
+
+<div id="targeted challenges">
+    <h3>We challenge you to:</h3>
+    {% for challenge in targeted_challenges %}
+    <p>
+        Substitute {{ challenge.accepted_qty }} {{ challenge.challenge.alternative_items }} 
+        for {{ challenge.challenge.original_items }} and save about 
+        ${{ "%.2f" % challenge.donation.donation_price }} 
+        to <a href="#" class="donation_info_link">{{ challenge.donation.donation_item }}</a>.
+    </p>
+    <div class="donation_info">
+        <p>{{ challenge.donation.description }}</p>
+        <p>Organization: {{challenge.donation.organization.org_name }}</p>
+    </div>
+    <input type="button" data-acid="{{ challenge.ac_id }}"
+        value="Accept" class="accept_button">
+
+    {% endfor %}
+</div>
 
 <p>
     Please note, this graph does not contain all of your transactions, just the ones that are
@@ -48,32 +67,25 @@
         }]
     });
 
+    $(".donation_info").hide();
+    $(".donation_info_link").click(toggleDonationInfo);
+    function toggleDonationInfo() {
+        $(this).closest("p").next("div").toggle();
+    }
+    $(".accept_button").click(acceptChallenge);
 
-
-
-
-
-
-
-
-
-
-
-
-            // console.log(result);
-            // var coordinates = []
-            // var total_progress = 0
-            // console.log(result.progress_updates)
-            // _.each(result.progress_updates, function(update) {
-            //     total_progress = total_progress + update.update_amt
-            //     var updated_at = update.updated_at
-            //     updated_at = new Date(updated_at)
-            //     console.log(updated_at)
-            //     time = Date.UTC(updated_at.getFullYear(), 
-            //                     updated_at.getMonth(), 
-            //                     updated_at.getDate())
-            //     coordinates.push([time, total_progress])
-            // });
+    function acceptChallenge(evt) {
+        var data = $(evt.currentTarget).data();
+        var form = document.createElement('form');
+        console.log(data.acid)
+        debugger
+        $(form).attr("method", "post").attr("action", "/accept_preset_challenge");
+        $("<input>").attr({
+            name: "ac_id",
+            value: data.acid
+        }).appendTo(form);
+        $(form).submit();
+    }
 
 </script>
 

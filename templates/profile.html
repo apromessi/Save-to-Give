@@ -13,7 +13,7 @@
         <h4>Current Challenges</h4>
      {% endif %}
 
-        {% for challenge in users_current_challenges %}
+        {% for challenge in users_current_challenges|reverse %}
                 <p>I will substitute {{ challenge[0] }} {{ challenge[1] }} for {{ challenge[2] }} 
                 and use the ${{ "%0.2f" % challenge[4] }} I save to {{ challenge[3] }}.</p>
                 <input type="button" value="View Challenge" class="view_button"
@@ -32,7 +32,7 @@
         <h4>Completed Challenges</h4>
      {% endif %}
 
-        {% for challenge in users_completed_challenges %}
+        {% for challenge in users_completed_challenges|reverse %}
             <p>I will substitute {{ challenge[0] }} {{ challenge[1] }} for {{ challenge[2] }} 
                 and use the ${{ "%0.2f" % challenge[4] }} I save to {{ challenge[3] }}.</p>
             <input type="button" value="View Challenge" class="view_button"

@@ -10,7 +10,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 
 from model import (User, Challenge, Accepted_Challenge, Donation, Transaction,
                     Organization, Progress_Update, connect_to_db, db)
-from transaction_analysis import get_transactions
+from transaction_analysis import get_transactions, spending_category_analysis
 
 
 app = Flask(__name__)
@@ -176,6 +176,31 @@ def mint_authentication():
     return render_template('mint_authentication.html')
 
 
+@app.route("/accept_preset_challenge", methods = ["POST"])
+def accept_preset_challenge():
+    """When user accepts a present challenge from transaction analysis, copies accepted 
+        challenge object and applies user id and current time to accepted_at
+        redirects to users profile"""
+
+    ac_id = request.form["ac_id"]
+    preset_ac_obj = Accepted_Challenge.query.get(ac_id)
+
+    user = User.query.filter(User.email == session["login"]).one()
+
+    users_ac_obj = Accepted_Challenge(user_id = user.user_id,
+                                    challenge_id = preset_ac_obj.challenge_id,
+                                    donation_id = preset_ac_obj.donation_id,
+                                    accepted_qty = preset_ac_obj.accepted_qty,
+                                    accepted_at = datetime.datetime.now(tzlocal()))
+
+    db.session.add(users_ac_obj)
+    db.session.commit()
+
+    print "HEREEEEEEE"
+
+    return redirect("/profile")
+
+
 @app.route("/transaction_analysis", methods = ["POST"])
 def transaction_analysis():
     """Scrapes data from Mint account and displays an analysis of transactions by category.
@@ -188,8 +213,17 @@ def transaction_analysis():
 
     categories = get_transactions(mint_username, mint_password)
     print categories
+    challenge_ids = spending_category_analysis(categories)
 
-    return render_template('transaction_analysis.html', categories = json.dumps(categories))
+    targeted_challenges = []
+
+    for challenge_id in challenge_ids:
+        targeted_challenge = Accepted_Challenge.query.filter(Accepted_Challenge.user_id == 4,
+                                        Accepted_Challenge.challenge_id == challenge_id).all()
+        targeted_challenges.extend(targeted_challenge)
+
+    return render_template('transaction_analysis.html', categories = json.dumps(categories),
+                            targeted_challenges = targeted_challenges)
 
 
 @app.route("/profile", methods=["GET", "POST"])
