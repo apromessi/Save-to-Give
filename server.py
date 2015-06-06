@@ -398,9 +398,13 @@ def donate(ac_id):
     ac_obj = Accepted_Challenge.query.get(ac_id)
     if ac_obj.completed_at == None:
         ac_obj.completed_at = datetime.datetime.now()
+        total_progress = ac_obj.calculate_total_progress()
+        print type(total_progress), "total progress", total_progress
+        print type(ac_obj.donation.donation_price), "donation price"
+        update_amt = ac_obj.donation.donation_price - total_progress
         completed_prog_obj = Progress_Update(ac_id = ac_id,
                                             updated_at = datetime.datetime.now(),
-                                            update_amt = ac_obj.donation.donation_price)
+                                            update_amt = update_amt)
         db.session.add(completed_prog_obj)
 
     org_id = ac_obj.donation.org_id
