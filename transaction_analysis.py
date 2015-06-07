@@ -6,6 +6,21 @@ import keyring
 import pandas as pd
 
 
+class Transaction(object):
+    """Contains transaction data from mintapi - NOT STORED IN DB"""
+
+    def __init__(self, transaction_id, date, description, category, amount):
+        self.transaction_id = transaction_id
+        self.date = date
+        self.description = description
+        self.category = category
+        self.amount = amount
+
+    def __repr__(self):
+        return "<Transaction Object: %s user_id=%s, category = %s, amount = %s>" % (
+                self.transaction_id, self.user_id, self.category, self.amount)
+
+
 def get_transactions(mint_username, mint_password):
     """Grab transactions from mintapi and create transaction objects.
     BUT - don't load them into database."""
@@ -24,7 +39,7 @@ def get_transactions(mint_username, mint_password):
         category = user_transactions["category"][i]
         categories[str(category).strip()] = 0
         amount = float(user_transactions["amount"][i])
-        transaction_obj = Transaction(date = date, description = description,
+        transaction_obj = Transaction(transaction_id = i, date = date, description = description,
                                         category = category, amount = amount)
         transaction_obj_list.append(transaction_obj)
 

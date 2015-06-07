@@ -59,9 +59,8 @@ def login_form():
 
 @app.route("/logout")
 def logout():
-    """Logout - link removes User from session and redirects to homepage. Flashes message confirming that User has logged out."""
-    
-    # password seems to not be in keychain anymore...i think this is a good thing?
+    """Logout - link removes User from session and redirects to homepage.
+        Flashes message confirming that User has logged out."""
 
     session.pop("login")
     flash("You've successfully logged out. Goodbye.")
@@ -196,8 +195,6 @@ def accept_preset_challenge():
     db.session.add(users_ac_obj)
     db.session.commit()
 
-    print "HEREEEEEEE"
-
     return redirect("/profile")
 
 
@@ -232,35 +229,40 @@ def profile():
         Links to progress on specific challenges.
         Links to transaction analysis - and/or displays summarized version?"""
 
-    a_user = User.query.filter(User.email == session["login"]).one()
+    if session.get("login"):
+        a_user = User.query.filter(User.email == session["login"]).first()
 
-    if request.method == "POST":
-        original_items = request.form.get("original_items")
-        qty = request.form.get("qty")
-        donation_item = request.form.get("donation_item")
+        if request.method == "POST":
+            original_items = request.form.get("original_items")
+            qty = request.form.get("qty")
+            donation_item = request.form.get("donation_item")
 
-        challenge_id = db.session.query(Challenge.challenge_id).filter(
-                            Challenge.original_items == original_items).one()
-        donation_id = db.session.query(Donation.donation_id).filter(
-                            Donation.donation_item == donation_item).one()
-        accepted_at = datetime.datetime.now(tzlocal())
-        
-        accepted_challenge = Accepted_Challenge(user_id = a_user.user_id,
-                                                challenge_id = challenge_id[0],
-                                                donation_id = donation_id[0],
-                                                accepted_qty = qty,
-                                                accepted_at = accepted_at) 
+            challenge_id = db.session.query(Challenge.challenge_id).filter(
+                                Challenge.original_items == original_items).one()
+            donation_id = db.session.query(Donation.donation_id).filter(
+                                Donation.donation_item == donation_item).one()
+            accepted_at = datetime.datetime.now(tzlocal())
+            
+            accepted_challenge = Accepted_Challenge(user_id = a_user.user_id,
+                                                    challenge_id = challenge_id[0],
+                                                    donation_id = donation_id[0],
+                                                    accepted_qty = qty,
+                                                    accepted_at = accepted_at) 
 
-        db.session.add(accepted_challenge)
-        db.session.commit()
-        flash("You have successfully added a challenge!")
+            db.session.add(accepted_challenge)
+            db.session.commit()
+            flash("You have successfully added a challenge!")
 
-    users_current_challenges, users_completed_challenges = a_user.accepted_challenge_info(a_user.user_id)
+        users_current_challenges, users_completed_challenges = a_user.accepted_challenge_info(
+                                                                a_user.user_id)
 
-    return render_template("profile.html", firstname = a_user.firstname,
+        return render_template("profile.html", firstname = a_user.firstname,
                                         user_id = a_user.user_id,
                                         users_current_challenges = users_current_challenges,
                                         users_completed_challenges = users_completed_challenges)
+
+    else:
+        return redirect("/login")
 
 
 @app.route("/overall_progress_chart/<int:user_id>")
@@ -423,6 +425,7 @@ if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point
     # that we invoke the DebugToolbarExtension
     app.debug = True
+    app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
     connect_to_db(app)
 
