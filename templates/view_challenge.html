@@ -61,7 +61,7 @@
         $("#submit_update").attr("data-ac_id", {{ ac_id }})
         $("#update_statement").append("<p>We estimate that you saved $" +
             calculated_estimate + ".</p>");
-        $("#edit_estimate").toggle();
+        $("#edit_estimate").slideToggle();
     }
 
     $("#edit_estimate").click(editEstimate);
@@ -73,6 +73,7 @@
                         "<input type='number' name='manual_estimate' id='manual_estimate'" +
                         "placeholder='" + data.calculated_estimate +
                         "' oninput='enterEstimate()'></label>");
+        $("#update_statement").hide().slideToggle();
     }
 
     function enterEstimate() {

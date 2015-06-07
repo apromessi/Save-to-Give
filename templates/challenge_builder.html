@@ -39,9 +39,9 @@
 
 
 <script>
-    $("#step2").css("visibility", "hidden");
-    $("#step3").css("visibility", "hidden");
-    $("#step3_high_amt").css("visibility", "hidden");
+    $("#step2").hide();
+    $("#step3").hide();
+    $("#step3_high_amt").hide();
 
     function showStep2() {
         var original_items = encodeURIComponent($("#step1 option:selected").text());
@@ -52,7 +52,7 @@
                 $("#orig").text(result.original_items);
             }
         );
-        $("#step2").css("visibility", "visible");
+        $("#step2").slideToggle();
             };
 
     function showStep3() {
@@ -92,9 +92,9 @@
                     });
                 }
         );
-        console.log(parseFloat($("#qty").val()))
+        
         if (($("#qty").val()) > 100) {
-            $("#step3_high_amt").css("visibility", "visible");
+            $("#step3_high_amt").slideToggle();
             $("#step3").empty();
             var original_items = $("#step1 option:selected").text();
             var qty = $("#qty").val();
@@ -108,14 +108,14 @@
             });
         }
         else {
-            $("#step3").css("visibility", "visible");
-            $("#step3_high_amt").css("visibility", "hidden");
+            $("#step3").slideToggle();
+            $("#step3_high_amt").hide();
         }
     }
 
 
     function toggleDonationInfo() {
-        $(this).closest("p").next("div").toggle();
+        $(this).closest("p").next("div").slideToggle();
     }
 
     function acceptChallenge(evt) {
