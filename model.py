@@ -153,23 +153,23 @@ class Progress_Update(db.Model):
                 self.progress_id, self.ac_id, self.update_amt, self.updated_at)
 
 
-class Transaction(db.Model):
-    """Contains transaction data from mintapi"""
+# class Transaction(db.Model):
+#     """Contains transaction data from mintapi"""
 
-    __tablename__ = "transactions"
+#     __tablename__ = "transactions"
 
-    transaction_id = db.Column(db.Integer, autoincrement = True, primary_key = True)
-    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"))
-    date = db.Column(db.DateTime)
-    description = db.Column(db.String(100))
-    category = db.Column(db.String(64))
-    amount = db.Column(db.Float)
-    # add more info for whether a particular transaction counts towards a challenge - would also allow user to input relevant transactions - or apply an existing transaction to progress?
-    user = db.relationship("User", backref = db.backref("transactions"))
+#     transaction_id = db.Column(db.Integer, autoincrement = True, primary_key = True)
+#     user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"))
+#     date = db.Column(db.DateTime)
+#     description = db.Column(db.String(100))
+#     category = db.Column(db.String(64))
+#     amount = db.Column(db.Float)
+#     # add more info for whether a particular transaction counts towards a challenge - would also allow user to input relevant transactions - or apply an existing transaction to progress?
+#     user = db.relationship("User", backref = db.backref("transactions"))
 
-    def __repr__(self):
-        return "<Transaction Object: %s user_id=%s, category = %s, amount = %s>" % (
-                self.transaction_id, self.user_id, self.category, self.amount)
+#     def __repr__(self):
+#         return "<Transaction Object: %s user_id=%s, category = %s, amount = %s>" % (
+#                 self.transaction_id, self.user_id, self.category, self.amount)
 
 
 class Organization(db.Model):

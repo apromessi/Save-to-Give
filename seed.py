@@ -1,4 +1,4 @@
-from model import User, Donation, Challenge, Transaction, Organization, connect_to_db, db
+from model import User, Donation, Challenge, Organization, connect_to_db, db
 from server import app
 
 
