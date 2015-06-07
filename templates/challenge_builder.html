@@ -75,12 +75,12 @@
                                 "<p>With $<span id='donation_price'>" + 
                                 donation_obj.donation_price + 
                                 "</span> you can <span id='donation_item'> <a href='#'" +
-                                "class='btn btn-default donation_info_link' role='button'>" + 
+                                "class=donation_info_link'>" + 
                                 donation_obj.donation_item + "</a></span>!</p>",
 
                                 "<div class='donation_info'><p>" +
-                                donation_obj.description + "</p><p>Organization: " +
-                                donation_obj.org_name + "</p></div>",
+                                donation_obj.description + "</p><p class='org_name'>" + 
+                                "Organization: " + donation_obj.org_name + "</p></div>",
 
                                 "<input type='button' class='btn btn-default accept_button' " +
                                 "data-donation_item='" + donation_obj.donation_item + 

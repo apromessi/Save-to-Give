@@ -1,17 +1,25 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>View Challenge</h1>
+<div class="container-fluid">
+  <row>
+    <div id="indiv_progress_chart" class="col-sm-8" style="width:60%; height:400px;"></div>
 
-<div id="indiv_progress_chart" style="width:400px; height:400px;"></div>
+    <div class="col-sm-4">
+      <span id="challenge">
+        <h4>My Challenge:</h4>
+          <p>
+            I have agreed to substitute {{ qty }} {{ alternative_items }} for 
+            {{original_items }} and use the ${{ "%0.2f" % donation_price }} I save to 
+            {{ donation_item }}.
+          </p>
+          <p>{{ donation_description }}</p>
+          <p class="org_name">Organization: {{ org_name }}</p>
+      </span>
+    </div>
 
-<span id="challenge">
-    <h4>My Challenge:</h4>
-    <p>I have agreed to substitute {{ qty }} {{ alternative_items }} for {{ original_items }}
-        and use the ${{ "%0.2f" % donation_price }} I save to {{ donation_item }}.</p>
-    <p>{{ donation_description }}</p>
-    <p>Organization: {{ org_name }}</p>
-</span>
+  </row>
+</div>
 
 {% if completed_at == None %}
     <h4>Update my progress:</h4>
@@ -40,7 +48,6 @@
 
 {% else %}
     <h4>
-        <!-- Congratulations! You have saved ${{ "%0.2f" % total_progress }} and completed this challenge! Would you like to <a href="/donate/{{ ac_id }}">donate now</a>? -->
         Congratulations! You have completed this challenge! Would you like to <a href="/donate/{{ ac_id }}">donate now</a>?
     </h4>
 

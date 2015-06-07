@@ -3,43 +3,55 @@
 
 <h1>{{ firstname }}'s Profile</h1>
 
-<div id="overall_progress_chart" style="width:400px; height:400px;"></div>
+<div class="container-fluid">
+  <row>
+    <div id="overall_progress_chart" class="col-sm-8" style="width:60%; height:400px;"></div>
 
-{% if users_current_challenges|length >= 1 %}
-    <div id="current_challenges">
-    {% if users_current_challenges|length == 1 %}
-        <h4>Current Challenge</h4>
-    {% else %}
-        <h4>Current Challenges</h4>
-     {% endif %}
+    <div class="col-sm-4">
+      {% if users_current_challenges|length >= 1 %}
+        <div id="current_challenges">
+          {% if users_current_challenges|length == 1 %}
+            <h4>Current Challenge</h4>
+          {% else %}
+            <h4>Current Challenges</h4>
+          {% endif %}
 
-        {% for challenge in users_current_challenges|reverse %}
-                <p>I will substitute {{ challenge[0] }} {{ challenge[1] }} for {{ challenge[2] }} 
-                and use the ${{ "%0.2f" % challenge[4] }} I save to {{ challenge[3] }}.</p>
-                <input type="button" class='btn btn-default view_button' value="View Challenge"
-                data-acid="{{ challenge[6] }}">
-                <input type="button" class='btn btn-default cancel_button' 
-                value="Cancel Challenge" data-acid="{{ challenge[6] }}">
-        {% endfor %}
-    </div>
-{% endif %}
-
-{% if users_completed_challenges|length >= 1 %}
-    <div id="completed_challenges">
-    {% if users_completed_challenges|length == 1 %}
-        <h4>Completed Challenge</h4>
-    {% else %}
-        <h4>Completed Challenges</h4>
-     {% endif %}
-
-        {% for challenge in users_completed_challenges|reverse %}
-            <p>I will substitute {{ challenge[0] }} {{ challenge[1] }} for {{ challenge[2] }} 
-                and use the ${{ "%0.2f" % challenge[4] }} I save to {{ challenge[3] }}.</p>
+          {% for challenge in users_current_challenges|reverse %}
+            <p>
+              I will substitute {{ challenge[0] }} {{ challenge[1] }} for {{ challenge[2] }} 
+              and use the ${{ "%0.2f" % challenge[4] }} I save to {{ challenge[3] }}.
+            </p>
             <input type="button" class='btn btn-default view_button' value="View Challenge"
             data-acid="{{ challenge[6] }}">
-        {% endfor %} 
+            <input type="button" class='btn btn-default cancel_button' 
+            value="Cancel Challenge" data-acid="{{ challenge[6] }}">
+          {% endfor %}
+        </div>
+      {% endif %}
     </div>
-{% endif %}
+  </row>
+
+  {% if users_completed_challenges|length >= 1 %}
+  <row>
+    <div id="completed_challenges" class="col-sm-12">
+      {% if users_completed_challenges|length == 1 %}
+        <h4>Completed Challenge</h4>
+      {% else %}
+        <h4>Completed Challenges</h4>
+      {% endif %}
+
+      {% for challenge in users_completed_challenges|reverse %}
+        <p>
+          I will substitute {{ challenge[0] }} {{ challenge[1] }} for {{ challenge[2] }} 
+          and use the ${{ "%0.2f" % challenge[4] }} I save to {{ challenge[3] }}.
+        </p>
+          <input type="button" class='btn btn-default view_button' value="View Challenge"
+          data-acid="{{ challenge[6] }}">
+      {% endfor %} 
+    </div>
+  </row>
+  {% endif %}
+</div>
 
 <script>
 
