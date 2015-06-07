@@ -8,7 +8,7 @@ import json
 from flask import Flask, render_template, redirect, request, flash, session, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 
-from model import (User, Challenge, Accepted_Challenge, Donation, Transaction,
+from model import (User, Challenge, Accepted_Challenge, Donation,
                     Organization, Progress_Update, connect_to_db, db)
 from transaction_analysis import get_transactions, spending_category_analysis
 
@@ -26,9 +26,9 @@ app.jinja_env.undefined = StrictUndefined
 
 @app.route("/")
 def index():
-    """Displays Homepage"""
+    """Displays challenge builder - which is homepage"""
 
-    return render_template("homepage.html")
+    return redirect("/challenge_builder")
 
 
 @app.route("/login", methods = ["POST", "GET"])

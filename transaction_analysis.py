@@ -1,4 +1,4 @@
-from model import Transaction, connect_to_db, db
+from model import connect_to_db, db
 import datetime
 import random
 import mintapi
