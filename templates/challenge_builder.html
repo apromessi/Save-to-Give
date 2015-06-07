@@ -1,10 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>Build your own challenge!</h1>
+<div class="site-wrapper">
+<div class="site-wrapper-inner">
+<div class="cover-container">
 
-<div id="step1">
-    <form>
+<div id="step1" class="inner cover">
+  <h1 class="cover-heading">Save<h1>
+    <form class="lead">
         <label>I spend too much money on
             <select name="original_items" onchange="showStep2()">
                     <option value="choose_an_item"></option>
@@ -26,7 +29,8 @@
 
 <div id="step3">
     <p>You will save $<span class="savings"></span>!</p>
-    <h3>Here are three donation items that most closely match the amount you are saving:</h3>
+    <h1>Give</h1>
+    <h4>Here are three donation items that most closely match the amount you are saving:</h4>
     <div id="challenge"></div>
 </div>
 
@@ -34,6 +38,11 @@
     <h4>Wow, you're feeling generous! Would you like to donate $<span class="savings">
     </span> directly to <a href="https://www.oxfam.org/">Oxfam International</a>
     or the organization of your choice?</h4>
+</div>
+
+
+</div>
+</div>
 </div>
 
 
