@@ -5,6 +5,7 @@
 <div class="site-wrapper-inner">
 <div class="cover-container">
 
+<div class="box">
 <div id="step1" class="inner cover">
   <h1 class="cover-heading">Save<h1>
     <form class="lead">
@@ -25,11 +26,13 @@
             <input type="number" name="qty" id="qty" oninput="showStep3()"> <span class="alt"></span><br>
         </label>
     </form>
+    <p id="calculated_savings"><p>
+</div>
 </div>
 
+<div class="box">
 <div id="step3">
-    <p>You will save $<span class="savings"></span>!</p>
-    <h1>Give</h1>
+    <h1 class="cover-heading">Give</h1>
     <h4>Here are three donation items that most closely match the amount you are saving:</h4>
     <div id="challenge"></div>
 </div>
@@ -74,6 +77,8 @@
             function (result) {
                 var donation_amt = (result.savings * qty);
                 donation_amt = (donation_amt).toFixed(2);
+                $("#calculated_savings").html("You will save $<span " + 
+                                "class='savings'></span>!");
                 $(".savings").text(donation_amt);
                 
                 $.get(
@@ -84,7 +89,7 @@
                                 "<p>With $<span id='donation_price'>" + 
                                 donation_obj.donation_price + 
                                 "</span> you can <span id='donation_item'> <a href='#'" +
-                                "class=donation_info_link'>" + 
+                                "class='donation_info_link'>" + 
                                 donation_obj.donation_item + "</a></span>!</p>",
 
                                 "<div class='donation_info'><p>" +

@@ -27,12 +27,7 @@
 .donation_info_link.text-primary:hover {
   color: #286090;
 }
-/*.donation_info_link.text-success:hover {
-  color: #2b542c;
-}*/
-/*.donation_info_link:hover {
-}
 
-.donation_info_link:active {
-    color: #c3c3c3;
-}*/
+.cover-container{
+  text-align: center;
+}
