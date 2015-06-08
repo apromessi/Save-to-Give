@@ -12,7 +12,7 @@
 
 <div class="box col-sm-6">
 <div id="step1" class="inner cover">
-  <h1 class="cover-heading">Save<h1>
+  <h1 class="cover-heading title">Save<h1>
     <form class="lead">
         <label>I spend too much money on
             <select name="original_items" onchange="showStep2()">
@@ -25,7 +25,7 @@
     </form>
 </div>
 
-<div id="step2"><br>
+<div id="step2">
     <form>
         <label>How many <span class="alt"></span> will you substitute for <span id="orig"></span>?<br>
             <input type="number" name="qty" id="qty" oninput="showStep3()"> <span class="alt"></span><br>
@@ -44,15 +44,15 @@
 
 <div class="box col-sm-6">
 <div id="step3">
-    <h1 class="cover-heading">Give</h1>
-    <h4>Here are three donation items that most closely match the amount you are saving:</h4>
+    <h1 class="cover-heading title">Give</h1>
+    <p>Here are three donation items that most closely match the amount you are saving:</p>
     <div id="challenge"></div>
 </div>
 
 <div id="step3_high_amt">
-    <h4>Wow, you're feeling generous! Would you like to donate $<span class="savings">
+    <p>Wow, you're feeling generous! Would you like to donate $<span class="savings">
     </span> directly to <a href="https://www.oxfam.org/">Oxfam International</a>
-    or the organization of your choice?</h4>
+    or the organization of your choice?</p>
 </div>
 
 <div class="col-sm-3">
