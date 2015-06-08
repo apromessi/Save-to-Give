@@ -37,26 +37,54 @@ label {
 
 .donation_info_link:visited {
 	text-decoration: none;
-	color: #337ab7;
+	color: #000000;
 }
 
-.donation_info_link:active,
+/*.donation_info_link:active,
 .donation_info_link:hover {
   outline: 0;
-}
+}*/
 .donation_info_link:hover,
 .donation_info_link:focus {
-  color: #23527c;
+  color: #000000;
+  font-size: 15px
 }
 .donation_info_link.text-primary:hover {
   color: #286090;
 }
 
-.cover-container {
-  text-align: center;
+#homepage {
+  /*text-align: center;*/
+  background-image: url("/static/images/cover_golden.jpg");
+  background-color: #FFF9D9;
+  color: #000000;
 }
+
+input:focus {
+  box-shadow: 0 0 5px rgba(0,0,0,0.3);
+  border: 1px solid rgba(0,0,0,0.3);
+}
+
+input {
+  display: block;
+  border: none;
+  background-color: rgba(0,0,0,0.1);
+}
+
+/*.btn-default {
+  background-image: linear-gradient(to bottom,#fff 0,#000000 100%);
+  color: "black";
+}*/
+
 
 .box {
   border: 2px;
-  border-color: #3CA028
+  border-radius: 10px;
+  border-color: #3CA028;
+  background:#7f7f7f;
+  background:rgba(255,255,255,0.4);
+}
+
+#give_box {
+  background:rgba(255,255,255,0.5);
 }
