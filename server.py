@@ -11,6 +11,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from model import (User, Challenge, Accepted_Challenge, Donation,
                     Organization, Progress_Update, connect_to_db, db)
 from transaction_analysis import get_transactions, spending_category_analysis
+from mint_auth import load_mint_auth
 
 
 app = Flask(__name__)
@@ -166,13 +167,44 @@ def challenge_builder_step3(donation_amt):
 @app.route("/mint_authentication")
 def mint_authentication():
     """Collect mint username and password"""
-
     # if mint username/password is not already in keyring, show a form and ask user if they 
     # want to enter their info and have their transactions analyzed
     # if they go to transaction analysis link and password is already in keyring, redirect
     # to transaction analysis page
 
-    return render_template('mint_authentication.html')
+    if load_mint_auth():
+        return redirect("/transaction_analysis")
+    else:
+        return render_template('mint_authentication.html')
+
+
+@app.route("/transaction_analysis", methods = ["POST", "GET"])
+def transaction_analysis():
+    """Scrapes data from Mint account and displays an analysis of transactions by category.
+        Identfies places where User spends more money than necessary - ratio of "groceries"
+        to "restaurants", search for key words like "Starbucks" or "cafe". Could also focus on week by week.
+        Finds relevant challenges and displays challenge info for User, along with "Accept" buttons"""
+
+    if request.method == "GET":
+        if load_mint_auth():
+            mint_username, mint_password = load_mint_auth()
+    elif request.method == "POST":
+        mint_username = request.form["mint_username"]
+        mint_password = request.form["mint_password"]
+
+    categories = get_transactions(mint_username, mint_password)
+    print categories
+    challenge_ids = spending_category_analysis(categories)
+
+    targeted_challenges = []
+
+    for challenge_id in challenge_ids:
+        targeted_challenge = Accepted_Challenge.query.filter(Accepted_Challenge.user_id == 4,
+                                        Accepted_Challenge.challenge_id == challenge_id).all()
+        targeted_challenges.extend(targeted_challenge)
+
+    return render_template('transaction_analysis.html', categories = json.dumps(categories),
+                            targeted_challenges = targeted_challenges)
 
 
 @app.route("/accept_preset_challenge", methods = ["POST"])
@@ -196,31 +228,6 @@ def accept_preset_challenge():
     db.session.commit()
 
     return redirect("/profile")
-
-
-@app.route("/transaction_analysis", methods = ["POST"])
-def transaction_analysis():
-    """Scrapes data from Mint account and displays an analysis of transactions by category.
-        Identfies places where User spends more money than necessary - ratio of "groceries"
-        to "restaurants", search for key words like "Starbucks" or "cafe". Could also focus on week by week.
-        Finds relevant challenges and displays challenge info for User, along with "Accept" buttons"""
-
-    mint_username = request.form["mint_username"]
-    mint_password = request.form["mint_password"]
-
-    categories = get_transactions(mint_username, mint_password)
-    print categories
-    challenge_ids = spending_category_analysis(categories)
-
-    targeted_challenges = []
-
-    for challenge_id in challenge_ids:
-        targeted_challenge = Accepted_Challenge.query.filter(Accepted_Challenge.user_id == 4,
-                                        Accepted_Challenge.challenge_id == challenge_id).all()
-        targeted_challenges.extend(targeted_challenge)
-
-    return render_template('transaction_analysis.html', categories = json.dumps(categories),
-                            targeted_challenges = targeted_challenges)
 
 
 @app.route("/profile", methods=["GET", "POST"])

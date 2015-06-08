@@ -1,5 +1,6 @@
 env
 secrets.sh
+secrets.txt
 secrets.py
 
 savetogive.db

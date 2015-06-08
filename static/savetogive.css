@@ -28,6 +28,11 @@
   color: #286090;
 }
 
-.cover-container{
+.cover-container {
   text-align: center;
+}
+
+.box {
+  border: 2px;
+  border-color: #3CA028
 }
