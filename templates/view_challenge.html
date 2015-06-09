@@ -19,8 +19,8 @@
             {{original_items }} and use the ${{ "%0.2f" % donation_price }} I save to 
             {{ donation_item }}.
           </p>
-          <p>{{ donation_description }}</p>
-          <p class="org_name">Organization: {{ org_name }}</p>
+          <p class="explanation">{{ donation_description }}</p>
+          <p class="org_name explanation">Organization: {{ org_name }}</p>
       </span>
     </div>
 
@@ -47,16 +47,18 @@
             class='btn btn-default btn-xs'>
     </form>
     
-    <p>I'm so close to reaching my goal! I would like to declare my challenge complete
-        and <a class="donation_info_link" href="/donate/{{ ac_id }}">donate now</a>.
+    <p>
+        <a class="donation_info_link" href="/donate/{{ ac_id }}">I'm so close to reaching my goal! 
+            I would like to declare my challenge complete and donate now.</a>
     </p>
     
 
 {% else %}
-    <h4>
-        Congratulations! You have completed this challenge! Would you like to 
-        <a href="/donate/{{ ac_id }}" class="donation_info_link">donate now</a>?
-    </h4>
+    <br>
+    <p>
+        <a href="/donate/{{ ac_id }}" class="donation_info_link">Congratulations! 
+            You have completed this challenge! Would you like to donate now?</a>
+    </p>
 
 {% endif %}
 

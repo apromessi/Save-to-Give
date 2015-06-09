@@ -27,20 +27,20 @@
         <h4>We challenge you to:</h4>
         {% for challenge in targeted_challenges %}
         <p>
-            Substitute {{ challenge.accepted_qty }} 
+            <a href="#" class="donation_info_link">Substitute {{ challenge.accepted_qty }} 
             {{ challenge.challenge.alternative_items }} 
             for {{ challenge.challenge.original_items }} and save about 
             ${{ "%.2f" % challenge.donation.donation_price }} 
-            to <a href="#" class="donation_info_link">
-            {{ challenge.donation.donation_item }}</a>.
+            to {{ challenge.donation.donation_item }}.</a>
+
+            <input type="button" data-acid="{{ challenge.ac_id }}"
+            value="Accept" class="accept_button btn btn-default btn-xs">
         </p>
-        <div class="donation_info">
+        <div class="donation_info explanation">
             <p>{{ challenge.donation.description }}</p>
             <p class="org_name">Organization: {{challenge.donation.organization.org_name }}</p>
         </div>
-        <input type="button" data-acid="{{ challenge.ac_id }}"
-            value="Accept" class="accept_button btn btn-default btn-xs">
-
+        
         {% endfor %}
 
     </div>

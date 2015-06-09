@@ -7,12 +7,13 @@
 
 {% block content %}
 
-<h1>Donate!</h1>
+<h1 class="title">Donate!</h1>
 
 <div>
     <p>Congratulations on completing your challenge!</p>
     <p>Thank you for giving up {{ original_items }} for a little while.</p>
-    <p><a href="{{ org_obj.org_url }}" class="donation_info_link">Please follow {{ org_obj.org_name }}'s link to {{ donation_item }}.</a></p>
+    <p><a href="{{ org_obj.org_url }}" class="donation_info_link">
+      Please follow {{ org_obj.org_name }}'s link to {{ donation_item }}.</a></p>
 </div>
 
 
