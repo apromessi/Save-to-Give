@@ -146,11 +146,13 @@
                         ignoreHiddenSeries: false,
                         marginRight: 35,
                         style: {
-                                'font-family': "'Raleway', sans-serif"
-                            }
+                                'font-family': "'Raleway', sans-serif",
+                            },
+                        backgroundColor: '#FFF9D9',
                     },
+                    colors: ['#dba366'],
                     title: {
-                        text: 'My Progress'
+                        text: 'My Progress',
                     },
                     xAxis: {
                         type: 'datetime',
@@ -160,7 +162,7 @@
                         },
                         title: {
                             text: 'Date'
-                        }
+                        },
                     },
                     yAxis: {
                         title: {
@@ -170,7 +172,7 @@
                         plotLines: [{
                             value: result.goal,
                             width: 2,
-                            color: 'blue',
+                            color: '#dba366',
                             dashStyle: "dash",
                             label: {
                                 text: 'Challenge: $' + result.goal,
