@@ -20,7 +20,7 @@
 <div id="step1" class="inner cover">
   <h1 class="cover-heading title">Save<h1>
     <form class="lead">
-        <label>I spend too much money on
+        <label>Where does your money go? 
             <select name="original_items" onchange="showStep2()">
                     <option value="choose_an_item"></option>
                 {% for original_items in challenges_list %}
@@ -32,11 +32,12 @@
 </div>
 
 <div id="step2">
-    <form>
-        <label>How many <span class="alt"></span> will you substitute for <span id="orig"></span>?
+    <p>If you substitute a few <span class="alt"></span> for <span class="orig"></span>, you can 
+        save some pocket change.</p>
+    <form id="qty_form">
+        <label>How many <span class="orig" id="orig_text"></span> can you give up?
             <br>
             <input type="number" name="qty" id="qty" oninput="showStep3()" autocomplete="off"> 
-            <span class="alt"></span><br>
         </label>
     </form>
     <p id="calculated_savings"><p>
@@ -79,18 +80,23 @@
 <script>
     $("#step2").hide();
     $("#step3").hide();
+    $("#give_box").hide();
     $("#step3_high_amt").hide();
 
     function showStep2() {
+        $("#step2").slideUp(200);
+        $("#qty").val('');
+        $("#step3").slideUp(200);
+        $("#give_box").hide();
         var original_items = encodeURIComponent($("#step1 option:selected").text());
         $.get(
             "/challenge_builder_step2/" + original_items,
             function (result) {
                 $(".alt").text(result.alternative_items);
-                $("#orig").text(result.original_items);
+                $(".orig").text(result.original_items);
             }
         );
-        $("#step2").slideToggle();
+        $("#step2").slideDown(200);
             };
 
     function showStep3() {
@@ -112,19 +118,19 @@
                     function (result) {
                         _.each(result.donation_objects, function(donation_obj) {
                             $("#challenge").append(
-                                "<p>With $<span id='donation_price'>" + 
+                                "<p class='challenge_txt'>With $<span id='donation_price'>" + 
                                 donation_obj.donation_price + 
                                 "</span> you can <span id='donation_item'> <a href='#'" +
                                 "class='donation_info_link'>" + 
-                                donation_obj.donation_item + "</a></span>!</p>",
+                                donation_obj.donation_item + "</a></span>! " +
+
+                                "<input type='button' class='btn btn-default accept_button " +
+                                "btn-xs' data-donation_item='" + donation_obj.donation_item + 
+                                "' value='Accept'></p>",
 
                                 "<div class='donation_info'><p>" +
                                 donation_obj.description + "</p><p class='org_name'>" + 
-                                "Organization: " + donation_obj.org_name + "</p></div>",
-
-                                "<p><input type='button' class='btn btn-default accept_button " +
-                                "btn-xs' data-donation_item='" + donation_obj.donation_item + 
-                                "' value='Accept'></p>");
+                                "Organization: " + donation_obj.org_name + "</p></div>"); 
                         });
                         $(".donation_info").hide();
                         $(".accept_button").click(acceptChallenge);
@@ -134,7 +140,7 @@
         );
         
         if (($("#qty").val()) > 100) {
-            $("#step3_high_amt").slideToggle();
+            $("#step3_high_amt").slideToggle(200);
             $("#step3").empty();
             var original_items = $("#step1 option:selected").text();
             var qty = $("#qty").val();
@@ -148,20 +154,20 @@
             });
         }
         else {
-            $("#step3").slideToggle();
+            $("#give_box").show();
+            $("#step3").slideDown(200);
             $("#step3_high_amt").hide();
         }
     }
 
 
     function toggleDonationInfo() {
-        $(this).closest("p").next("div").slideToggle();
+        $(this).closest("p").next("div").slideToggle(200);
     }
 
     function acceptChallenge(evt) {
         var data = $(evt.currentTarget).data();
-        console.log(data.donation_item)
-        var data_obj = { original_items: $("#orig").text(),
+        var data_obj = { original_items: $("#orig_text").text(),
                         alternative_items: $(".alt").text(),
                         qty: $("#qty").val(),
                         donation_item: data.donation_item};

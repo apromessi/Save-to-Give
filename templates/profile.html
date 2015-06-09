@@ -27,9 +27,9 @@
               I will substitute {{ challenge[0] }} {{ challenge[1] }} for {{ challenge[2] }} 
               and use the ${{ "%0.2f" % challenge[4] }} I save to {{ challenge[3] }}.
             </p>
-            <input type="button" class='btn btn-default view_button' value="View Challenge"
+            <input type="button" class='btn btn-default view_button btn-xs' value="View Challenge"
             data-acid="{{ challenge[6] }}">
-            <input type="button" class='btn btn-default cancel_button' 
+            <input type="button" class='btn btn-default cancel_button btn-xs' 
             value="Cancel Challenge" data-acid="{{ challenge[6] }}">
           {% endfor %}
         </div>
@@ -51,7 +51,7 @@
           I will substitute {{ challenge[0] }} {{ challenge[1] }} for {{ challenge[2] }} 
           and use the ${{ "%0.2f" % challenge[4] }} I save to {{ challenge[3] }}.
         </p>
-          <input type="button" class='btn btn-default view_button' value="View Challenge"
+          <input type="button" class='btn btn-default view_button btn-xs' value="View Challenge"
           data-acid="{{ challenge[6] }}">
       {% endfor %} 
     </div>

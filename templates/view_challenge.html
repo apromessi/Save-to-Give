@@ -42,19 +42,20 @@
         </div><br>
             
             <input type="button" value="Edit Estimate" id="edit_estimate"
-            class='btn btn-default'>
+            class='btn btn-default btn-xs'>
             <input type="button" value="Submit Update" id="submit_update" 
-            class='btn btn-default'>
+            class='btn btn-default btn-xs'>
     </form>
     
     <p>I'm so close to reaching my goal! I would like to declare my challenge complete
-        and <a href="/donate/{{ ac_id }}">donate now</a>.
+        and <a class="donation_info_link" href="/donate/{{ ac_id }}">donate now</a>.
     </p>
     
 
 {% else %}
     <h4>
-        Congratulations! You have completed this challenge! Would you like to <a href="/donate/{{ ac_id }}">donate now</a>?
+        Congratulations! You have completed this challenge! Would you like to 
+        <a href="/donate/{{ ac_id }}" class="donation_info_link">donate now</a>?
     </h4>
 
 {% endif %}
