@@ -26,19 +26,21 @@
     <div id="targeted challenges" class="col-sm-4">
         <h4>We challenge you to:</h4>
         {% for challenge in targeted_challenges %}
+        <div class='challenge_statements'>
         <p>
             <a href="#" class="donation_info_link">Substitute {{ challenge.accepted_qty }} 
             {{ challenge.challenge.alternative_items }} 
             for {{ challenge.challenge.original_items }} and save about 
             ${{ "%.2f" % challenge.donation.donation_price }} 
             to {{ challenge.donation.donation_item }}.</a>
-
+        </p>
             <input type="button" data-acid="{{ challenge.ac_id }}"
             value="Accept" class="accept_button btn btn-default btn-xs">
-        </p>
         <div class="donation_info explanation">
+            <br>
             <p>{{ challenge.donation.description }}</p>
             <p class="org_name">Organization: {{challenge.donation.organization.org_name }}</p>
+        </div>
         </div>
         
         {% endfor %}
@@ -97,7 +99,7 @@
     $(".donation_info").hide();
     $(".donation_info_link").click(toggleDonationInfo);
     function toggleDonationInfo() {
-        $(this).closest("p").next("div").slideToggle();
+        $(this).closest("p").next().next("div").slideToggle();
     }
     $(".accept_button").click(acceptChallenge);
 

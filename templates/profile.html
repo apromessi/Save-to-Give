@@ -10,7 +10,7 @@
 <!-- <h1>{{ firstname }}'s Profile</h1> -->
 
 <div class="container-fluid">
-  <row>
+  <div class='row'>
     <div id="overall_progress_chart" class="col-sm-8" style="width:60%; height:400px;"></div>
 
     <div class="col-sm-4">
@@ -23,6 +23,7 @@
           {% endif %}
 
           {% for challenge in users_current_challenges|reverse %}
+            <div class='challenge_statements'>
             <p>
               I will substitute {{ challenge[0] }} {{ challenge[1] }} for {{ challenge[2] }} 
               and use the ${{ "%0.2f" % challenge[4] }} I save to {{ challenge[3] }}.
@@ -31,15 +32,16 @@
             data-acid="{{ challenge[6] }}">
             <input type="button" class='btn btn-default cancel_button btn-xs' 
             value="Cancel Challenge" data-acid="{{ challenge[6] }}">
+            </div>
           {% endfor %}
         </div>
       {% endif %}
     </div>
-  </row>
+  </div>
 
   {% if users_completed_challenges|length >= 1 %}
-  <row>
-    <div id="completed_challenges" class="col-sm-12">
+  <div class='row'>
+    <div id="completed_challenges" class="col-sm-7">
       {% if users_completed_challenges|length == 1 %}
         <h4>Completed Challenge</h4>
       {% else %}
@@ -47,15 +49,19 @@
       {% endif %}
 
       {% for challenge in users_completed_challenges|reverse %}
+        <div class='challenge_statements'>
         <p>
           I will substitute {{ challenge[0] }} {{ challenge[1] }} for {{ challenge[2] }} 
           and use the ${{ "%0.2f" % challenge[4] }} I save to {{ challenge[3] }}.
         </p>
           <input type="button" class='btn btn-default view_button btn-xs' value="View Challenge"
           data-acid="{{ challenge[6] }}">
+        </div>
       {% endfor %} 
     </div>
-  </row>
+    <div class='col-sm-5'>
+    </div>
+  </div>
   {% endif %}
 </div>
 

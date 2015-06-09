@@ -87,6 +87,17 @@ input {
   background-color: rgba(0,0,0,0.1);
 }
 
+input[type='number'] {
+  width: 40px;
+  display: inline-block;
+}
+
+#qty {
+  height: 30px;
+  text-align: center;
+  font-weight: medium;
+}
+
 .btn-default:hover {
   background-color: rgba(0,0,0,0.1);
   background-image: none;
@@ -106,19 +117,40 @@ select,
   background: none;
   color: #000000;
   text-shadow: none;
+  font-weight: medium;
 }
 
 .btn-group-xs>.btn, .btn-xs {
   padding: 1px 10px;
 }
 
-.challenge_txt .accept_button {
+.challenge_txt .accept_btn_homepage {
   display: inline-block;
+}
+.accept_btn_homepage {
+  margin-left: 10px;
+}
+
+#update_qty_label #update_qty {
+  display: inline-block;
+}
+#qty_label #qty {
+  display: inline-block;
+}
+#manual_estimate_label #manual_estimate {
+  display: inline-block;
+}
+
+.challenge_statements {
+  border-radius: 5px;
+  background:rgba(255, 255, 255, 1);
+  padding: 5px;
+  margin-bottom: 10px;
+  border: 1px solid #dba366;
 }
 
 .box {
   border-radius: 10px;
-  background:#7f7f7f;
   background:rgba(255, 249, 217, 0.3);
 }
 

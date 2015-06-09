@@ -14,6 +14,7 @@
     <div class="col-sm-4">
       <span id="challenge">
         <h4>My Challenge:</h4>
+          <div class='challenge_statements'
           <p>
             I have agreed to substitute {{ qty }} {{ alternative_items }} for 
             {{original_items }} and use the ${{ "%0.2f" % donation_price }} I save to 
@@ -21,6 +22,7 @@
           </p>
           <p class="explanation">{{ donation_description }}</p>
           <p class="org_name explanation">Organization: {{ org_name }}</p>
+          </div>
       </span>
     </div>
 
@@ -30,7 +32,7 @@
 {% if completed_at == None %}
     <h4>Update my progress:</h4>
     <form>
-        <label>I have successfully substituted
+        <label id="update_qty_label">I have successfully substituted
             <input type="number" name="update_qty" id="update_qty"
                     oninput="calcEstimate()"
                     data-altcost="{{ alternative_cost }}"
@@ -39,7 +41,7 @@
         </label>
 
         <div id="update_statement">
-        </div><br>
+        </div>
             
             <input type="button" value="Edit Estimate" id="edit_estimate"
             class='btn btn-default btn-xs'>
@@ -47,18 +49,18 @@
             class='btn btn-default btn-xs'>
     </form>
     
-    <p>
+    <p><strong>
         <a class="donation_info_link" href="/donate/{{ ac_id }}">I'm so close to reaching my goal! 
             I would like to declare my challenge complete and donate now.</a>
-    </p>
+    </strong></p>
     
 
 {% else %}
     <br>
-    <p>
+    <p><strong>
         <a href="/donate/{{ ac_id }}" class="donation_info_link">Congratulations! 
             You have completed this challenge! Would you like to donate now?</a>
-    </p>
+    </strong></p>
 
 {% endif %}
 
@@ -85,7 +87,8 @@
     function editEstimate() {
         $("#update_statement").empty();
         var data = $("#submit_update").data();
-        $("#update_statement").append("<br><label>I estimate that I really saved $" +
+        $("#update_statement").append("<label id='manual_estimate_label'>" + 
+                        "I estimate that I really saved $" +
                         "<input type='number' name='manual_estimate' id='manual_estimate'" +
                         "placeholder='" + data.calculated_estimate +
                         "' oninput='enterEstimate()'></label>");
