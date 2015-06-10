@@ -63,6 +63,7 @@ body {
 
 #homepage {
   background-image: url("/static/images/cover_golden.jpg");
+  background-attachment: fixed;
   color: #000000;
   font-size: 16px;
 }
@@ -161,4 +162,5 @@ select,
 
 #give_box {
   background:rgba(255, 249, 217, 0.5);
+  margin-bottom: 25px;
 }
