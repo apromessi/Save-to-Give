@@ -18,7 +18,7 @@ The donation items are carefully selected from reputable organizations that have
 
 Here are some examples of challenges and corresponding donation items:
 
-![image](/static/images/challenge_examples.jpg) 
+![image](/static/images/challenge_examples.png) 
 
 Save to Give tracks your progress towards completing challenges and displays line charts of cumulative progress for easy visual reference. Update your progress through another dynamic form that asks you how many times you've substituted the alternative, cheaper item. It estimates how much you've saved, and allows you to edit that estimate. When cumulative progress reaches the donation target, Save to Give prompts the user to donate.
 
