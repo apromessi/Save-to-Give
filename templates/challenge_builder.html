@@ -117,11 +117,11 @@
                     function (result) {
                         _.each(result.donation_objects, function(donation_obj) {
                             $("#challenge").append(
-                                "<p class='challenge_txt'><a href='#'" +
-                                "class='donation_info_link'>With $<span id='donation_price'>" + 
+                                "<p class='challenge_txt'>With $<span id='donation_price'>" + 
                                 donation_obj.donation_price + 
-                                "</span> you can <span id='donation_item'>"  + 
-                                donation_obj.donation_item + "</span>!</a>" +
+                                "</span> you can <a href='#'" +
+                                "class='donation_info_link'> <span id='donation_item'>"  + 
+                                donation_obj.donation_item + "</span></a>!" +
 
                                 "<input type='button' class='btn btn-default accept_button " +
                                 "btn-xs accept_btn_homepage' data-donation_item='" + 

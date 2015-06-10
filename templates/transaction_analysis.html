@@ -28,11 +28,11 @@
         {% for challenge in targeted_challenges %}
         <div class='challenge_statements'>
         <p>
-            <a href="#" class="donation_info_link">Substitute {{ challenge.accepted_qty }} 
+            Substitute {{ challenge.accepted_qty }} 
             {{ challenge.challenge.alternative_items }} 
             for {{ challenge.challenge.original_items }} and save about 
             ${{ "%.2f" % challenge.donation.donation_price }} 
-            to {{ challenge.donation.donation_item }}.</a>
+            to <a href="#" class="donation_info_link">{{ challenge.donation.donation_item }}</a>.
         </p>
             <input type="button" data-acid="{{ challenge.ac_id }}"
             value="Accept" class="accept_button btn btn-default btn-xs">

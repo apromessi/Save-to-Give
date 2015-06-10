@@ -50,17 +50,18 @@
     </form>
     
     <p><strong>
-        <a class="donation_info_link" href="/donate/{{ ac_id }}">I'm so close to reaching my goal! 
-            I would like to declare my challenge complete and donate now.</a>
+        I'm so close to reaching my goal! I would like to declare my challenge complete and donate now.
     </strong></p>
+    <a href="/donate/{{ ac_id }}"><input type="button" value="Donate" class='btn btn-default btn-xs donate_button'></a>
     
 
 {% else %}
     <br>
     <p><strong>
-        <a href="/donate/{{ ac_id }}" class="donation_info_link">Congratulations! 
-            You have completed this challenge! Would you like to donate now?</a>
+        Congratulations! You have completed this challenge! Would you like to donate now?
     </strong></p>
+    <a href="/donate/{{ ac_id }}"><input type="button" value="Donate" 
+    class='btn btn-default btn-xs donate_button'></a>
 
 {% endif %}
 

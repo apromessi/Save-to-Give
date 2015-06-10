@@ -3,6 +3,10 @@
   font-family: 'Pacifico', cursive;
 }
 
+.navbar-brand {
+  font-size: 25px;
+}
+
 
 h1,
 h2,
@@ -44,17 +48,12 @@ label {
 }
 
 .donation_info_link:hover {
-  font-size: 15px;
   color: #000000;
+  text-decoration: underline;
 }
 
-/*.donation_info_link.text-primary:hover {
-  color: #286090;
-}*/
-
 .donation_info_link:visited:hover {
-  text-decoration: none;
-  font-size: 15px;
+  text-decoration: underline;
   color: #000000;
 }
 
@@ -65,6 +64,11 @@ body {
 #homepage {
   background-image: url("/static/images/cover_golden.jpg");
   color: #000000;
+  font-size: 16px;
+}
+
+#homepage label {
+  font-size: 16px;
 }
 
 button:focus {
@@ -129,6 +133,7 @@ select,
 }
 .accept_btn_homepage {
   margin-left: 10px;
+  font-size: 16px;
 }
 
 #update_qty_label #update_qty {
@@ -151,9 +156,9 @@ select,
 
 .box {
   border-radius: 10px;
-  background:rgba(255, 249, 217, 0.3);
+  background:rgba(255, 249, 217, 0.4);
 }
 
 #give_box {
-  background:rgba(255, 249, 217, 0.4);
+  background:rgba(255, 249, 217, 0.5);
 }
