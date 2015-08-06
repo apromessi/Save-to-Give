@@ -1,13 +1,13 @@
-from model import connect_to_db, db
 import datetime
 import random
 import mintapi
 import keyring
-import pandas as pd
 
 
 class Transaction(object):
-    """Contains transaction data from mintapi - NOT STORED IN DB"""
+    """
+    Contains transaction data from mintapi - NOT STORED IN DB
+    """
 
     def __init__(self, transaction_id, date, description, category, amount):
         self.transaction_id = transaction_id
@@ -17,13 +17,17 @@ class Transaction(object):
         self.amount = amount
 
     def __repr__(self):
-        return "<Transaction Object: %s user_id=%s, category = %s, amount = %s>" % (
-                self.transaction_id, self.user_id, self.category, self.amount)
+        return "<Trans Object: %s user_id=%s, category = %s, amount = %s>" % (
+            self.transaction_id, self.user_id, self.category, self.amount)
 
 
 def get_transactions(mint_username, mint_password):
-    """Grab transactions from mintapi and create transaction objects.
-    BUT - don't load them into database."""
+    """
+    Grab transactions from mintapi and create transaction objects.
+    BUT - don't load them into database.
+    """
+
+    # NOTE - for demo use secrets file for authentication instead of keyring
 
     # mint_password = keyring.get_password("system", mint_username)
     mint = mintapi.Mint(mint_username, mint_password)
@@ -39,29 +43,43 @@ def get_transactions(mint_username, mint_password):
         category = user_transactions["category"][i]
         categories[str(category).strip()] = 0
         amount = float(user_transactions["amount"][i])
-        transaction_obj = Transaction(transaction_id = i, date = date, description = description,
-                                        category = category, amount = amount)
+        transaction_obj = Transaction(transaction_id=i,
+                                      date=date,
+                                      description=description,
+                                      category=category,
+                                      amount=amount)
         transaction_obj_list.append(transaction_obj)
 
-    categories_to_remove = set(["paycheck", "bills & utilities", "business services", "transfer",
-                                "federal tax", "credit card payment", "nan", "financial", "income",
-                                "interest income", "pharmacy", "check", "atm fee", "doctor", 
-                                "air travel", "hotel", "gas & fuel"])
+    categories_to_remove = set(["paycheck", "bills & utilities",
+                                "business services", "transfer",
+                                "federal tax", "credit card payment",
+                                "nan", "financial", "income",
+                                "interest income", "pharmacy", "check",
+                                "atm fee", "doctor", "air travel", "hotel",
+                                "gas & fuel"])
 
     for category in categories.keys():
         if category in categories_to_remove:
             del categories[category]
-
 
     for transaction_obj in transaction_obj_list:
         category = transaction_obj.category
         if category in categories.keys():
             categories[category] += transaction_obj.amount
 
-    categories_to_group = {"entertainment": ("amusement", "entertainment", "music", "sports"),
-                            "taxi": ("taxi", "rental car & taxi"),
-                            "shopping": ("clothing", "books", "electronics & software", "hair"),
-                            "restaurants": ("restaurants", "food & dining", "fast food")}
+    categories_to_group = {"entertainment": ("amusement",
+                                             "entertainment",
+                                             "music",
+                                             "sports"),
+                           "restaurants": ("restaurants",
+                                           "food & dining",
+                                           "fast food"),
+                           "shopping": ("clothing",
+                                        "books",
+                                        "electronics & software",
+                                        "hair"),
+                           "taxi": ("taxi",
+                                    "rental car & taxi")}
 
     for category in categories_to_group.keys():
         for grouped_category in categories_to_group[category]:
@@ -73,10 +91,10 @@ def get_transactions(mint_username, mint_password):
 
 
 def spending_category_analysis(categories):
-    """analyzes spending habits by comparing related buckets (eg. public transit 
-        to taxis) [and by comparing your spending with average spending in SF 
-        according to the Intuit Consumer Spending Index, based on user data 
-        from Mint. --- don't have this data yet, hoping for a response to inquiry]"""
+    """
+    Analyzes spending habits by comparing related buckets (eg. public transit
+    to taxis)
+    """
 
     challenge_ids = []
 
@@ -98,7 +116,7 @@ def spending_category_analysis(categories):
         challenge_ids.extend(restaurant_challenges)
 
     if categories["alcohol & bars"] * 2 > categories["restaurants"]:
-        challenge_ids.extend("alcohol_challenges")
+        challenge_ids.extend(alcohol_challenges)
 
     if categories["taxi"] > categories["public transportation"]:
         challenge_ids.extend(transit_challenges)
@@ -110,5 +128,3 @@ def spending_category_analysis(categories):
         challenge_ids = random.sample(range(1, 13), 3)
 
     return challenge_ids
-
-    
