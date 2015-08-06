@@ -3,7 +3,9 @@ from server import app
 
 
 def load_users():
-    """load fake users from users.csv into database."""
+    """
+    load fake users from users.csv into database
+    """
 
     users_file = open("./seed_data/users.csv")
 
@@ -21,7 +23,9 @@ def load_users():
 
 
 def load_challenges():
-    """load challenge estimates from challenges.csv into database."""
+    """
+    load challenge estimates from challenges.csv into database
+    """
 
     challenges_file = open("./seed_data/challenges.csv")
 
@@ -39,7 +43,9 @@ def load_challenges():
 
 
 def load_donations():
-    """load donation options from donations.csv into database."""
+    """
+    load donation options from donations.csv into database
+    """
 
     donations_file = open("./seed_data/donations.csv")
 
@@ -57,7 +63,9 @@ def load_donations():
 
 
 def load_orgs():
-    """load organization table from orgs.csv into database."""
+    """
+    load organization table from orgs.csv into database
+    """
 
     orgs_file = open("./seed_data/orgs.csv")
 
