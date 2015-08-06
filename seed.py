@@ -11,10 +11,10 @@ def load_users():
         lines = text.strip().splitlines()
         for line in lines:
             line = line.split(",")
-            a_user = User(firstname = line[1],
-                            lastname = line[2],
-                            email = line[3],
-                            password = line[5])
+            a_user = User(firstname=line[1],
+                          lastname=line[2],
+                          email=line[3],
+                          password=line[5])
             db.session.add(a_user)
 
     db.session.commit()
@@ -29,10 +29,10 @@ def load_challenges():
         lines = text.strip().splitlines()
         for line in lines:
             line = line.split(",")
-            a_challenge = Challenge(original_items = line[1],
-            						original_cost = float(line[2]),
-            						alternative_items = line[3],
-            						alternative_cost = float(line[4]))
+            a_challenge = Challenge(original_items=line[1],
+                                    original_cost=float(line[2]),
+                                    alternative_items=line[3],
+                                    alternative_cost=float(line[4]))
             db.session.add(a_challenge)
 
     db.session.commit()
@@ -47,10 +47,10 @@ def load_donations():
         lines = text.strip().splitlines()
         for line in lines:
             line = line.split("#")
-        a_donation = Donation(org_id = line[1],
-        						donation_item = line[2],
-        						description = line[3].strip('"'),
-        						donation_price = float(line[4]))
+        a_donation = Donation(org_id=line[1],
+                              donation_item=line[2],
+                              description=line[3].strip('"'),
+                              donation_price=float(line[4]))
         db.session.add(a_donation)
 
     db.session.commit()
@@ -65,13 +65,12 @@ def load_orgs():
         lines = text.strip().splitlines()
         for line in lines:
             line = line.split(",")
-        an_organization = Organization(org_name = line[1],
-        						payment_method = line[2],
-        						org_url = line[3])
-    	db.session.add(an_organization)
+        an_organization = Organization(org_name=line[1],
+                                       payment_method=line[2],
+                                       org_url=line[3])
+        db.session.add(an_organization)
 
     db.session.commit()
-
 
 
 if __name__ == "__main__":
